@@ -1,0 +1,19 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>life.genny</groupId>
+    <artifactId>gennyq</artifactId>
+    <version>8.0.0</version>
+
+    <packaging>pom</packaging>
+<!--    <properties>-->
+<!--&lt;!&ndash;        <revision>${project.version}</revision>&ndash;&gt;-->
+<!--        <revision>8.0.0</revision>-->
+<!--    </properties>-->
+    <modules>
+        <module>bridgeq</module>
+<!--    <module>genny-proxy</module>  -->
+    </modules>
+</project>
