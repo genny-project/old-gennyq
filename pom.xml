@@ -22,8 +22,8 @@
 <!--        &lt;!&ndash;    <module>genny-proxy</module>  &ndash;&gt;-->
         <module>qwandaq</module>
 <!--        <module>bridgeq</module> ====>>>> load quarkus genny extension module same above clusterbale-->
-        <module>bridgeq</module>
-<!--        messageq ====>>>> load quarkus genny extension module same above clusterbale-->
+        <!--        <module>bridgeq</module>-->
+       <!--        messageq ====>>>> load quarkus genny extension module same above clusterbale-->
 
 <!--        rulesq ====>>>> load quarkus genny extension module same above foucus on kogito clusterbale-->
 
