@@ -12,8 +12,24 @@
 <!--&lt;!&ndash;        <revision>${project.version}</revision>&ndash;&gt;-->
 <!--        <revision>8.0.0</revision>-->
 <!--    </properties>-->
+
     <modules>
+<!--       order important !!!  qwandaq ======>>>> contains stardnad genny pojo util-->
+<!--        bootxportq===>>> import base entity from google doc, needs qwandaq-->
+
+<!--        quarkus-genny-module =====>>>>>> genny extension core code qwandaq keycloak messaging kafka database-->
+<!--        apiq ===>>> load quarkus genny module + bootxportq + clustering-->
+<!--        &lt;!&ndash;    <module>genny-proxy</module>  &ndash;&gt;-->
+        <module>qwandaq</module>
+<!--        <module>bridgeq</module> ====>>>> load quarkus genny extension module same above clusterbale-->
         <module>bridgeq</module>
-<!--    <module>genny-proxy</module>  -->
+<!--        messageq ====>>>> load quarkus genny extension module same above clusterbale-->
+
+<!--        rulesq ====>>>> load quarkus genny extension module same above foucus on kogito clusterbale-->
+
+<!--        project-genny extension focus core rules workflow and test keycloak themes-->
     </modules>
-</project>
+
+    <!--  7.10 setup a parent
+      complete build-->
+  </project>
