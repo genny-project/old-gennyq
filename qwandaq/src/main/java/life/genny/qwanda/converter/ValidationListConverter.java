@@ -1,16 +1,20 @@
 package life.genny.qwanda.converter;
 
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import life.genny.qwanda.validation.Validation;
-import org.apache.commons.lang3.StringUtils;
-import org.jboss.logging.Logger;
+import java.lang.invoke.MethodHandles;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
+
+import org.apache.commons.lang3.StringUtils;
+import org.jboss.logging.Logger;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import life.genny.qwanda.validation.Validation;
 
 @Converter
 public class ValidationListConverter implements AttributeConverter<List<Validation>, String> {

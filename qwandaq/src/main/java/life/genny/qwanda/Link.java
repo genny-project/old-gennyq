@@ -17,12 +17,14 @@
 
 package life.genny.qwanda;
 
-import io.quarkus.runtime.annotations.RegisterForReflection;
-import org.jboss.logging.Logger;
+import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import java.io.Serializable;
+
+import org.jboss.logging.Logger;
+
+import io.quarkus.runtime.annotations.RegisterForReflection;
 
 /**
  * A Link object
@@ -60,15 +62,7 @@ public class Link implements Serializable {
   /**
    * 
    */
-
-  public String getAttributeCode() {
-    return attributeCode;
-  }
-
-  public void setAttributeCode(String attributeCode) {
-    this.attributeCode = attributeCode;
-  }
-
+ 
   /**
    * A field that stores the human readable attributecode associated with this link.
    * <p>
@@ -76,29 +70,13 @@ public class Link implements Serializable {
   @Column(name = "LINK_CODE", updatable = false, nullable = false, unique = false)
   public String attributeCode;
 
-
-  public String getTargetCode() {
-    return targetCode;
-  }
-
-  public void setTargetCode(String targetCode) {
-    this.targetCode = targetCode;
-  }
-
+ 
   /**
    * A field that stores the human readable targetcode associated with this link.
    * <p>
    */
   @Column(name = "TARGET_CODE", updatable = false, nullable = false, unique = false)
   public String targetCode;
-
-  public String getSourceCode() {
-    return sourceCode;
-  }
-
-  public void setSourceCode(String sourceCode) {
-    this.sourceCode = sourceCode;
-  }
 
   /**
    * A field that stores the human readable sourcecode associated with this link.
@@ -108,28 +86,12 @@ public class Link implements Serializable {
   public String sourceCode;
 
 
-  public String getLinkValue() {
-    return linkValue;
-  }
-
-  public void setLinkValue(String linkValue) {
-    this.linkValue = linkValue;
-  }
-
   /**
    * A field that stores the human readable link Value associated with this link.
    * <p>
    */
   public String linkValue;
-
-  public Double getWeight() {
-    return weight;
-  }
-
-  public void setWeight(Double weight) {
-    this.weight = weight;
-  }
-
+  
   @Column(name = "LINK_WEIGHT", updatable = true, nullable = true, unique = false)
   public Double weight;
   

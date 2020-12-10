@@ -1,362 +1,335 @@
 package life.genny.qwanda.attribute;
 
-import io.quarkus.hibernate.orm.panache.PanacheEntity;
-import io.quarkus.runtime.annotations.RegisterForReflection;
-import life.genny.qwanda.adapter.LocalDateTimeAdapter;
-import life.genny.qwanda.Value;
-import life.genny.qwanda.entity.BaseEntity;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.jboss.logging.Logger;
-
-import javax.json.bind.annotation.JsonbTransient;
-import javax.json.bind.annotation.JsonbTypeAdapter;
-import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.Date;
 
+import javax.json.bind.annotation.JsonbTransient;
+import javax.json.bind.annotation.JsonbTypeAdapter;
+import javax.persistence.Cacheable;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.persistence.UniqueConstraint;
+import javax.persistence.Index;
+
+//
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.jboss.logging.Logger;
+
+import io.quarkus.hibernate.orm.panache.PanacheEntity;
+import io.quarkus.runtime.annotations.RegisterForReflection;
+import life.genny.notes.utils.LocalDateTimeAdapter;
+import life.genny.qwanda.Value;
+import life.genny.qwanda.entity.BaseEntity;
+
 @Entity
 
 @Table(name = "qbaseentity_attribute",
-        indexes = {
-                @Index(columnList = "baseEntityCode", name = "ba_idx"),
-                @Index(columnList = "attributeCode", name = "ba_idx"),
-                @Index(columnList = "valueString", name = "ba_idx"),
-                @Index(columnList = "valueBoolean", name = "ba_idx")
-        },
-        uniqueConstraints = @UniqueConstraint(columnNames = {"attributeCode", "baseEntityCode", "realm"})
+indexes = {
+		@Index(name = "ba_idx", columnList = "baseEntityCode"),
+		@Index(name = "bb_idx", columnList = "attributeCode"),
+		@Index(name = "bc_idx", columnList = "valueString"),
+				@Index(name = "bd_idx", columnList = "valueBoolean"),
+				@Index(name = "bae_idx", columnList = "realm, ATTRIBUTE_ID,BASEENTITY_ID", unique = true)
+    }
 )
 
 @Cacheable
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @RegisterForReflection
 public class EntityAttribute extends PanacheEntity {
-    //
-    private static final Logger log = Logger.getLogger(EntityAttribute.class);
+//
+	private static final Logger log = Logger.getLogger(EntityAttribute.class);
 
-    private static final String REGEX_REALM = "[a-zA-Z0-9]+";
-    private static final String DEFAULT_REALM = "genny";
+	private static final String REGEX_REALM = "[a-zA-Z0-9]+";
+	private static final String DEFAULT_REALM = "genny";
 
-    @NotEmpty
-    @JsonbTransient
-    @Pattern(regexp = REGEX_REALM, message = "Must be valid Realm Format!")
-    public String realm = DEFAULT_REALM;
+	@NotEmpty
+	@JsonbTransient
+	@Pattern(regexp = REGEX_REALM, message = "Must be valid Realm Format!")
+	public String realm = DEFAULT_REALM;
 
-    @JsonbTypeAdapter(LocalDateTimeAdapter.class)
-    public LocalDateTime created = LocalDateTime.now(ZoneId.of("UTC"));
+	@JsonbTypeAdapter(LocalDateTimeAdapter.class)
+	public LocalDateTime created = LocalDateTime.now(ZoneId.of("UTC"));
 
-    @JsonbTypeAdapter(LocalDateTimeAdapter.class)
-    public LocalDateTime updated;
-
-    public Attribute getAttribute() {
-        return attribute;
-    }
-
-    public void setAttribute(Attribute attribute) {
-        this.attribute = attribute;
-    }
-
-    //
+	@JsonbTypeAdapter(LocalDateTimeAdapter.class)
+	public LocalDateTime updated;
+//
 //	@JsonbTypeAdapter(AttributeAdapter.class)
-    @NotNull
-    @ManyToOne(fetch = FetchType.LAZY)
-    public Attribute attribute;
+	@NotNull
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "ATTRIBUTE_ID", nullable = false)
+	public Attribute attribute;
 
-    @JsonbTransient
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "BASEENTITY_ID", nullable = false)
-    public BaseEntity baseentity;
+	@JsonbTransient
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "BASEENTITY_ID", nullable = false)
+	public BaseEntity baseentity;
 
-    public String getBaseEntityCode() {
-        return baseEntityCode;
-    }
+	// For compatibility initially
+	public String baseEntityCode;
+	public String attributeCode;
+	public String attributeName;
 
-    public void setBaseEntityCode(String baseEntityCode) {
-        this.baseEntityCode = baseEntityCode;
-    }
+	@Embedded
+	@NotNull
+	public Value value = new Value();
 
-    // For compatibility initially
-    public String baseEntityCode;
+	public Boolean readonly = false;
 
-    public String getAttributeCode() {
-        return attributeCode;
-    }
+	@Transient
+	public Integer index = 0; // used to assist with ordering
 
-    public void setAttributeCode(String attributeCode) {
-        this.attributeCode = attributeCode;
-    }
+	/**
+	 * Store the relative importance of the attribute for the baseEntity
+	 */
+	public Boolean inferred = false;
 
-    public String attributeCode;
+	/**
+	 * Store the privacy of this attribute , i.e. Don't display
+	 */
+	public Boolean privacyFlag = false;
 
-    public String getAttributeName() {
-        return attributeName;
-    }
+	public EntityAttribute() {
+	}
 
-    public void setAttributeName(String attributeName) {
-        this.attributeName = attributeName;
-    }
+	/**
+	 * Constructor.
+	 * 
+	 * @param BaseEntity the entity that needs to contain attributes
+	 * @param Attribute  the associated Attribute
+	 * @param Weight     the weighted importance of this attribute (relative to the
+	 *                   other attributes)
+	 */
+	public EntityAttribute(final BaseEntity baseEntity, final Attribute attribute, Double weight) {
+		this(baseEntity, attribute, weight, null);
+	}
 
-    public String attributeName;
+	/**
+	 * Constructor.
+	 * 
+	 * @param BaseEntity the entity that needs to contain attributes
+	 * @param Attribute  the associated Attribute
+	 * @param Weight     the weighted importance of this attribute (relative to the
+	 *                   other attributes)
+	 * @param Value      the value associated with this attribute
+	 */
+	public EntityAttribute(final BaseEntity baseEntity, final Attribute attribute, Double weight, final Object value) {
+		autocreateCreated();
+		this.baseentity = baseEntity;
+		this.attribute = attribute;
+		setWeight(weight);
+		privacyFlag = attribute.defaultPrivacyFlag;
+		setValue(value);
+	}
 
-    @Embedded
-    @NotNull
-    public Value value = new Value();
+	@PreUpdate
+	public void autocreateUpdate() {
+		updated = LocalDateTime.now(ZoneId.of("UTC"));
+	}
 
-    public Boolean readonly = false;
+	@PrePersist
+	public void autocreateCreated() {
+		if (created == null)
+			created = LocalDateTime.now(ZoneId.of("UTC"));
+	}
 
-    @Transient
-    public Integer index = 0; // used to assist with ordering
+	@Transient
+	@JsonbTransient
+	public Date getCreatedDate() {
+		final Date out = Date.from(created.atZone(ZoneId.systemDefault()).toInstant());
+		return out;
+	}
 
-    public Boolean getInferred() {
-        return inferred;
-    }
+	@Transient
+	@JsonbTransient
+	public Date getUpdatedDate() {
+		if (updated == null)
+			return null;
+		final Date out = Date.from(updated.atZone(ZoneId.systemDefault()).toInstant());
+		return out;
+	}
 
-    public void setInferred(Boolean inferred) {
-        this.inferred = inferred;
-    }
+	@SuppressWarnings("unchecked")
+	@JsonbTransient
+	@Transient
+	public <T> T getValue() {
+		return value.getValue();
 
-    /**
-     * Store the relative importance of the attribute for the baseEntity
-     */
-    public Boolean inferred = false;
+	}
 
-    public Boolean getPrivacyFlag() {
-        return privacyFlag;
-    }
+	@JsonbTransient
+	@Transient
+	public <T> void setValue(final Object value) {
+		if (this.readonly) {
+			log.error("Trying to set the value of a readonly EntityAttribute! " + attribute.code);
+			return;
+		}
 
-    public void setPrivacyFlag(Boolean privacyFlag) {
-        this.privacyFlag = privacyFlag;
-    }
+		setValue(value, true);
+	}
 
-    /**
-     * Store the privacy of this attribute , i.e. Don't display
-     */
-    public Boolean privacyFlag = false;
+	@JsonbTransient
+	@Transient
+	public <T> void setValue(final Object value, final Boolean lock) {
+		if (this.readonly) {
+			log.error("Trying to set the value of a readonly EntityAttribute! " + attribute.code);
+			return;
+		}
 
-    public EntityAttribute() {
-    }
+		if (value == null) {
+			this.value.setValue(this.attribute.defaultValue);
+		} else {
+			this.value.setValue(value);
+		}
+		// if the lock is set then 'Lock it in Eddie!'.
+		if (lock) {
+			this.readonly = true;
+		}
 
-    /**
-     * Constructor.
-     *
-     * @param baseEntity the entity that needs to contain attributes
-     * @param attribute  the associated Attribute
-     * @param weight     the weighted importance of this attribute (relative to the
-     *                   other attributes)
-     */
-    public EntityAttribute(final BaseEntity baseEntity, final Attribute attribute, Double weight) {
-        this(baseEntity, attribute, weight, null);
-    }
+	}
 
-    /**
-     * Constructor.
-     *
-     * @param baseEntity the entity that needs to contain attributes
-     * @param attribute  the associated Attribute
-     * @param weight     the weighted importance of this attribute (relative to the
-     *                   other attributes)
-     * @param value      the value associated with this attribute
-     */
-    public EntityAttribute(final BaseEntity baseEntity, final Attribute attribute, Double weight, final Object value) {
-        autocreateCreated();
-        this.baseentity = baseEntity;
-        this.attribute = attribute;
-        setWeight(weight);
-        privacyFlag = attribute.defaultPrivacyFlag;
-        setValue(value);
-    }
+	@JsonbTransient
+	@Transient
+	public <T> void setLoopValue(final Object value) {
+		setValue(value, false);
+	}
 
-    @PreUpdate
-    public void autocreateUpdate() {
-        updated = LocalDateTime.now(ZoneId.of("UTC"));
-    }
+	@JsonbTransient
+	@Transient
+	public String getAsString() {
 
-    @PrePersist
-    public void autocreateCreated() {
-        if (created == null)
-            created = LocalDateTime.now(ZoneId.of("UTC"));
-    }
+		return value.toString();
+	}
 
-    @Transient
-    @JsonbTransient
-    public Date getCreatedDate() {
-        final Date out = Date.from(created.atZone(ZoneId.systemDefault()).toInstant());
-        return out;
-    }
+	@JsonbTransient
+	@Transient
+	public String getAsLoopString() {
+		return value.toString();
+	}
 
-    @Transient
-    @JsonbTransient
-    public Date getUpdatedDate() {
-        if (updated == null)
-            return null;
-        final Date out = Date.from(updated.atZone(ZoneId.systemDefault()).toInstant());
-        return out;
-    }
+	@SuppressWarnings("unchecked")
+	@JsonbTransient
+	@Transient
+	public <T> T getLoopValue() {
+		return getValue();
 
-    @SuppressWarnings("unchecked")
-    @JsonbTransient
-    @Transient
-    public <T> T getValue() {
-        return value.getValue();
-    }
+	}
 
-    @JsonbTransient
-    @Transient
-    public <T> void setValue(final Object value) {
-        if (this.readonly) {
-            log.error("Trying to set the value of a readonly EntityAttribute! " + attribute.code);
-            return;
-        }
-        setValue(value, true);
-    }
+	public int compareTo(EntityAttribute obj) {
+		if (this == obj)
+			return 0;
 
-    @JsonbTransient
-    @Transient
-    public <T> void setValue(final Object value, final Boolean lock) {
-        if (this.readonly) {
-            log.error("Trying to set the value of a readonly EntityAttribute! " + attribute.code);
-            return;
-        }
+		return value.compareTo(obj.value);
+	}
 
-        if (value == null) {
-            this.value.setValue(this.attribute.defaultValue);
-        } else {
-            this.value.setValue(value);
-        }
-        // if the lock is set then 'Lock it in Eddie!'.
-        if (lock) {
-            this.readonly = true;
-        }
-    }
+	@Override
+	public String toString() {
+		return "attributeCode=" + attribute.code + ", value=" + value + ", weight=" + value.weight + ", inferred="
+				+ inferred + "] be=" + baseentity.code;
+	}
 
-    @JsonbTransient
-    @Transient
-    public <T> void setLoopValue(final Object value) {
-        setValue(value, false);
-    }
+	@SuppressWarnings("unchecked")
+	@JsonbTransient
+	@Transient
+	public <T> T getObject() {
 
-    @JsonbTransient
-    @Transient
-    public String getAsString() {
-        return value.toString();
-    }
+		return getValue();
+	}
 
-    @JsonbTransient
-    @Transient
-    public String getAsLoopString() {
-        return value.toString();
-    }
+	@JsonbTransient
+	@Transient
+	public String getObjectAsString() {
 
-    @SuppressWarnings("unchecked")
-    @JsonbTransient
-    @Transient
-    public <T> T getLoopValue() {
-        return getValue();
-    }
+		return value.toString();
 
-    public int compareTo(EntityAttribute obj) {
-        if (this == obj)
-            return 0;
-        return value.compareTo(obj.value);
-    }
+	}
 
-    @Override
-    public String toString() {
-        return "attributeCode=" + attribute.code + ", value=" + value + ", weight=" + value.weight + ", inferred="
-                + inferred + "] be=" + baseentity.code;
-    }
+	@JsonbTransient
+	@Transient
+	public Boolean getValueBoolean() {
+		return value.valueBoolean;
+	}
 
-    @SuppressWarnings("unchecked")
-    @JsonbTransient
-    @Transient
-    public <T> T getObject() {
-        return getValue();
-    }
+	@JsonbTransient
+	@Transient
+	public String getValueString() {
+		return value.valueString;
+	}
 
-    @JsonbTransient
-    @Transient
-    public String getObjectAsString() {
-        return value.toString();
-    }
+	@JsonbTransient
+	@Transient
+	public Double getValueDouble() {
+		return value.valueDouble;
+	}
 
-    @JsonbTransient
-    @Transient
-    public Boolean getValueBoolean() {
-        return value.valueBoolean;
-    }
+	@JsonbTransient
+	@Transient
+	public Integer getValueInteger() {
+		return value.valueInteger;
+	}
 
-    @JsonbTransient
-    @Transient
-    public String getValueString() {
-        return value.valueString;
-    }
+	@JsonbTransient
+	@Transient
+	public Long getValueLong() {
+		return value.valueLong;
+	}
 
-    @JsonbTransient
-    @Transient
-    public Double getValueDouble() {
-        return value.valueDouble;
-    }
+	@JsonbTransient
+	@Transient
+	public LocalDateTime getValueDateTime() {
+		return value.valueDateTime;
+	}
+	
+	@JsonbTransient
+	@Transient
+	public LocalDate getValueDate() {
+		return value.valueDate;
+	}
+	
+	@JsonbTransient
+	@Transient
+	public LocalTime getValueTime() {
+		return value.valueTime;
+	}
 
-    @JsonbTransient
-    @Transient
-    public Integer getValueInteger() {
-        return value.valueInteger;
-    }
+	/**
+	 * @return the index
+	 */
+	public Integer getIndex() {
+		return index;
+	}
 
-    @JsonbTransient
-    @Transient
-    public Long getValueLong() {
-        return value.valueLong;
-    }
+	/**
+	 * @param index the index to set
+	 */
+	public void setIndex(Integer index) {
+		this.index = index;
+	}
 
-    @JsonbTransient
-    @Transient
-    public LocalDateTime getValueDateTime() {
-        return value.valueDateTime;
-    }
+	@Transient
+	public Double getWeight() {
+		return value.weight;
+	}
 
-    @JsonbTransient
-    @Transient
-    public LocalDate getValueDate() {
-        return value.valueDate;
-    }
-
-    @JsonbTransient
-    @Transient
-    public LocalTime getValueTime() {
-        return value.valueTime;
-    }
-
-    /**
-     * @return the index
-     */
-    public Integer getIndex() {
-        return index;
-    }
-
-    /**
-     * @param index the index to set
-     */
-    public void setIndex(Integer index) {
-        this.index = index;
-    }
-
-    @Transient
-    public Double getWeight() {
-        return value.weight;
-    }
-
-    @Transient
-    public void setWeight(Double weight) {
-        if (weight == null) {
-            weight = 0.0; // This permits ease of adding attributes and hides
-            // attribute from scoring.
-        }
-        value.weight = weight;
-    }
+	@Transient
+	public void setWeight(Double weight) {
+		if (weight == null) {
+			weight = 0.0; // This permits ease of adding attributes and hides
+							// attribute from scoring.
+		}
+		value.weight = weight;
+	}
 }

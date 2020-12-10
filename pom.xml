@@ -1,35 +1,70 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
-    <groupId>life.genny</groupId>
-    <artifactId>gennyq</artifactId>
-    <version>8.0.0</version>
+	<groupId>life.genny</groupId>
+	<artifactId>gennyq</artifactId>
+	<version>${revision}</version>
+	<packaging>pom</packaging>
+  	<name>GennyProject</name>
 
-    <packaging>pom</packaging>
-<!--    <properties>-->
-<!--&lt;!&ndash;        <revision>${project.version}</revision>&ndash;&gt;-->
-<!--        <revision>8.0.0</revision>-->
-<!--    </properties>-->
 
-    <modules>
-<!--       order important !!!  qwandaq ======>>>> contains stardnad genny pojo util-->
-<!--        bootxportq===>>> import base entity from google doc, needs qwandaq-->
+	<licenses>
+		<license>
+			<name>Apache License, Version 2.0</name>
+			<distribution>repo</distribution>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
+		</license>
+	</licenses>
 
-<!--        quarkus-genny-module =====>>>>>> genny extension core code qwandaq keycloak messaging kafka database-->
-<!--        apiq ===>>> load quarkus genny module + bootxportq + clustering-->
-<!--        &lt;!&ndash;    <module>genny-proxy</module>  &ndash;&gt;-->
-        <module>qwandaq</module>
-<!--        <module>bridgeq</module> ====>>>> load quarkus genny extension module same above clusterbale-->
-        <!--        <module>bridgeq</module>-->
-       <!--        messageq ====>>>> load quarkus genny extension module same above clusterbale-->
+	<properties>
+		<revision>8.0.0</revision>
+		<surefire-plugin.version>3.0.0-M5</surefire-plugin.version>
+		<maven.compiler.target>11</maven.compiler.target>
+		<maven.compiler.source>11</maven.compiler.source>
+		<quarkus-plugin.version>1.10.3.Final</quarkus-plugin.version>
+		<quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
+		<quarkus.platform.group-id>io.quarkus</quarkus.platform.group-id>
+		<quarkus.platform.version>1.10.3.Final</quarkus.platform.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+	</properties>
+	
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>${quarkus.platform.group-id}</groupId>
+				<artifactId>${quarkus.platform.artifact-id}</artifactId>
+				<version>${quarkus.platform.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 
-<!--        rulesq ====>>>> load quarkus genny extension module same above foucus on kogito clusterbale-->
+	<modules>
+		<module>qwandaq</module>
+		<!-- order important !!! qwandaq ======>>>> contains stardnad genny pojo 
+			util -->
+		<!-- bootxportq===>>> import base entity from google doc, needs qwandaq -->
 
-<!--        project-genny extension focus core rules workflow and test keycloak themes-->
-    </modules>
+		<!-- quarkus-genny-module =====>>>>>> genny extension core code qwandaq 
+			keycloak messaging kafka database -->
+		<!-- apiq ===>>> load quarkus genny module + bootxportq + clustering -->
+		<!-- &lt;!&ndash; <module>genny-proxy</module> &ndash;&gt; -->
 
-    <!--  7.10 setup a parent
-      complete build-->
-  </project>
+		<!-- <module>bridgeq</module> ====>>>> load quarkus genny extension module 
+			same above clusterbale -->
+		<!-- <module>bridgeq</module> -->
+		<!-- messageq ====>>>> load quarkus genny extension module same above clusterbale -->
+
+		<!-- rulesq ====>>>> load quarkus genny extension module same above foucus 
+			on kogito clusterbale -->
+
+		<!-- project-genny extension focus core rules workflow and test keycloak 
+			themes -->
+	</modules>
+
+	<!-- 7.10 setup a parent complete build -->
+</project>

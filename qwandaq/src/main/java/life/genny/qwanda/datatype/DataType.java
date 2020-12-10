@@ -16,19 +16,21 @@
 
 package life.genny.qwanda.datatype;
 
-import life.genny.qwanda.converter.ValidationListConverter;
-import life.genny.qwanda.validation.Validation;
-import life.genny.qwanda.validation.ValidationList;
-import org.jboss.logging.Logger;
+import java.io.Serializable;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Embeddable;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.io.Serializable;
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
+
+import org.jboss.logging.Logger;
+
+import life.genny.qwanda.converter.ValidationListConverter;
+import life.genny.qwanda.validation.Validation;
+import life.genny.qwanda.validation.ValidationList;
 
 /**
  * DataType represents a distinct abstract Data Representation in the Qwanda
@@ -255,13 +257,13 @@ public class DataType implements Serializable {
 		switch (dtype.getClassName()) {
 		case "java.lang.Integer":
 		case "Integer":
-			return 0;
+			return new Integer(0);
 		case "java.lang.Long":
 		case "Long":
-			return 0L;
+			return new Long(0);
 		case "java.lang.Double":
 		case "Double":
-			return 0.0;
+			return new Double(0.0);
 		case "org.javamoney.moneta.Money":
 		default:
 			return null;

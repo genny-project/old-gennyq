@@ -21,7 +21,9 @@
 
 package life.genny.qwanda.attribute;
 
-import life.genny.qwanda.datatype.DataType;
+import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -30,7 +32,8 @@ import javax.persistence.InheritanceType;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.io.Serializable;
+
+import life.genny.qwanda.datatype.DataType;
 
 /**
  * AttributeDate class handles LocalDate based attributes.

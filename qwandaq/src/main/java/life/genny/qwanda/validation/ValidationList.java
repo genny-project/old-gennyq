@@ -16,14 +16,21 @@
 
 package life.genny.qwanda.validation;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.jboss.logging.Logger;
-
-import javax.persistence.*;
-import javax.xml.bind.annotation.XmlTransient;
 import java.io.Serializable;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Embeddable;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.xml.bind.annotation.XmlTransient;
+
+import org.jboss.logging.Logger;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 
 /**

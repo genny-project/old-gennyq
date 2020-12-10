@@ -20,24 +20,30 @@
 
 package life.genny.qwanda.validation;
 
-import io.quarkus.hibernate.orm.panache.PanacheEntity;
-import io.quarkus.runtime.annotations.RegisterForReflection;
-import life.genny.qwanda.adapter.LocalDateTimeAdapter;
-import life.genny.qwanda.converter.StringListConverter;
-import org.jboss.logging.Logger;
-
-import javax.json.bind.annotation.JsonbTransient;
-import javax.json.bind.annotation.JsonbTypeAdapter;
-import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.regex.PatternSyntaxException;
+
+import javax.json.bind.annotation.JsonbTransient;
+import javax.json.bind.annotation.JsonbTypeAdapter;
+import javax.persistence.Cacheable;
+import javax.persistence.Column;
+import javax.persistence.Convert;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
+import org.jboss.logging.Logger;
+
+import io.quarkus.hibernate.orm.panache.PanacheEntity;
+import io.quarkus.runtime.annotations.RegisterForReflection;
+import life.genny.notes.utils.LocalDateTimeAdapter;
+import life.genny.qwanda.converter.StringListConverter;
 
 /**
  * Validation represents a distinct abstract Validation Representation in the
@@ -106,7 +112,7 @@ public class Validation extends PanacheEntity {
 	 * Note that this regex needs to be applied to the complete value (Not partial).
 	 */
 	@NotNull
-	@Column(name = "regex", length = 128, updatable = true, nullable = false)
+	@Column(name = "regex", length = 512, updatable = true, nullable = false)
 	public String regex;
 
 	@Column(name = "selection_grp", length = 512, updatable = true, nullable = true)

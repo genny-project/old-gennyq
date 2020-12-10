@@ -1,16 +1,5 @@
 package life.genny.qwanda;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import io.quarkus.runtime.annotations.RegisterForReflection;
-import life.genny.qwanda.datatype.DataType;
-import org.apache.commons.lang3.time.DateUtils;
-import org.hibernate.annotations.Type;
-import org.jboss.logging.Logger;
-
-import javax.json.bind.annotation.JsonbTransient;
-import javax.persistence.Embeddable;
-import javax.persistence.Transient;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -24,6 +13,21 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+
+import javax.json.bind.annotation.JsonbTransient;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.persistence.Transient;
+
+import org.apache.commons.lang3.time.DateUtils;
+import org.hibernate.annotations.Type;
+import org.jboss.logging.Logger;
+
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+
+import io.quarkus.runtime.annotations.RegisterForReflection;
+import life.genny.qwanda.datatype.DataType;
 
 @Embeddable
 @RegisterForReflection
@@ -43,7 +47,8 @@ public class Value implements Serializable,Comparable<Value> {
 	public LocalTime valueTime;
 	public Boolean valueBoolean;
 
-	@Type(type = "string")
+//	  @Column(name="valueString" , length = 65535, columnDefinition="varchar")
+	  @Type(type="text")
 	public String valueString;
 
 	public Boolean expired = false;
@@ -208,7 +213,7 @@ public class Value implements Serializable,Comparable<Value> {
 			try {
 				olddate = DateUtils.parseDate(value, "M/y", "yyyy-MM-dd", "yyyy/MM/dd",
 						"yyyy-MM-dd'T'HH:mm:ss", "yyyy-MM-dd'T'HH:mm:ss.SSSZ");
-			} catch (ParseException e) {
+			} catch (java.text.ParseException e) {
 				olddate = DateUtils.parseDate(value, "yyyy-MM-dd", "yyyy-MM-dd'T'HH:mm:ss",
 						"yyyy-MM-dd'T'HH:mm:ss.SSSZ");
 			}
@@ -500,7 +505,7 @@ public class Value implements Serializable,Comparable<Value> {
 		try {
 			olddate = DateUtils.parseDate(value, "M/y", "yyyy-MM-dd", "yyyy/MM/dd",
 					"yyyy-MM-dd'T'HH:mm:ss", "yyyy-MM-dd'T'HH:mm:ss.SSSZ");
-		} catch (ParseException e) {
+		} catch (java.text.ParseException e) {
 			try {
 				olddate = DateUtils.parseDate(value, "yyyy-MM-dd", "yyyy-MM-dd'T'HH:mm:ss",
 						"yyyy-MM-dd'T'HH:mm:ss.SSSZ");
@@ -523,7 +528,7 @@ public class Value implements Serializable,Comparable<Value> {
 		Date olddate = null;
 		try {
 			olddate = DateUtils.parseDate(value, "HH:mm:ss", "HH:mm:ss.SSSZ","HH:mm:ss.S","HH:mm:ss.SS","HH:mm:ss.SSS");
-		} catch (ParseException e) {
+		} catch (java.text.ParseException e) {
 		}
 		final LocalTime time = olddate.toInstant().atZone(ZoneId.systemDefault()).toLocalTime();
 		

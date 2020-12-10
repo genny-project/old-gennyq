@@ -21,8 +21,7 @@
 
 package life.genny.qwanda.attribute;
 
-import life.genny.qwanda.datatype.DataType;
-import org.javamoney.moneta.Money;
+import java.io.Serializable;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -31,7 +30,10 @@ import javax.persistence.InheritanceType;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.io.Serializable;
+
+import org.javamoney.moneta.Money;
+
+import life.genny.qwanda.datatype.DataType;
 
 /**
  * AttributeMoney class handles LocalDate based attributes.
@@ -67,6 +69,8 @@ public class AttributeMoney extends Attribute implements Serializable {
 	
 	/**
 	  * Constructor.
+	  * 
+	  * @param none
 	  */
 	@SuppressWarnings("unused")
 	public AttributeMoney()
@@ -84,5 +88,9 @@ public class AttributeMoney extends Attribute implements Serializable {
 	public AttributeMoney(String aCode, String aName)
 	{
 		super(aCode, aName, new DataType(Money.class));
+		
 	}
+	
+	
+	
 }
