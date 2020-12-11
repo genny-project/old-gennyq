@@ -29,6 +29,7 @@
 		<quarkus.platform.version>1.10.3.Final</quarkus.platform.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		
 	</properties>
 	
 	<dependencyManagement>
@@ -45,6 +46,7 @@
 
 	<modules>
 		<module>qwandaq</module>
+		<module>quarkus-genny</module>
 		<!-- order important !!! qwandaq ======>>>> contains stardnad genny pojo 
 			util -->
 		<!-- bootxportq===>>> import base entity from google doc, needs qwandaq -->
