@@ -26,6 +26,7 @@ import javax.json.JsonArrayBuilder;
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlTransient;
 
+import io.quarkus.oidc.IdToken;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.microprofile.jwt.JsonWebToken;
@@ -49,6 +50,7 @@ public class GennyToken implements Serializable {
 
 	
 	@Inject
+	@IdToken
 	JsonWebToken accessToken;
 
 
