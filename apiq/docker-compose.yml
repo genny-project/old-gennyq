@@ -1,0 +1,48 @@
+version: '2.3'
+
+services:
+  apiq:
+    image: gennyproject/apiq:latest 
+    container_name:  apiq
+    restart: always
+#    volumes:
+#      - ./google_credentials:/root/.genny/sheets.googleapis.com-java-quickstart
+    environment:
+      - VIRTUAL_HOST=apiq.genny.life
+      - VIRTUAL_PORT=8096
+      - FULL_MYSQL_URL=127.0.0.1:3310/gennydb?zeroDateTimeBehavior=convertToNull
+    ports:
+      - 8196:8096
+      - 5006:5006
+    networks:
+      - mainproxy
+
+  apiqn:
+    image: gennyproject/apiq:native 
+    container_name:  apiqn
+    restart: always
+#    volumes:
+#      - ./google_credentials:/root/.genny/sheets.googleapis.com-java-quickstart
+    environment:
+      - VIRTUAL_HOST=apiqn.genny.life
+      - VIRTUAL_PORT=8097
+      - FULL_MYSQL_URL=127.0.0.1:3310/gennydb?zeroDateTimeBehavior=convertToNull
+    ports:
+      - 8296:8096
+      - 5106:5006
+    networks:
+      - mainproxy
+
+
+
+volumes:
+  mysql_data:
+  minio_conf:
+  minio_data:
+  maildata:
+    driver: local
+  mailstate:
+    driver: local
+networks:
+  mainproxy:
+    driver: bridge
