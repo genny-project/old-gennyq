@@ -4,9 +4,16 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+        <parent>
+                <groupId>life.genny</groupId>
+                <artifactId>gennyq</artifactId>
+                <version>${revision}</version>
+                <relativePath>../</relativePath>
+        </parent>
+
     <groupId>life.genny</groupId>
     <artifactId>quarkus-genny-parent</artifactId>
-    <version>8.0.0</version>
+    <version>${revision}</version>
     <name>Genny Quarkus - Parent</name>
 
     <packaging>pom</packaging>
@@ -14,8 +21,6 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
         <maven.compiler.parameters>true</maven.compiler.parameters>
         <quarkus.version>1.9.2.Final</quarkus.version>
         <compiler-plugin.version>3.8.1</compiler-plugin.version>

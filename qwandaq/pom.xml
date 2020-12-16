@@ -9,11 +9,13 @@
 		<groupId>life.genny</groupId>
 		<artifactId>gennyq</artifactId>
 		<version>${revision}</version>
+                <relativePath>../</relativePath>
 	</parent>
 
 	<groupId>life.genny</groupId>
 	<artifactId>qwandaq</artifactId>
 	<name>QwandaQ</name>
+        <version>${revision}</version>
 
 	<properties>
 
