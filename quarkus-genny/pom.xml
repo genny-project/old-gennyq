@@ -16,6 +16,14 @@
     <version>${revision}</version>
     <name>Genny Quarkus - Parent</name>
 
+    <parent>
+        <groupId>life.genny</groupId>
+        <artifactId>gennyq</artifactId>
+        <version>${revision}</version>
+    </parent>
+
+    <artifactId>quarkus-genny-parent</artifactId>
+
     <packaging>pom</packaging>
 
     <properties>
