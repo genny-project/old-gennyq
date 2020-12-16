@@ -6,7 +6,7 @@
 
     <groupId>life.genny</groupId>
     <artifactId>quarkus-genny-parent</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>8.0.0</version>
     <name>Genny Quarkus - Parent</name>
 
     <packaging>pom</packaging>

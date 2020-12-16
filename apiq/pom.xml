@@ -130,7 +130,7 @@
     <dependency>
       <groupId>life.genny</groupId>
       <artifactId>quarkus-genny</artifactId>
-      <version>1.0-SNAPSHOT</version>
+      <version>8.0.0</version>
     </dependency>
   </dependencies>
   <build>
