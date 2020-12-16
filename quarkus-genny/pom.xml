@@ -5,9 +5,16 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>life.genny</groupId>
-    <artifactId>quarkus-genny-parent</artifactId>
     <version>8.0.0</version>
     <name>Genny Quarkus - Parent</name>
+
+    <parent>
+        <groupId>life.genny</groupId>
+        <artifactId>gennyq</artifactId>
+        <version>${revision}</version>
+    </parent>
+
+    <artifactId>quarkus-genny-parent</artifactId>
 
     <packaging>pom</packaging>
 
