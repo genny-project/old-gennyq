@@ -1,2 +1,3 @@
 #!/bin/bash
-mvn clean install 
+mvn -N versions:update-child-modules
+mvn clean package 

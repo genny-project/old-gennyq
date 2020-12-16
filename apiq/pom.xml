@@ -2,9 +2,19 @@
 <project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>life.genny</groupId>
-  <artifactId>apiq</artifactId>
-  <version>8.0.0</version>
+
+
+  <parent>
+    <groupId>life.genny</groupId>
+    <artifactId>gennyq</artifactId>
+    <version>8.0.0</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+
+   <groupId>life.genny</groupId>
+   <artifactId>apiq</artifactId>
+   <packaging>jar</packaging>
+
   <properties>
     <commons-lang3.version>3.10</commons-lang3.version>
     <compiler-plugin.version>3.8.1</compiler-plugin.version>

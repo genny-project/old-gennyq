@@ -40,11 +40,11 @@
 
 	<dependencies>
 
-		<dependency>
-			<groupId>life.genny</groupId>
-			<artifactId>qwandaq</artifactId>
-			<version>${project.version}</version>
-		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>life.genny</groupId>-->
+<!--			<artifactId>qwandaq</artifactId>-->
+<!--			<version>${project.version}</version>-->
+<!--		</dependency>-->
 		<dependency>
 			<groupId>io.quarkus</groupId>
 			<artifactId>quarkus-undertow</artifactId>
