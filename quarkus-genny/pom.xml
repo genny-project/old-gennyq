@@ -8,6 +8,7 @@
                 <groupId>life.genny</groupId>
                 <artifactId>gennyq</artifactId>
                 <version>8.0.0</version>
+		<relativePath>../pom.xml</relativePath>
         </parent>
 
     <groupId>life.genny</groupId>

@@ -41,6 +41,11 @@
 	<dependencies>
 
 		<dependency>
+			<groupId>life.genny</groupId>
+			<artifactId>qwandaq</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
 			<groupId>io.quarkus</groupId>
 			<artifactId>quarkus-undertow</artifactId>
 		</dependency>
@@ -98,11 +103,6 @@
 			<artifactId>quarkus-oidc</artifactId>
 		</dependency>
 
-		<dependency>
-			<groupId>life.genny</groupId>
-			<artifactId>qwandaq</artifactId>
-			<version>8.0.0</version>
-		</dependency>
 
 	</dependencies>
 
