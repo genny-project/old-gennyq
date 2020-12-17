@@ -50,10 +50,10 @@
 			<artifactId>quarkus-undertow</artifactId>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/io.quarkus/quarkus-bootstrap-core -->
-<!--		<dependency>-->
-<!--			<groupId>io.quarkus</groupId>-->
-<!--			<artifactId>quarkus-bootstrap-core</artifactId>-->
-<!--		</dependency>-->
+		<dependency>
+			<groupId>io.quarkus</groupId>
+			<artifactId>quarkus-bootstrap-core</artifactId>
+		</dependency>
 
 		<dependency>
 			<groupId>io.quarkus</groupId>
@@ -214,7 +214,7 @@
 				<executions>
 					<execution>
 						<goals>
-							<goal>build</goal>
+<!--							<goal>build</goal>-->
 						</goals>
 					</execution>
 				</executions>
