@@ -40,11 +40,7 @@
 
 	<dependencies>
 
-<!--		<dependency>-->
-<!--			<groupId>life.genny</groupId>-->
-<!--			<artifactId>qwandaq</artifactId>-->
-<!--			<version>${project.version}</version>-->
-<!--		</dependency>-->
+
 		<dependency>
 			<groupId>io.quarkus</groupId>
 			<artifactId>quarkus-undertow</artifactId>
@@ -103,6 +99,11 @@
 			<artifactId>quarkus-oidc</artifactId>
 		</dependency>
 
+		<dependency>
+			<groupId>life.genny</groupId>
+			<artifactId>qwandaq</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 
 	</dependencies>
 
@@ -214,7 +215,7 @@
 				<executions>
 					<execution>
 						<goals>
-<!--							<goal>build</goal>-->
+							<goal>build</goal>
 						</goals>
 					</execution>
 				</executions>
