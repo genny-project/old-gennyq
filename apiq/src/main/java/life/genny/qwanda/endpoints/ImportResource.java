@@ -1,9 +1,7 @@
 package life.genny.qwanda.endpoints;
 
 import java.io.IOException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
@@ -12,13 +10,11 @@ import java.util.regex.Pattern;
 
 import javax.enterprise.event.Observes;
 import javax.inject.Inject;
-import javax.json.JsonValue;
 import javax.transaction.HeuristicMixedException;
 import javax.transaction.HeuristicRollbackException;
 import javax.transaction.NotSupportedException;
 import javax.transaction.RollbackException;
 import javax.transaction.SystemException;
-import javax.transaction.Transaction;
 import javax.transaction.Transactional;
 import javax.transaction.UserTransaction;
 import javax.ws.rs.Consumes;
@@ -34,6 +30,8 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
 
+import life.genny.qwanda.GennyToken;
+import life.genny.qwanda.Value;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.client.ClientProtocolException;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
@@ -44,16 +42,12 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
-import io.quarkus.narayana.jta.runtime.TransactionConfiguration;
 import io.quarkus.runtime.ShutdownEvent;
 import io.quarkus.runtime.StartupEvent;
 import io.quarkus.runtime.annotations.RegisterForReflection;
 import io.quarkus.security.identity.SecurityIdentity;
 import life.genny.notes.utils.LocalDateTimeAdapter;
-import life.genny.qwanda.GennyToken;
-import life.genny.qwanda.Value;
 import life.genny.qwanda.attribute.Attribute;
 import life.genny.qwanda.attribute.EntityAttribute;
 import life.genny.qwanda.datatype.DataType;

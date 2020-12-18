@@ -24,6 +24,8 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
 
+import life.genny.qwanda.DataTable;
+import life.genny.qwanda.GennyToken;
 import org.eclipse.microprofile.jwt.JsonWebToken;
 import org.jboss.logging.Logger;
 
@@ -32,8 +34,6 @@ import io.quarkus.panache.common.Parameters;
 import io.quarkus.runtime.ShutdownEvent;
 import io.quarkus.runtime.StartupEvent;
 import io.quarkus.runtime.annotations.RegisterForReflection;
-import life.genny.qwanda.DataTable;
-import life.genny.qwanda.GennyToken;
 import life.genny.qwanda.attribute.Attribute;
 import life.genny.qwanda.attribute.EntityAttribute;
 import life.genny.qwanda.message.QDataEntityAttributeMessage;
@@ -235,7 +235,7 @@ public class EntityAttributeResource {
     @GET
     @Path("/datatable")
     public DataTable<EntityAttribute> datatable(@QueryParam(value = "draw") int draw, @QueryParam(value = "start") int start,
-                                     @QueryParam(value = "length") int length, @QueryParam(value = "search[value]") String searchVal
+                                                @QueryParam(value = "length") int length, @QueryParam(value = "search[value]") String searchVal
 
     ) {
         GennyToken userToken = new GennyToken(accessToken.getRawToken());

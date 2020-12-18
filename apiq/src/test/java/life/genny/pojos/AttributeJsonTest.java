@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import javax.json.bind.Jsonb;
 import javax.json.bind.JsonbBuilder;
 
+import life.genny.qwanda.DateTimeDeserializer;
 import org.jboss.logging.Logger;
 import org.junit.Test;
 
@@ -13,7 +14,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import io.quarkus.test.junit.QuarkusTest;
-import life.genny.qwanda.DateTimeDeserializer;
 import life.genny.qwanda.attribute.Attribute;
 import life.genny.qwanda.attribute.AttributeText;
 import life.genny.qwanda.datatype.LocalDateConverter;

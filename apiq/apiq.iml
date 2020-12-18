@@ -129,45 +129,45 @@
     <orderEntry type="library" name="Maven: jakarta.activation:jakarta.activation-api:1.2.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: com.sun.xml.bind:jaxb-impl:2.3.3" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: io.quarkus:quarkus-junit5:1.10.2.Final" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: io.quarkus:quarkus-bootstrap-core:1.10.2.Final" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: io.quarkus:quarkus-bootstrap-app-model:1.10.2.Final" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: io.quarkus:quarkus-bootstrap-maven-resolver:1.10.2.Final" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.apache.maven:maven-embedder:3.6.3" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.apache.maven:maven-settings:3.6.3" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.apache.maven:maven-core:3.6.3" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.apache.maven:maven-artifact:3.6.3" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.codehaus.plexus:plexus-component-annotations:2.1.0" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.apache.maven:maven-plugin-api:3.6.3" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.apache.maven:maven-model:3.6.3" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.apache.maven:maven-model-builder:3.6.3" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.apache.maven:maven-builder-support:3.6.3" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.apache.maven.resolver:maven-resolver-api:1.4.1" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.apache.maven.resolver:maven-resolver-util:1.4.1" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.apache.maven.shared:maven-shared-utils:3.2.1" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: com.google.inject:guice:no_aop:4.2.1" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: com.google.guava:guava:30.0-jre" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: com.google.guava:failureaccess:1.0.1" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.codehaus.plexus:plexus-utils:3.2.1" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.codehaus.plexus:plexus-classworlds:2.6.0" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: commons-cli:commons-cli:1.4" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.eclipse.sisu:org.eclipse.sisu.plexus:0.3.4" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.apache.maven:maven-settings-builder:3.6.3" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.codehaus.plexus:plexus-interpolation:1.25" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.sonatype.plexus:plexus-sec-dispatcher:1.4" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.sonatype.plexus:plexus-cipher:1.4" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.apache.maven:maven-resolver-provider:3.6.3" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.apache.maven:maven-repository-metadata:3.6.3" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.apache.maven.resolver:maven-resolver-spi:1.4.1" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.apache.maven.resolver:maven-resolver-impl:1.4.1" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.apache.maven.resolver:maven-resolver-connector-basic:1.4.1" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.apache.maven.resolver:maven-resolver-transport-wagon:1.4.1" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.apache.maven.wagon:wagon-http:3.3.4" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.apache.maven.wagon:wagon-http-shared:3.3.4" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.jsoup:jsoup:1.12.1" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.apache.maven.wagon:wagon-provider-api:3.3.4" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.apache.maven.wagon:wagon-file:3.3.4" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: io.quarkus:quarkus-bootstrap-gradle-resolver:1.10.2.Final" level="project" />
+    <orderEntry type="library" name="Maven: io.quarkus:quarkus-bootstrap-core:1.10.2.Final" level="project" />
+    <orderEntry type="library" name="Maven: io.quarkus:quarkus-bootstrap-app-model:1.10.2.Final" level="project" />
+    <orderEntry type="library" name="Maven: io.quarkus:quarkus-bootstrap-maven-resolver:1.10.2.Final" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.maven:maven-embedder:3.6.3" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.maven:maven-settings:3.6.3" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.maven:maven-core:3.6.3" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.maven:maven-artifact:3.6.3" level="project" />
+    <orderEntry type="library" name="Maven: org.codehaus.plexus:plexus-component-annotations:2.1.0" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.maven:maven-plugin-api:3.6.3" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.maven:maven-model:3.6.3" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.maven:maven-model-builder:3.6.3" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.maven:maven-builder-support:3.6.3" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.maven.resolver:maven-resolver-api:1.4.1" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.maven.resolver:maven-resolver-util:1.4.1" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.maven.shared:maven-shared-utils:3.2.1" level="project" />
+    <orderEntry type="library" name="Maven: com.google.inject:guice:no_aop:4.2.1" level="project" />
+    <orderEntry type="library" name="Maven: com.google.guava:guava:30.0-jre" level="project" />
+    <orderEntry type="library" name="Maven: com.google.guava:failureaccess:1.0.1" level="project" />
+    <orderEntry type="library" name="Maven: com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava" level="project" />
+    <orderEntry type="library" name="Maven: org.codehaus.plexus:plexus-utils:3.2.1" level="project" />
+    <orderEntry type="library" name="Maven: org.codehaus.plexus:plexus-classworlds:2.6.0" level="project" />
+    <orderEntry type="library" name="Maven: commons-cli:commons-cli:1.4" level="project" />
+    <orderEntry type="library" name="Maven: org.eclipse.sisu:org.eclipse.sisu.plexus:0.3.4" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.maven:maven-settings-builder:3.6.3" level="project" />
+    <orderEntry type="library" name="Maven: org.codehaus.plexus:plexus-interpolation:1.25" level="project" />
+    <orderEntry type="library" name="Maven: org.sonatype.plexus:plexus-sec-dispatcher:1.4" level="project" />
+    <orderEntry type="library" name="Maven: org.sonatype.plexus:plexus-cipher:1.4" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.maven:maven-resolver-provider:3.6.3" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.maven:maven-repository-metadata:3.6.3" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.maven.resolver:maven-resolver-spi:1.4.1" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.maven.resolver:maven-resolver-impl:1.4.1" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.maven.resolver:maven-resolver-connector-basic:1.4.1" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.maven.resolver:maven-resolver-transport-wagon:1.4.1" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.maven.wagon:wagon-http:3.3.4" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.maven.wagon:wagon-http-shared:3.3.4" level="project" />
+    <orderEntry type="library" name="Maven: org.jsoup:jsoup:1.12.1" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.maven.wagon:wagon-provider-api:3.3.4" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.maven.wagon:wagon-file:3.3.4" level="project" />
+    <orderEntry type="library" name="Maven: io.quarkus:quarkus-bootstrap-gradle-resolver:1.10.2.Final" level="project" />
     <orderEntry type="library" name="Maven: io.smallrye.common:smallrye-common-io:1.4.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.eclipse.sisu:org.eclipse.sisu.inject:0.3.4" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: io.quarkus:quarkus-test-common:1.10.2.Final" level="project" />
@@ -287,5 +287,6 @@
     <orderEntry type="library" name="Maven: com.github.ben-manes.caffeine:caffeine:2.8.6" level="project" />
     <orderEntry type="library" name="Maven: com.google.errorprone:error_prone_annotations:2.2.0" level="project" />
     <orderEntry type="library" name="Maven: io.quarkus:quarkus-caffeine:1.10.2.Final" level="project" />
+    <orderEntry type="module" module-name="qwandaq" />
   </component>
 </module>
