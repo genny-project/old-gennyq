@@ -1,4 +1,4 @@
-package au.com.crowtech.quarkus.nest.endpoints;
+package life.genny.nest.endpoints;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;

@@ -1,4 +1,4 @@
-package au.com.crowtech.quarkus.nest.models;
+package life.genny.nest.models;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -17,9 +17,9 @@ import javax.persistence.Embeddable;
 
 import org.apache.commons.lang3.StringUtils;
 
-import au.com.crowtech.quarkus.nest.adapters.LocalDateAdapter;
-import au.com.crowtech.quarkus.nest.adapters.LocalDateTimeAdapter;
-import au.com.crowtech.quarkus.nest.adapters.LocalTimeAdapter;
+import life.genny.nest.adapters.LocalDateAdapter;
+import life.genny.nest.adapters.LocalDateTimeAdapter;
+import life.genny.nest.adapters.LocalTimeAdapter;
 
 @Embeddable
 public class Value {

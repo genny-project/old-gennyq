@@ -1,8 +1,8 @@
-package au.com.crowtech.quarkus.nest.adapters;
+package life.genny.nest.adapters;
 
 import java.time.Instant;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAccessor;
@@ -14,14 +14,14 @@ import javax.json.bind.adapter.JsonbAdapter;
 import io.quarkus.runtime.annotations.RegisterForReflection;
 
 @RegisterForReflection
-public class LocalDateAdapter implements JsonbAdapter<LocalDate, JsonValue> {
+public class LocalTimeAdapter implements JsonbAdapter<LocalTime, JsonValue> {
 	 
-	 public LocalDateAdapter() {}
+	 public LocalTimeAdapter() {}
 
 	@Override
-	public JsonValue adaptToJson(LocalDate obj) throws Exception {
+	public JsonValue adaptToJson(LocalTime obj) throws Exception {
 		
-		String dateTimePattern = "yyyy-MM-dd";
+		String dateTimePattern = "HH:mm:ss";
 		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(dateTimePattern);
 		String localDateTimeStr = obj.format(dateFormatter);
 		return Json.createValue(localDateTimeStr);
@@ -29,20 +29,20 @@ public class LocalDateAdapter implements JsonbAdapter<LocalDate, JsonValue> {
 	}
 
 	@Override
-	public LocalDate adaptFromJson(JsonValue obj) throws Exception {
-		String dateTimePattern = "yyyy-MM-dd";
+	public LocalTime adaptFromJson(JsonValue obj) throws Exception {
+		String dateTimePattern = "HH:mm:ss";
 		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(dateTimePattern);
 		String str = obj.toString();
 		str = str.substring(0,str.length()-1);
 		String value = str.substring(1);
-		LocalDate ret = null;
+		LocalTime ret = null;
 		
 		try {
-			ret = dateFormatter.parse(value, LocalDate::from);
+			ret = dateFormatter.parse(value, LocalTime::from);
 		} catch (Exception e) {
-			dateTimePattern = "yyyy-MM-dd";
+			dateTimePattern = "HH:mm:ss";
 			dateFormatter = DateTimeFormatter.ofPattern(dateTimePattern);
-			ret = dateFormatter.parse(value, LocalDate::from);
+			ret = dateFormatter.parse(value, LocalTime::from);
 		}
 
 	return ret;

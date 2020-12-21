@@ -1,4 +1,4 @@
-package au.com.crowtech.quarkus.nest.endpoints;
+package life.genny.nest.endpoints;
 
 import javax.inject.Inject;
 import javax.ws.rs.GET;
@@ -6,7 +6,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import au.com.crowtech.quarkus.nest.beans.Echo;
+import life.genny.nest.beans.Echo;
 
 @Path("/hello")
 public class ExampleResource {

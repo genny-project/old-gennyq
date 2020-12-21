@@ -1,4 +1,4 @@
-package au.com.crowtech.quarkus.nest.utils;
+package life.genny.nest.utils;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
@@ -68,7 +68,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import au.com.crowtech.quarkus.nest.adapters.ValueAdapter;
+import life.genny.nest.adapters.ValueAdapter;
 import io.vertx.core.json.JsonObject;
 
 

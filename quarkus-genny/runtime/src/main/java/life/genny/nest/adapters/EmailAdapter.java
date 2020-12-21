@@ -1,10 +1,10 @@
-package au.com.crowtech.quarkus.nest.adapters;
+package life.genny.nest.adapters;
 
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.bind.adapter.JsonbAdapter;
 
-import au.com.crowtech.quarkus.nest.models.Email;
+import life.genny.nest.models.Email;
 import io.quarkus.runtime.annotations.RegisterForReflection;
 
 @RegisterForReflection

@@ -1,4 +1,4 @@
-package au.com.crowtech.quarkus.nest.beans;
+package life.genny.nest.beans;
 
 import javax.inject.Singleton;
 

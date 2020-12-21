@@ -1,4 +1,4 @@
-package au.com.crowtech.quarkus.nest.utils;
+package life.genny.nest.utils;
 
 import java.io.Serializable;
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package au.com.crowtech.quarkus.nest.adapters;
+package life.genny.nest.adapters;
 
 import java.time.Instant;
 import java.time.LocalDateTime;

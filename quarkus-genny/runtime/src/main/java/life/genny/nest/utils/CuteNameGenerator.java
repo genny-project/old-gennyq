@@ -1,4 +1,4 @@
-package au.com.crowtech.quarkus.nest.utils;
+package life.genny.nest.utils;
 
 
 import java.util.HashSet;

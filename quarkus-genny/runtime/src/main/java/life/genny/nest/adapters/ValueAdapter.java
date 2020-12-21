@@ -1,4 +1,4 @@
-package au.com.crowtech.quarkus.nest.adapters;
+package life.genny.nest.adapters;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -14,7 +14,7 @@ import javax.json.bind.adapter.JsonbAdapter;
 
 import org.jboss.logging.Logger;
 
-import au.com.crowtech.quarkus.nest.models.Value;
+import life.genny.nest.models.Value;
 import io.quarkus.runtime.annotations.RegisterForReflection;
 
 @RegisterForReflection

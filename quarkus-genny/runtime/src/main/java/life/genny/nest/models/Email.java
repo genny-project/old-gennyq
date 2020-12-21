@@ -1,4 +1,4 @@
-package au.com.crowtech.quarkus.nest.models;
+package life.genny.nest.models;
 
 import java.io.Serializable;
 import java.util.regex.Matcher;
