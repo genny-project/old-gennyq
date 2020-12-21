@@ -4,9 +4,9 @@
              http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
              version="2.1">
 
-    <persistence-unit name="CustomerPU" transaction-type="JTA">
+    <persistence-unit name="GennyPU" transaction-type="JTA">
 
-        <description>My customer entities</description>
+        <description>Genny entities</description>
 
         <properties>
             <!-- Connection specific -->
@@ -20,7 +20,7 @@
                 will cause background errors being logged if they already exist,
                 but is practical to retain existing data across runs (or create as needed) -->
             <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
-            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://127.0.0.1:3310/gennydb?zeroDateTimeBehavior=convertToNull" />
+            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://127.0.0.1:3340/gennydb?zeroDateTimeBehavior=convertToNull" />
             <property name="javax.persistence.jdbc.user" value="genny" />
             <property name="javax.persistence.jdbc.password" value="password" />
 
