@@ -1,8 +1,7 @@
-package au.com.crowtech.quarkus.nest.deployment;
+package life.genny.quarkus.quarkus.nest.deployment;
 
-
-import au.com.crowtech.quarkus.nest.endpoints.ExampleResource;
-import au.com.crowtech.quarkus.nest.endpoints.GreetingServlet;
+import life.genny.nest.endpoints.ExampleResource;
+import life.genny.nest.endpoints.GreetingServlet;
 import io.quarkus.deployment.annotations.BuildStep;
 import io.quarkus.deployment.builditem.FeatureBuildItem;
 import io.quarkus.undertow.deployment.ServletBuildItem;

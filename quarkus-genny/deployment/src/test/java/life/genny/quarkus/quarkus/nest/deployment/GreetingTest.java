@@ -1,4 +1,4 @@
-package au.com.crowtech.quarkus.nest.deployment;
+package life.genny.quarkus.quarkus.nest.deployment;
 
 import io.quarkus.test.QuarkusUnitTest;
 import io.restassured.RestAssured;
