@@ -1,4 +1,4 @@
-package org.acme.security.keycloak.authorization;
+package life.genny.security;
 
 import io.quarkus.test.common.QuarkusTestResourceLifecycleManager;
 import life.genny.notes.utils.PropertiesReader;

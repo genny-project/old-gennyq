@@ -1,4 +1,4 @@
-package org.acme.security.keycloak.authorization;
+package life.genny.security;
 
 import io.quarkus.test.common.QuarkusTestResource;
 import org.junit.jupiter.api.Test;
