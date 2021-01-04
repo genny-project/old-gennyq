@@ -49,6 +49,7 @@
 		<module>apiq</module>
 		<module>bridgeq</module>
 		<module>genny-proxy</module>
+		<module>notes</module>
 		<!-- order important !!! qwandaq ======>>>> contains stardnad genny pojo 
 			util -->
 		<!-- bootxportq===>>> import base entity from google doc, needs qwandaq -->
