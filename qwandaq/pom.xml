@@ -7,13 +7,13 @@
 	<parent>
 		<groupId>life.genny</groupId>
 		<artifactId>gennyq</artifactId>
-                <version>8.0.0</version>
+		<version>8.0.0</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>life.genny</groupId>
 	<artifactId>qwandaq</artifactId>
+	<version>8.0.0</version>
 	<name>QwandaQ</name>
 	<packaging>jar</packaging>
 
