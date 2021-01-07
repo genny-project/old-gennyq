@@ -104,7 +104,6 @@
     <orderEntry type="library" name="Maven: io.vertx:vertx-auth-common:3.9.4" level="project" />
     <orderEntry type="library" name="Maven: io.vertx:vertx-jwt:3.9.4" level="project" />
     <orderEntry type="library" name="Maven: io.quarkus:quarkus-jackson:1.9.2.Final" level="project" />
-    <orderEntry type="module" module-name="qwandaq" />
     <orderEntry type="library" name="Maven: io.quarkus:quarkus-hibernate-orm-rest-data-panache:1.9.2.Final" level="project" />
     <orderEntry type="library" name="Maven: io.quarkus:quarkus-rest-data-panache:1.9.2.Final" level="project" />
     <orderEntry type="library" name="Maven: io.quarkus:quarkus-hibernate-orm-panache:1.9.2.Final" level="project" />

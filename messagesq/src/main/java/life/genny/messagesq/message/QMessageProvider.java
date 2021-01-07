@@ -1,9 +1,8 @@
-package life.genny.message;
+package life.genny.messagesq.message;
 
 import java.util.Map;
 import io.vertx.core.eventbus.EventBus;
-import life.genny.qwanda.message.QBaseMSGMessage;
-import life.genny.qwanda.message.QMessageGennyMSG;
+
 
 public interface QMessageProvider {
 	

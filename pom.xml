@@ -1,75 +1,49 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-
-	<groupId>life.genny</groupId>
-	<artifactId>gennyq</artifactId>
-	<version>8.0.0</version>
-	<packaging>pom</packaging>
-  	<name>GennyProject</name>
-	<description>Parent POM</description>
-
-	<licenses>
-		<license>
-			<name>Apache License, Version 2.0</name>
-			<distribution>repo</distribution>
-			<url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
-		</license>
-	</licenses>
-
-	<properties>
-		<surefire-plugin.version>3.0.0-M5</surefire-plugin.version>
-		<maven.compiler.target>11</maven.compiler.target>
-		<maven.compiler.source>11</maven.compiler.source>
-		<quarkus-plugin.version>1.10.5.Final</quarkus-plugin.version>
-		<quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
-		<quarkus.platform.group-id>io.quarkus</quarkus.platform.group-id>
-		<quarkus.platform.version>1.10.5.Final</quarkus.platform.version>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		
-	</properties>
-	
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>${quarkus.platform.group-id}</groupId>
-				<artifactId>${quarkus.platform.artifact-id}</artifactId>
-				<version>${quarkus.platform.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
-
-	<modules>
-		<module>qwandaq</module>
-		<module>quarkus-genny</module>
-		<module>apiq</module>
-		<module>bridgeq</module>
-		<module>genny-proxy</module>
-		<module>notes</module>
-		<!-- order important !!! qwandaq ======>>>> contains stardnad genny pojo 
-			util -->
-		<!-- bootxportq===>>> import base entity from google doc, needs qwandaq -->
-
-		<!-- quarkus-genny-module =====>>>>>> genny extension core code qwandaq 
-			keycloak messaging kafka database -->
-		<!-- apiq ===>>> load quarkus genny module + bootxportq + clustering -->
-		<!-- &lt;!&ndash; <module>genny-proxy</module> &ndash;&gt; -->
-
-		<!-- <module>bridgeq</module> ====>>>> load quarkus genny extension module 
-			same above clusterbale -->
-		<!-- <module>bridgeq</module> -->
-		<!-- messageq ====>>>> load quarkus genny extension module same above clusterbale -->
-
-		<!-- rulesq ====>>>> load quarkus genny extension module same above foucus 
-			on kogito clusterbale -->
-
-		<!-- project-genny extension focus core rules workflow and test keycloak 
-			themes -->
-	</modules>
-
-	<!-- 7.10 setup a parent complete build -->
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>life.genny</groupId>
+  <artifactId>gennyq</artifactId>
+  <version>8.0.0</version>
+  <packaging>pom</packaging>
+  <name>GennyProject</name>
+  <description>Parent POM</description>
+  <licenses>
+    <license>
+      <name>Apache License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <modules>
+    <module>qwandaq</module>
+    <module>quarkus-genny</module>
+    <module>apiq</module>
+    <module>bridgeq</module>
+    <module>genny-proxy</module>
+    <module>notes</module>
+    <module>messagesq</module>
+  </modules>
+  <properties>
+    <maven.compiler.source>11</maven.compiler.source>
+    <maven.compiler.target>11</maven.compiler.target>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <quarkus-plugin.version>1.10.5.Final</quarkus-plugin.version>
+    <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
+    <quarkus.platform.group-id>io.quarkus</quarkus.platform.group-id>
+    <quarkus.platform.version>1.10.5.Final</quarkus.platform.version>
+    <surefire-plugin.version>3.0.0-M5</surefire-plugin.version>
+  </properties>
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>${quarkus.platform.group-id}</groupId>
+        <artifactId>${quarkus.platform.artifact-id}</artifactId>
+        <version>${quarkus.platform.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
 </project>

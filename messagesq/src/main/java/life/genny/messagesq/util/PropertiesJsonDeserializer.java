@@ -1,4 +1,4 @@
-package life.genny.util;
+package life.genny.messagesq.util;
 
 import java.lang.reflect.Type;
 import java.util.Map.Entry;
