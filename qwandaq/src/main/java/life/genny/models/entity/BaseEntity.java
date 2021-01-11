@@ -14,7 +14,7 @@
  * Contributors: Adam Crow Byron Aguirre
  */
 
-package life.genny.qwanda.entity;
+package life.genny.models.entity;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -51,10 +51,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import io.quarkus.runtime.annotations.RegisterForReflection;
-import life.genny.notes.utils.LocalDateTimeAdapter;
-import life.genny.qwanda.attribute.Attribute;
-import life.genny.qwanda.attribute.EntityAttribute;
-import life.genny.qwanda.exception.BadDataException;
+import life.genny.models.attribute.Attribute;
+import life.genny.models.attribute.EntityAttribute;
+import life.genny.models.exception.BadDataException;
+import life.genny.utils.LocalDateTimeAdapter;
 
 /**
  * BaseEntity represents a base entity that contains many attributes. It is the

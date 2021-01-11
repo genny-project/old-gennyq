@@ -18,7 +18,7 @@
  *     Byron Aguirre
  */
 
-package life.genny.qwanda.validation;
+package life.genny.models.validation;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -42,8 +42,8 @@ import org.jboss.logging.Logger;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import io.quarkus.runtime.annotations.RegisterForReflection;
-import life.genny.notes.utils.LocalDateTimeAdapter;
-import life.genny.qwanda.converter.StringListConverter;
+import life.genny.models.converter.StringListConverter;
+import life.genny.utils.LocalDateTimeAdapter;
 
 /**
  * Validation represents a distinct abstract Validation Representation in the

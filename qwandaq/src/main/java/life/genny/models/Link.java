@@ -15,7 +15,7 @@
  */
 
 
-package life.genny.qwanda;
+package life.genny.models;
 
 import java.io.Serializable;
 

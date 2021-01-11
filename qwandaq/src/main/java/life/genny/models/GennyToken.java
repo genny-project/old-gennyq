@@ -1,4 +1,4 @@
-package life.genny.qwanda;
+package life.genny.models;
 
 
 import java.io.Serializable;
@@ -35,8 +35,7 @@ import org.jose4j.json.JsonUtil;
 import org.jose4j.lang.JoseException;
 
 import io.quarkus.runtime.annotations.RegisterForReflection;
-//import life.genny.notes.utils.SecurityUtils;
-import life.genny.notes.utils.SecurityUtils;
+import life.genny.utils.SecurityUtils;
 
 
 @RegisterForReflection

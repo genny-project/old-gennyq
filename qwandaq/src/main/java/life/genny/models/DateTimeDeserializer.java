@@ -1,4 +1,4 @@
-package life.genny.qwanda;
+package life.genny.models;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;

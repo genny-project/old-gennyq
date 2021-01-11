@@ -18,7 +18,7 @@
  *     Byron Aguirre
  */
 
-package life.genny.qwanda.attribute;
+package life.genny.models.attribute;
 
 import java.io.Serializable;
 import java.util.List;

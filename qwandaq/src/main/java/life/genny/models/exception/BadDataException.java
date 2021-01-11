@@ -1,4 +1,4 @@
-package life.genny.qwanda.exception;
+package life.genny.models.exception;
 
 
 @SuppressWarnings("serial")

@@ -1,4 +1,4 @@
-package life.genny.notes.utils;
+package life.genny.utils;
 
 import org.jboss.logging.Logger;
 

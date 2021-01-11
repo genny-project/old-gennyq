@@ -1,7 +1,7 @@
-package life.genny.qwanda.message;
+package life.genny.models.message;
 
 import io.quarkus.runtime.annotations.RegisterForReflection;
-import life.genny.qwanda.attribute.Attribute;
+import life.genny.models.attribute.Attribute;
 
 @RegisterForReflection
 public class QDataAttributeMessage extends QDataMessage{

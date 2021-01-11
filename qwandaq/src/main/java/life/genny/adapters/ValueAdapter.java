@@ -1,4 +1,4 @@
-package life.genny.nest.adapters;
+package life.genny.adapters;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -14,7 +14,7 @@ import javax.json.bind.adapter.JsonbAdapter;
 
 import org.jboss.logging.Logger;
 
-import life.genny.nest.models.Value;
+import life.genny.models.Value;
 import io.quarkus.runtime.annotations.RegisterForReflection;
 
 @RegisterForReflection

@@ -1,10 +1,10 @@
-package life.genny.nest.adapters;
+package life.genny.adapters;
 
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.bind.adapter.JsonbAdapter;
 
-import life.genny.nest.models.Email;
+import life.genny.models.Email;
 import io.quarkus.runtime.annotations.RegisterForReflection;
 
 @RegisterForReflection

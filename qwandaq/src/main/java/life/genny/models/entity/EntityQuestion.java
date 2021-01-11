@@ -1,4 +1,4 @@
-package life.genny.qwanda.entity;
+package life.genny.models.entity;
 
 import java.io.Serializable;
 
@@ -21,11 +21,11 @@ import org.jboss.logging.Logger;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import io.quarkus.runtime.annotations.RegisterForReflection;
-import life.genny.qwanda.Link;
-import life.genny.qwanda.Value;
+import life.genny.models.Link;
+import life.genny.models.Value;
 //
 //import io.quarkus.runtime.annotations.RegisterForReflection;
-//import life.genny.qwanda.Value;
+//import life.genny.models.Value;
 //
 @Entity
 @Table(name = "qentity_q")

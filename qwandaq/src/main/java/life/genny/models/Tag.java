@@ -1,4 +1,4 @@
-package life.genny.notes.models;
+package life.genny.models;
 
 import java.io.Serializable;
 import java.util.Objects;

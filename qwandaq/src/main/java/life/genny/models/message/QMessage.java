@@ -1,4 +1,4 @@
-package life.genny.qwanda.message;
+package life.genny.models.message;
 
 import java.io.Serializable;
 import java.util.List;

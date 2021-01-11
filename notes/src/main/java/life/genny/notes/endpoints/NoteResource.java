@@ -42,7 +42,7 @@ import io.quarkus.runtime.ShutdownEvent;
 import io.quarkus.runtime.StartupEvent;
 import io.quarkus.security.identity.SecurityIdentity;
 import life.genny.notes.models.DataTable;
-import life.genny.notes.models.GennyToken;
+import life.genny.qwanda.GennyToken;
 import life.genny.notes.models.Note;
 import life.genny.notes.models.NoteStatus;
 import life.genny.notes.models.ParentNote;

@@ -1,4 +1,4 @@
-package life.genny.nest.models;
+package life.genny.models;
 
 import java.io.Serializable;
 import java.util.regex.Matcher;

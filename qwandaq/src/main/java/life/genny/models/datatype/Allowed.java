@@ -1,4 +1,4 @@
-package life.genny.qwanda.datatype;
+package life.genny.models.datatype;
 
 import java.io.Serializable;
 import java.util.Objects;

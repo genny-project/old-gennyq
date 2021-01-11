@@ -1,4 +1,4 @@
-package life.genny.qwanda.attribute;
+package life.genny.models.attribute;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -30,9 +30,9 @@ import org.jboss.logging.Logger;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import io.quarkus.runtime.annotations.RegisterForReflection;
-import life.genny.notes.utils.LocalDateTimeAdapter;
-import life.genny.qwanda.Value;
-import life.genny.qwanda.entity.BaseEntity;
+import life.genny.models.Value;
+import life.genny.models.entity.BaseEntity;
+import life.genny.utils.LocalDateTimeAdapter;
 
 @Entity
 

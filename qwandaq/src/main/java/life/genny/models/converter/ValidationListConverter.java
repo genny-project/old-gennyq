@@ -1,4 +1,4 @@
-package life.genny.qwanda.converter;
+package life.genny.models.converter;
 
 
 import java.lang.invoke.MethodHandles;
@@ -14,7 +14,7 @@ import org.jboss.logging.Logger;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import life.genny.qwanda.validation.Validation;
+import life.genny.models.validation.Validation;
 
 @Converter
 public class ValidationListConverter implements AttributeConverter<List<Validation>, String> {

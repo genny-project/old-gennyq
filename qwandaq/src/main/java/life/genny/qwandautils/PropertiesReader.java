@@ -1,4 +1,4 @@
-package life.genny.notes.utils;
+package life.genny.qwandautils;
 
 import java.io.IOException;
 import java.io.InputStream;

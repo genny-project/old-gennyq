@@ -1,4 +1,4 @@
-package life.genny.qwanda.datatype;
+package life.genny.models.datatype;
 
 /*
  * Copyright 2014 Greg Kopff

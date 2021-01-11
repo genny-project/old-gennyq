@@ -19,7 +19,7 @@
  */
 
 
-package life.genny.qwanda.attribute;
+package life.genny.models.attribute;
 
 import java.io.Serializable;
 
@@ -33,7 +33,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.javamoney.moneta.Money;
 
-import life.genny.qwanda.datatype.DataType;
+import life.genny.models.datatype.DataType;
 
 /**
  * AttributeMoney class handles LocalDate based attributes.

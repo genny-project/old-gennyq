@@ -14,7 +14,7 @@
  * Contributors: Adam Crow Byron Aguirre
  */
 
-package life.genny.qwanda.validation;
+package life.genny.models.validation;
 
 import java.io.Serializable;
 import java.util.List;

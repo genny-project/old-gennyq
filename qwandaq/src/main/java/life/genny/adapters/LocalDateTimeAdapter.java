@@ -1,4 +1,4 @@
-package life.genny.nest.adapters;
+package life.genny.adapters;
 
 import java.time.Instant;
 import java.time.LocalDateTime;

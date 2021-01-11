@@ -19,7 +19,7 @@
  */
 
 
-package life.genny.qwanda.attribute;
+package life.genny.models.attribute;
 
 import java.io.Serializable;
 
@@ -31,7 +31,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import life.genny.qwanda.datatype.DataType;
+import life.genny.models.datatype.DataType;
 
 /**
  * AttributeDouble class handles LocalDouble based attributes.

@@ -4,18 +4,20 @@ import java.lang.reflect.Type;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+
+
 import org.jboss.logging.Logger;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import life.genny.qwanda.DateTimeDeserializer;
-import life.genny.qwanda.datatype.LocalDateConverter;
+import life.genny.models.DateTimeDeserializer;
+import life.genny.models.datatype.LocalDateConverter;
 
 public class JsonUtils {
 	
 	 private static final Logger log = Logger.getLogger(JsonUtils.class);	
-
+	
 	static GsonBuilder gsonBuilder = new GsonBuilder();       
 
 	static public Gson gson = gsonBuilder

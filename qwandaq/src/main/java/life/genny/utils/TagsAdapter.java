@@ -1,4 +1,4 @@
-package life.genny.notes.utils;
+package life.genny.utils;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -9,7 +9,7 @@ import javax.json.JsonObject;
 import javax.json.bind.adapter.JsonbAdapter;
 
 import io.quarkus.runtime.annotations.RegisterForReflection;
-import life.genny.notes.models.Tag;
+import life.genny.models.Tag;
 
 @RegisterForReflection
 public class TagsAdapter implements JsonbAdapter<Set<Tag>, JsonObject> {

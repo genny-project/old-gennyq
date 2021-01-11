@@ -1,4 +1,4 @@
-package life.genny.qwanda.converter;
+package life.genny.models.converter;
 
 /*
  * Copyright 2014 Greg Kopff

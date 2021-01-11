@@ -1,4 +1,4 @@
-package life.genny.qwanda;
+package life.genny.models;
 
 public interface QDataMessageIntf {
 	public String getData_type();

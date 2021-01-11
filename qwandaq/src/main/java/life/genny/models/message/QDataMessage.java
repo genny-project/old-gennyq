@@ -1,4 +1,4 @@
-package life.genny.qwanda.message;
+package life.genny.models.message;
 
 import io.quarkus.runtime.annotations.RegisterForReflection;
 

@@ -14,7 +14,7 @@
  * Contributors: Adam Crow Byron Aguirre
  */
 
-package life.genny.qwanda.datatype;
+package life.genny.models.datatype;
 
 import java.io.Serializable;
 import java.util.List;
@@ -28,9 +28,9 @@ import javax.validation.constraints.Size;
 
 import org.jboss.logging.Logger;
 
-import life.genny.qwanda.converter.ValidationListConverter;
-import life.genny.qwanda.validation.Validation;
-import life.genny.qwanda.validation.ValidationList;
+import life.genny.models.converter.ValidationListConverter;
+import life.genny.models.validation.Validation;
+import life.genny.models.validation.ValidationList;
 
 /**
  * DataType represents a distinct abstract Data Representation in the Qwanda

@@ -1,4 +1,4 @@
-package life.genny.qwanda.attribute;
+package life.genny.models.attribute;
 
 public interface AttributeType {
 

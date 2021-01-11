@@ -19,7 +19,7 @@
  */
 
 
-package life.genny.qwanda.attribute;
+package life.genny.models.attribute;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -34,7 +34,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import life.genny.qwanda.datatype.DataType;
+import life.genny.models.datatype.DataType;
 
 /**
  * AttributeTime class handles LocalTime based attributes.
