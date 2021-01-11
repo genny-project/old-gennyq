@@ -21,7 +21,7 @@
 		<docker-plugin.version>0.33.0</docker-plugin.version>
 		<keycloak.test.port>8180</keycloak.test.port>
 		<mysql.test.port>3340</mysql.test.port>
-		<keycloak.version>11.0.3</keycloak.version>
+		<keycloak.version>12.0.1</keycloak.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<quarkus-plugin.version>1.10.5.Final</quarkus-plugin.version>
@@ -75,10 +75,6 @@
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
 			<version>4.5.13</version>
-		</dependency>
-		<dependency>
-			<groupId>io.quarkus</groupId>
-			<artifactId>quarkus-keycloak-authorization</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>io.rest-assured</groupId>

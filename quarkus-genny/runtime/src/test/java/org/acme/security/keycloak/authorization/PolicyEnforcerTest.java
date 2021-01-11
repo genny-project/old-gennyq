@@ -1,23 +1,20 @@
 package org.acme.security.keycloak.authorization;
 
 import io.quarkus.test.common.QuarkusTestResource;
-
-import java.util.Optional;
-
-import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.junit.jupiter.api.Test;
 import org.keycloak.representations.AccessTokenResponse;
 
+
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.RestAssured;
+import life.genny.models.GennyToken;
 
 @QuarkusTest
-@QuarkusTestResource(KeycloakServer.class)
 @QuarkusTestResource(MySqlServer.class)
+@QuarkusTestResource(KeycloakServer.class)
 public class PolicyEnforcerTest {
 
-    @ConfigProperty(name = "quarkus.oidc.auth-server-url")
-    Optional<String> keycloakUrl;
+    private static final String KEYCLOAK_REALM = "quarkus";
 
     static {
         RestAssured.useRelaxedHTTPSValidation();
@@ -30,6 +27,13 @@ public class PolicyEnforcerTest {
     	System.out.println("Starting test");
     	String accessToken = getAccessToken("alice");
     	System.out.println("AccessToken Test="+accessToken);
+    	
+    	GennyToken gennyToken = new GennyToken(accessToken);
+    	
+    	System.out.println("Username = "+gennyToken.getString("preferred_username"));
+    	System.out.println("KeycloakUrl = "+gennyToken.getKeycloakUrl());
+    	System.out.println("Uuid = "+gennyToken.getUniqueId());
+    	System.out.println("Realm = "+gennyToken.getRealm());
     }
     
   //  @Test
@@ -77,7 +81,7 @@ public class PolicyEnforcerTest {
                 .param("client_id", "backend-service")
                 .param("client_secret", "secret")
                 .when()
-                .post(keycloakUrl.get()+ "/protocol/openid-connect/token")
+                .post(KeycloakServer.keycloakUrl + "/realms/" + KEYCLOAK_REALM + "/protocol/openid-connect/token")
                 .as(AccessTokenResponse.class).getToken();
     }
 }
