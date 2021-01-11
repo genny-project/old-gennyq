@@ -45,8 +45,8 @@
 
 	<modules>
 		<module>qwandaq</module>
-		<module>bootxportq</module>
 		<module>quarkus-genny</module>
+		<module>bootxportq</module>
 		<module>apiq</module>
 		<module>bridgeq</module>
 		<!-- order important !!! qwandaq ======>>>> contains stardnad genny pojo

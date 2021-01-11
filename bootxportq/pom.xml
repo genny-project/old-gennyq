@@ -114,8 +114,13 @@
         </dependency>
         <dependency>
             <groupId>life.genny</groupId>
-            <artifactId>qwandaq</artifactId>
+            <artifactId>quarkus-genny</artifactId>
             <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20201115</version>
         </dependency>
     </dependencies>
     <build>
