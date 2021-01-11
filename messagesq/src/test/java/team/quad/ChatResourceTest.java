@@ -24,8 +24,7 @@ public class ChatResourceTest {
     @Test
     public void testJoinGroupEndpointExists() {
         BaseEntity baseEntity = new BaseEntity();
-        baseEntity.code = "PRJ_GENNY";
-        given()
+         given()
             .contentType("application/json")
           .log().all()
           .body(baseEntity)
@@ -36,8 +35,7 @@ public class ChatResourceTest {
     @Test
     public void testJoinGroupResponse() {
         BaseEntity baseEntity = new BaseEntity();
-        baseEntity.code = "PRJ_GENNY";
-        BaseEntity result =
+         BaseEntity result =
               given()
                 .contentType("application/json")
                 .log().all()
