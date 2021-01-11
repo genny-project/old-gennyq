@@ -42,7 +42,11 @@ public class ChatResource {
 //      .thenApply(jsonObject -> jsonObject.mapTo(BaseEntity.class));
 
     return eventBus.<JsonObject>request("join",  JsonObject.mapFrom(baseEntity))
-            .onItem().transform(Message::body).map(jsonObject -> jsonObject.mapTo(BaseEntity.class)).await().atMost(Duration.ofSeconds(5));
+            .onItem()
+            .transform(Message::body)
+            .map(jsonObject -> jsonObject.mapTo(BaseEntity.class))
+            .await()
+            .atMost(Duration.ofSeconds(5));
   }
 
 //  @PUT
