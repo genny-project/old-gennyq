@@ -1,4 +1,4 @@
-package life.genny.security;
+package org.acme.security.keycloak.authorization;
 
 import io.quarkus.test.junit.NativeImageTest;
 

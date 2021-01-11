@@ -7,7 +7,7 @@
 	<artifactId>gennyq</artifactId>
 	<version>8.0.0</version>
 	<packaging>pom</packaging>
-  	<name>GennyProject</name>
+	<name>GennyProject</name>
 	<description>Parent POM</description>
 
 	<licenses>
@@ -19,18 +19,22 @@
 	</licenses>
 
 	<properties>
-		<surefire-plugin.version>3.0.0-M5</surefire-plugin.version>
+		<keycloak.version>12.0.1</keycloak.version>
+		<quarkus-plugin.version>1.10.5.Final</quarkus-plugin.version>
+		<quarkus.platform.version>1.10.5.Final</quarkus.platform.version>
+ 		<commons-lang3.version>3.10</commons-lang3.version>
 		<maven.compiler.target>11</maven.compiler.target>
 		<maven.compiler.source>11</maven.compiler.source>
-		<quarkus-plugin.version>1.10.5.Final</quarkus-plugin.version>
 		<quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
 		<quarkus.platform.group-id>io.quarkus</quarkus.platform.group-id>
-		<quarkus.platform.version>1.10.5.Final</quarkus.platform.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		
+		<surefire-plugin.version>3.0.0-M5</surefire-plugin.version>
+		<testcontainers.version>1.14.1</testcontainers.version>
+		<docker-plugin.version>0.33.0</docker-plugin.version>
+		<jandex.version>1.0.7</jandex.version>
 	</properties>
-	
+
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -48,6 +52,7 @@
 		<module>quarkus-genny</module>
 		<module>apiq</module>
 		<module>bridgeq</module>
+		<module>shleemy</module>
 		<module>genny-proxy</module>
 		<module>notes</module>
 		<!-- order important !!! qwandaq ======>>>> contains stardnad genny pojo 
