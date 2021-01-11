@@ -88,8 +88,9 @@ public class Attribute extends PanacheEntity {
 	private static final String DEFAULT_CODE_PREFIX = "PRI_";
 	private static final String REGEX_CODE = "[A-Z]{3}\\_[A-Z0-9\\.\\-\\@\\_]*";
 
-	static public final String REGEX_NAME = "[\\pL0-9/\\:\\ \\_\\.\\,\\?\\>\\<\\%\\$\\&\\!\\*" + ""
-			+ "\\[\\]\\'\\-\\@\\(\\)]+.?";	private static final String REGEX_REALM = "[a-zA-Z0-9]+";
+	private static final String REGEX_NAME = "[\\pL0-9/\\:\\ \\_\\.\\,\\?\\>\\<\\%\\$\\&\\!\\*" + ""
+			+ "\\[\\]\\'\\-\\@\\(\\)]+.?";
+	private static final String REGEX_REALM = "[a-zA-Z0-9]+";
 	private static final String DEFAULT_REALM = "genny";
 
 	/**

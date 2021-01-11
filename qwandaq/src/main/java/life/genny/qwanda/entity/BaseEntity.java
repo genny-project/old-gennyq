@@ -96,8 +96,9 @@ public class BaseEntity extends PanacheEntity {
 	private static final String DEFAULT_CODE_PREFIX = "BAS_";
 	private static final String REGEX_CODE = "[A-Z]{3}\\_[A-Z0-9\\.\\-\\@\\_]*";
 
-	static public final String REGEX_NAME = "[\\pL0-9/\\:\\ \\_\\.\\,\\?\\>\\<\\%\\$\\&\\!\\*" + ""
-			+ "\\[\\]\\'\\-\\@\\(\\)]+.?";	private static final String REGEX_REALM = "[a-zA-Z0-9]+";
+	private static final String REGEX_NAME = "[\\pL0-9/\\:\\ \\_\\.\\,\\?\\>\\<\\%\\$\\&\\!\\*" + ""
+			+ "\\[\\]\\'\\-\\@\\(\\)]+.?";
+	private static final String REGEX_REALM = "[a-zA-Z0-9]+";
 	private static final String DEFAULT_REALM = "genny";
 	
 	
@@ -158,7 +159,7 @@ public class BaseEntity extends PanacheEntity {
 	 */
 	@SuppressWarnings("unused")
 	public BaseEntity() {
-		created = LocalDateTime.now(ZoneId.of("UTC"));
+		//created = LocalDateTime.now(ZoneId.of("UTC"));
 	}
 
 	/**
