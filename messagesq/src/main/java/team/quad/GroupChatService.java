@@ -12,10 +12,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import life.genny.qwanda.entity.BaseEntity;
 
 public class GroupChatService extends AbstractVerticle {
 
-    private Map<String, User> members;
+    private Map<String, BaseEntity> members;
 
     @Override
     public void init(Vertx vertx, Context context) {
@@ -28,45 +29,35 @@ public class GroupChatService extends AbstractVerticle {
 
         // Join group
         vertx.eventBus().<JsonObject>consumer("join", message -> {
-            if (members.size() >= 10) {
-              System.out.println("size > 10");
-                message.fail(1, String.format("Group full with %s members", members.size()));
-            } else {
-                User user = message.body().mapTo(User.class);
-                if (members.containsKey(user.getAlias())) {
-                  System.out.println("already there");
-                    message.fail(2, "Already member");
-                } else {
-                  System.out.println("ok!");
-                    members.put(user.getUsername(), user);
-                    message.reply(JsonObject.mapFrom(user));
-                }
-            }
+                BaseEntity baseEntity = message.body().mapTo(BaseEntity.class);
+                System.out.println("ok!");
+                members.put(baseEntity.code, baseEntity);
+                message.reply(JsonObject.mapFrom(baseEntity));
         });
 
-        // Leave group
-        vertx.eventBus().<String>consumer("leave", message -> {
-            members.remove(message.body());
-            message.reply("OK");
-        });
-
-        // Handle incoming chat message
-        vertx.eventBus().<JsonObject>consumer("chat", message -> {
-            ChatMessage chatMessage = message.body().mapTo(ChatMessage.class);
-            User member = members.get(chatMessage.getUsername());
-            if(Objects.isNull(member)) {
-                message.fail(1, "Not a member");
-            } else {
-                vertx.eventBus().publish("stream", member.getAlias() + ":" + chatMessage.getMessage());
-                message.reply("OK");
-            }
-        });
-
-        // Get members
-        vertx.eventBus().<JsonArray>consumer("get.members", message -> {
-            List<String> users = this.members.values().stream().map(User::toString).collect(Collectors.toList());
-            message.reply(new JsonArray(users));
-        });
+//        // Leave group
+//        vertx.eventBus().<String>consumer("leave", message -> {
+//            members.remove(message.body());
+//            message.reply("OK");
+//        });
+//
+//        // Handle incoming chat message
+//        vertx.eventBus().<JsonObject>consumer("chat", message -> {
+//            ChatMessage chatMessage = message.body().mapTo(ChatMessage.class);
+//            User member = members.get(chatMessage.getUsername());
+//            if(Objects.isNull(member)) {
+//                message.fail(1, "Not a member");
+//            } else {
+//                vertx.eventBus().publish("stream", member.getAlias() + ":" + chatMessage.getMessage());
+//                message.reply("OK");
+//            }
+//        });
+//
+//        // Get members
+//        vertx.eventBus().<JsonArray>consumer("get.members", message -> {
+//            List<String> users = this.members.values().stream().map(User::toString).collect(Collectors.toList());
+//            message.reply(new JsonArray(users));
+//        });
 
         super.start(startFuture);
     }

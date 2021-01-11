@@ -104,6 +104,12 @@
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-smallrye-openapi</artifactId>
     </dependency>
+
+    <dependency>
+      <groupId>life.genny</groupId>
+      <artifactId>quarkus-genny</artifactId>
+      <version>8.0.0</version>
+    </dependency>
   </dependencies>
   <build>
     <plugins>

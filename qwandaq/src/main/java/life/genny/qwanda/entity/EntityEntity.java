@@ -19,6 +19,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.jboss.logging.Logger;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
@@ -229,6 +230,7 @@ public <T> T getValue() {
 //
 @JsonbTransient
 @Transient
+@JsonIgnore
 public <T> void setValue(final Object value) {
 
 	if (value == null) {

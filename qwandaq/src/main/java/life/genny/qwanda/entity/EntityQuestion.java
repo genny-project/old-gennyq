@@ -17,6 +17,7 @@ import javax.validation.constraints.NotNull;
 //import javax.persistence.Transient;
 //import javax.validation.constraints.NotNull;
 //
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.jboss.logging.Logger;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
@@ -64,6 +65,7 @@ public class EntityQuestion  extends PanacheEntity implements Serializable, Comp
 
 	@JsonbTransient
 	@Transient
+	@JsonIgnore
 	public <T> void setValue(final Object value) {
 		this.value.setValue(value);
 	}

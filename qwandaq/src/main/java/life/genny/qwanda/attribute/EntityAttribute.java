@@ -25,6 +25,7 @@ import javax.persistence.UniqueConstraint;
 import javax.persistence.Index;
 
 //
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.jboss.logging.Logger;
 
@@ -172,6 +173,7 @@ public class EntityAttribute extends PanacheEntity {
 
 	@JsonbTransient
 	@Transient
+	@JsonIgnore
 	public <T> void setValue(final Object value) {
 		if (this.readonly) {
 			log.error("Trying to set the value of a readonly EntityAttribute! " + attribute.code);
