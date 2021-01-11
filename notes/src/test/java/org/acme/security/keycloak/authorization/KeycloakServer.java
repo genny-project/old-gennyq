@@ -49,7 +49,8 @@ public class KeycloakServer implements QuarkusTestResourceLifecycleManager {
                 .withEnv("JAVA_OPTS_APPEND", "-Djava.awt.headless=true")
                 .withEnv("PREPEND_JAVA_OPTS", "-Dkeycloak.profile=preview -Dkeycloak.profile.feature.token_exchange=enabled -Dkeycloak.profile.feature.account_api=enabled")
                 .withClasspathResourceMapping("quarkus-realm.json", "/config/realm.json", BindMode.READ_ONLY)
-                .waitingFor(Wait.forLogMessage(".*Admin console listening.*\\n", 1))
+               // .waitingFor(Wait.forLogMessage(".*Admin console listening.*\\n", 1))
+                .waitingFor(Wait.forHttp("/auth"))
                 .withStartupTimeout(Duration.ofMinutes(2));
         keycloak.start();
         
