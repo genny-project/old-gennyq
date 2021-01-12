@@ -168,9 +168,99 @@ public class Attribute extends PanacheEntity {
 
 
 	@Override
-	public String toString() {
-		return code+ ",dataType=" + dataType;
-	}
+  public String toString() {
+    return "Attribute [code=" + code + ", created=" + created + ", dataType=" + dataType + ", defaultPrivacyFlag="
+        + defaultPrivacyFlag + ", defaultValue=" + defaultValue + ", description=" + description + ", help="
+        + help + ", name=" + name + ", placeholder=" + placeholder + ", realm=" + realm + ", updated=" + updated
+        + "]";
+  }
+
+
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + ((code == null) ? 0 : code.hashCode());
+    result = prime * result + ((created == null) ? 0 : created.hashCode());
+    result = prime * result + ((dataType == null) ? 0 : dataType.hashCode());
+    result = prime * result + ((defaultPrivacyFlag == null) ? 0 : defaultPrivacyFlag.hashCode());
+    result = prime * result + ((defaultValue == null) ? 0 : defaultValue.hashCode());
+    result = prime * result + ((description == null) ? 0 : description.hashCode());
+    result = prime * result + ((help == null) ? 0 : help.hashCode());
+    result = prime * result + ((name == null) ? 0 : name.hashCode());
+    result = prime * result + ((placeholder == null) ? 0 : placeholder.hashCode());
+    result = prime * result + ((realm == null) ? 0 : realm.hashCode());
+    result = prime * result + ((updated == null) ? 0 : updated.hashCode());
+    return result;
+  }
+
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj)
+      return true;
+    if (obj == null)
+      return false;
+    if (getClass() != obj.getClass())
+      return false;
+    Attribute other = (Attribute) obj;
+    if (code == null) {
+      if (other.code != null)
+        return false;
+    } else if (!code.equals(other.code))
+      return false;
+    if (created == null) {
+      if (other.created != null)
+        return false;
+    } else if (!created.equals(other.created))
+      return false;
+    if (dataType == null) {
+      if (other.dataType != null)
+        return false;
+    } else if (!dataType.equals(other.dataType))
+      return false;
+    if (defaultPrivacyFlag == null) {
+      if (other.defaultPrivacyFlag != null)
+        return false;
+    } else if (!defaultPrivacyFlag.equals(other.defaultPrivacyFlag))
+      return false;
+    if (defaultValue == null) {
+      if (other.defaultValue != null)
+        return false;
+    } else if (!defaultValue.equals(other.defaultValue))
+      return false;
+    if (description == null) {
+      if (other.description != null)
+        return false;
+    } else if (!description.equals(other.description))
+      return false;
+    if (help == null) {
+      if (other.help != null)
+        return false;
+    } else if (!help.equals(other.help))
+      return false;
+    if (name == null) {
+      if (other.name != null)
+        return false;
+    } else if (!name.equals(other.name))
+      return false;
+    if (placeholder == null) {
+      if (other.placeholder != null)
+        return false;
+    } else if (!placeholder.equals(other.placeholder))
+      return false;
+    if (realm == null) {
+      if (other.realm != null)
+        return false;
+    } else if (!realm.equals(other.realm))
+      return false;
+    if (updated == null) {
+      if (other.updated != null)
+        return false;
+    } else if (!updated.equals(other.updated))
+      return false;
+    return true;
+  }
 
 
 }

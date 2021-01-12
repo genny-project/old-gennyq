@@ -1,0 +1,46 @@
+package baseentity_schema;
+
+message BaseEntity {
+  required string code = 1;
+  required string name = 2;
+  required string created = 3;
+  repeated EntityAttribute baseEntityAttributes = 4;
+}
+
+message Attribute {
+  required string realm = 1;
+  required string code = 2;
+  required string created = 3;
+  required string name = 4;
+  required DataType dataType = 6;
+  optional bool defaultPrivacyFlag = 5;
+  optional string description = 7;
+  optional string help = 8;
+  optional string placeholder = 9;
+  optional string defaultValue = 10;
+}
+
+message DataType {
+  required string dttCode = 1;
+  required string className = 2;
+  repeated Validation validationList = 3;
+  required string typeName = 4;
+  required string inputmask= 5;
+}
+
+message Validation {
+  required string code = 1;
+  required string name = 2;
+  required string created = 3;
+  required string regex = 4;
+}
+
+message EntityAttribute {
+  required string realm = 1;
+  required string created = 3;
+  required Attribute attribute = 4;
+  required BaseEntity baseentity = 5;
+  required double weight  = 6;
+  required bytes value  = 7;
+  required bool privacyFlag = 8;
+}

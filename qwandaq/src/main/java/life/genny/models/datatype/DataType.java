@@ -219,15 +219,11 @@ public class DataType implements Serializable {
 		setClassName(simpleClassName);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#toString()
-	 */
 	@Override
-	public String toString() {
-		return "DType(" + className + ")";
-	}
+  public String toString() {
+    return "DataType [className=" + className + ", dttCode=" + dttCode + ", inputmask=" + inputmask + ", typeName="
+        + typeName + ", validationList=" + validationList + "]";
+  }
 
 	static public DataType getInstance(final String className) {
 		final List<Validation> validationList = new CopyOnWriteArrayList<Validation>();
@@ -286,5 +282,54 @@ public class DataType implements Serializable {
 			return null;
 		}
 	}
+
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + ((className == null) ? 0 : className.hashCode());
+    result = prime * result + ((dttCode == null) ? 0 : dttCode.hashCode());
+    result = prime * result + ((inputmask == null) ? 0 : inputmask.hashCode());
+    result = prime * result + ((typeName == null) ? 0 : typeName.hashCode());
+    result = prime * result + ((validationList == null) ? 0 : validationList.hashCode());
+    return result;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj)
+      return true;
+    if (obj == null)
+      return false;
+    if (getClass() != obj.getClass())
+      return false;
+    DataType other = (DataType) obj;
+    if (className == null) {
+      if (other.className != null)
+        return false;
+    } else if (!className.equals(other.className))
+      return false;
+    if (dttCode == null) {
+      if (other.dttCode != null)
+        return false;
+    } else if (!dttCode.equals(other.dttCode))
+      return false;
+    if (inputmask == null) {
+      if (other.inputmask != null)
+        return false;
+    } else if (!inputmask.equals(other.inputmask))
+      return false;
+    if (typeName == null) {
+      if (other.typeName != null)
+        return false;
+    } else if (!typeName.equals(other.typeName))
+      return false;
+    if (validationList == null) {
+      if (other.validationList != null)
+        return false;
+    } else if (!validationList.equals(other.validationList))
+      return false;
+    return true;
+  }
 
 }

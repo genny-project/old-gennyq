@@ -16,6 +16,7 @@
 
 package life.genny.models.entity;
 
+import java.sql.Date;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.HashSet;
@@ -45,6 +46,7 @@ import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlTransient;
 
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.infinispan.protostream.descriptors.Type;
 import org.jboss.logging.Logger;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -784,4 +786,101 @@ public class BaseEntity extends PanacheEntity {
 			ea.readonly = state;
 		} 
 	}
+
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + ((active == null) ? 0 : active.hashCode());
+    result = prime * result + ((baseEntityAttributes == null) ? 0 : baseEntityAttributes.hashCode());
+    result = prime * result + ((code == null) ? 0 : code.hashCode());
+    result = prime * result + ((created == null) ? 0 : created.hashCode());
+    result = prime * result + ((links == null) ? 0 : links.hashCode());
+    result = prime * result + ((name == null) ? 0 : name.hashCode());
+    result = prime * result + ((questions == null) ? 0 : questions.hashCode());
+    result = prime * result + ((realm == null) ? 0 : realm.hashCode());
+    result = prime * result + ((updated == null) ? 0 : updated.hashCode());
+    return result;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj)
+      return true;
+    if (obj == null)
+      return false;
+    if (getClass() != obj.getClass())
+      return false;
+    BaseEntity other = (BaseEntity) obj;
+    if (active == null) {
+      if (other.active != null)
+        return false;
+    } else if (!active.equals(other.active))
+      return false;
+    if (baseEntityAttributes == null) {
+      if (other.baseEntityAttributes != null)
+        return false;
+    } else if (!baseEntityAttributes.equals(other.baseEntityAttributes))
+      return false;
+    if (code == null) {
+      if (other.code != null)
+        return false;
+    } else if (!code.equals(other.code))
+      return false;
+    if (created == null) {
+      if (other.created != null)
+        return false;
+    } else if (!created.equals(other.created))
+      return false;
+    if (links == null) {
+      if (other.links != null)
+        return false;
+    } else if (!links.equals(other.links))
+      return false;
+    if (name == null) {
+      if (other.name != null)
+        return false;
+    } else if (!name.equals(other.name))
+      return false;
+    if (questions == null) {
+      if (other.questions != null)
+        return false;
+    } else if (!questions.equals(other.questions))
+      return false;
+    if (realm == null) {
+      if (other.realm != null)
+        return false;
+    } else if (!realm.equals(other.realm))
+      return false;
+    if (updated == null) {
+      if (other.updated != null)
+        return false;
+    } else if (!updated.equals(other.updated))
+      return false;
+    return true;
+  }
+
+  public String getCode() {
+    return code;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public void setCode(String code) {
+    this.code = code;
+  }
+
+  public LocalDateTime getCreated() {
+    return created;
+  }
+
+  public void setCreated(LocalDateTime created) {
+    this.created = created;
+  }
 }
