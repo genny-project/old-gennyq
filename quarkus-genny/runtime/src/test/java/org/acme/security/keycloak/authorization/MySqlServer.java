@@ -47,7 +47,7 @@ public class MySqlServer implements QuarkusTestResourceLifecycleManager {
     @Override
     public Map<String, String> start() {
 
-    	Map<String, String> returnCollections = new HashMap<String,String>();
+    	Map<String, String> returnCollections = new HashMap<>();
     	
     	Slf4jLogConsumer logConsumer = new Slf4jLogConsumer(log);
     	
@@ -63,7 +63,7 @@ public class MySqlServer implements QuarkusTestResourceLifecycleManager {
           returnCollections.putAll(Collections.singletonMap("quarkus.datasource.jdbc.url", mysqljdbc));
   //  	  returnCollections.put("quarkus.datasource.jdbc.url", mysql.getJdbcUrl());
     	  
-    	  String mysqlAddress = mysql.getIpAddress();
+    	  String mysqlAddress = mysql.getContainerIpAddress();
     	  Integer mysqlPort = mysql.getMappedPort(3306);
     	  System.out.println("MySQL Started and is at  "+mysqlAddress+":"+mysqlPort);
     	  
