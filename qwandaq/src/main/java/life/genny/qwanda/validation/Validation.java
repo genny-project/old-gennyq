@@ -259,13 +259,91 @@ public class Validation extends PanacheEntity {
 		return DEFAULT_CODE_PREFIX;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#toString()
-	 */
 	@Override
-	public String toString() {
-		return "Validation [regex=" + regex + "]";
-	}
+  public String toString() {
+    return "Validation [code=" + code + ", created=" + created + ", multiAllowed=" + multiAllowed + ", name=" + name
+        + ", options=" + options + ", realm=" + realm + ", recursiveGroup=" + recursiveGroup + ", regex="
+        + regex + ", selectionBaseEntityGroupList=" + selectionBaseEntityGroupList + ", updated=" + updated
+        + "]";
+  }
+
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + ((code == null) ? 0 : code.hashCode());
+    result = prime * result + ((created == null) ? 0 : created.hashCode());
+    result = prime * result + ((multiAllowed == null) ? 0 : multiAllowed.hashCode());
+    result = prime * result + ((name == null) ? 0 : name.hashCode());
+    result = prime * result + ((options == null) ? 0 : options.hashCode());
+    result = prime * result + ((realm == null) ? 0 : realm.hashCode());
+    result = prime * result + ((recursiveGroup == null) ? 0 : recursiveGroup.hashCode());
+    result = prime * result + ((regex == null) ? 0 : regex.hashCode());
+    result = prime * result
+        + ((selectionBaseEntityGroupList == null) ? 0 : selectionBaseEntityGroupList.hashCode());
+    result = prime * result + ((updated == null) ? 0 : updated.hashCode());
+    return result;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj)
+      return true;
+    if (obj == null)
+      return false;
+    if (getClass() != obj.getClass())
+      return false;
+    Validation other = (Validation) obj;
+    if (code == null) {
+      if (other.code != null)
+        return false;
+    } else if (!code.equals(other.code))
+      return false;
+    if (created == null) {
+      if (other.created != null)
+        return false;
+    } else if (!created.equals(other.created))
+      return false;
+    if (multiAllowed == null) {
+      if (other.multiAllowed != null)
+        return false;
+    } else if (!multiAllowed.equals(other.multiAllowed))
+      return false;
+    if (name == null) {
+      if (other.name != null)
+        return false;
+    } else if (!name.equals(other.name))
+      return false;
+    if (options == null) {
+      if (other.options != null)
+        return false;
+    } else if (!options.equals(other.options))
+      return false;
+    if (realm == null) {
+      if (other.realm != null)
+        return false;
+    } else if (!realm.equals(other.realm))
+      return false;
+    if (recursiveGroup == null) {
+      if (other.recursiveGroup != null)
+        return false;
+    } else if (!recursiveGroup.equals(other.recursiveGroup))
+      return false;
+    if (regex == null) {
+      if (other.regex != null)
+        return false;
+    } else if (!regex.equals(other.regex))
+      return false;
+    if (selectionBaseEntityGroupList == null) {
+      if (other.selectionBaseEntityGroupList != null)
+        return false;
+    } else if (!selectionBaseEntityGroupList.equals(other.selectionBaseEntityGroupList))
+      return false;
+    if (updated == null) {
+      if (other.updated != null)
+        return false;
+    } else if (!updated.equals(other.updated))
+      return false;
+    return true;
+  }
 }

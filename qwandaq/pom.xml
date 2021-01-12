@@ -32,6 +32,7 @@
 		<commons-codec.version>1.15</commons-codec.version>
 		<jose4j.version>0.7.2</jose4j.version>
 		<microprofile-jwt-auth-api.version>1.2-RC3</microprofile-jwt-auth-api.version>
+    <testcontainers.version>1.15.1</testcontainers.version>
 	</properties>
 
 	<dependencyManagement>
@@ -54,6 +55,17 @@
 			<version>${commons-codec.version}</version>
 		</dependency>
 
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-keycloak-authorization</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.testcontainers</groupId>
+      <artifactId>testcontainers</artifactId>
+      <version>${testcontainers.version}</version>
+      <scope>test</scope>
+    </dependency>
 
 		<dependency>
 			<groupId>org.bitbucket.b_c</groupId>
@@ -68,6 +80,10 @@
 			<version>${microprofile-jwt-auth-api.version}</version>
 		</dependency>
 
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-infinispan-client</artifactId>
+    </dependency>
 
 		<dependency>
 			<groupId>io.quarkus</groupId>
@@ -98,10 +114,10 @@
 			<scope>test</scope>
 		</dependency>
 
-		<dependency>
-			<groupId>io.quarkus</groupId>
-			<artifactId>quarkus-oidc</artifactId>
-		</dependency>
+		<!--<dependency>-->
+			<!--<groupId>io.quarkus</groupId>-->
+			<!--<artifactId>quarkus-oidc</artifactId>-->
+		<!--</dependency>-->
 		
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
