@@ -1,4 +1,4 @@
-package life.genny.notes.utils;
+package life.genny.qwandautils;
 
 import java.io.IOException;
 
@@ -14,13 +14,12 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 import org.jboss.logging.Logger;
 
-import life.genny.notes.models.GennyToken;
-import life.genny.notes.models.Note;
-import life.genny.notes.models.QDataNoteMessage;
-//
+import life.genny.models.GennyToken;
+import life.genny.models.message.QDataNoteMessage;
+
 
 public class WriteToBridge {
-	 private static final Logger log = Logger.getLogger(Note.class);	
+	 private static final Logger log = Logger.getLogger(WriteToBridge.class);	
 
 	public static String writeMessage(String bridgeUrl, QDataNoteMessage msg, final GennyToken userToken) {
 

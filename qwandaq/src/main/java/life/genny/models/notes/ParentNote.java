@@ -1,4 +1,4 @@
-package life.genny.notes.models;
+package life.genny.models.notes;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -23,7 +23,8 @@ import org.jboss.logging.Logger;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import io.quarkus.runtime.annotations.RegisterForReflection;
-import life.genny.notes.utils.LocalDateTimeAdapter;
+
+import life.genny.adapters.LocalDateTimeAdapter;
 
 @Entity
 @Cacheable

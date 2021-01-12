@@ -1,14 +1,16 @@
-package life.genny.notes.models;
+package life.genny.models.message;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import io.quarkus.runtime.annotations.RegisterForReflection;
+import life.genny.models.notes.Note;
+import life.genny.models.notes.NoteStatus;
 
 @RegisterForReflection
 public class QDataNoteMessage extends QDataMessage{
 
-	private static final String DATATYPE_NOTE = Note.class.getSimpleName();
+	private static final String DATATYPE_NOTE = QDataNoteMessage.class.getSimpleName();
 	/**
 	 * 
 	 */

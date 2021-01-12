@@ -1,4 +1,4 @@
-package life.genny.models;
+package life.genny.models.message;
 
 public class QCmdMessage extends QMessage {
 
