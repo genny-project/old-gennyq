@@ -3,6 +3,7 @@ package org.acme.security.keycloak.authorization;
 
 import io.quarkus.test.common.QuarkusTestResourceLifecycleManager;
 //import life.genny.notes.utils.PropertiesReader;
+import life.genny.qwandautils.PropertiesReader;
 
 import org.testcontainers.containers.BindMode;
 import org.testcontainers.containers.FixedHostPortGenericContainer;
@@ -23,7 +24,7 @@ public class KeycloakServer implements QuarkusTestResourceLifecycleManager {
     public int order(){
       return 2;
     }
-	 public static String KEYCLOAK_VERSION = "12.0.1";//new PropertiesReader("genny.properties").getProperty("keycloak.version","12.0.1");
+	 public static String KEYCLOAK_VERSION = new PropertiesReader("genny.properties").getProperty("keycloak.version","12.0.1");
 
     @Override
     public Map<String, String> start() {
