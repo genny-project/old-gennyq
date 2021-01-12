@@ -1,6 +1,9 @@
 package org.acme.security.keycloak.authorization;
 
+import life.genny.qwandautils.PropertiesReader;
+
 import io.quarkus.test.common.QuarkusTestResourceLifecycleManager;
+
 import org.testcontainers.containers.BindMode;
 import org.testcontainers.containers.FixedHostPortGenericContainer;
 import org.testcontainers.containers.GenericContainer;
@@ -8,53 +11,64 @@ import org.testcontainers.containers.wait.strategy.Wait;
 
 import java.time.Duration;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 public class KeycloakServer implements QuarkusTestResourceLifecycleManager {
     private GenericContainer keycloak;
-    public   GenericContainer   mysql;
+    
+	static public String keycloakUrl;
 
-    public static String MYSQL_PORT = "3340";//new PropertiesReader("genny.properties").getProperty("mysql.test.port","3336");
+    @Override
+    public int order(){
+      return 2;
+    }
+	 public static String KEYCLOAK_VERSION = new PropertiesReader("genny.properties").getProperty("keycloak.version","12.0.1");
+
     @Override
     public Map<String, String> start() {
-                mysql = new FixedHostPortGenericContainer("gennyproject/mysql:8x")
-                .withFixedExposedPort(Integer.parseInt(MYSQL_PORT), 3306)
-                // .withExposedPorts(3306)
-                .withEnv("MYSQL_USERNAME","genny")
-                .withEnv("MYSQL_URL","mysql")
-                .withEnv("MYSQL_DB","gennydb")
-                .withEnv("MYSQL_PORT","3306")
-                .withEnv("MYSQL_ALLOW_EMPTY","")
-                .withEnv("MYSQL_RANDOM_ROOT_PASSWORD","no")
-                .withEnv("MYSQL_DATABASE","gennydb")
-                .withEnv("MYSQL_USER","genny")
-                .withEnv("MYSQL_PASSWORD","password")
-                .withEnv("MYSQL_ROOT_PASSWORD","password")
-                .withEnv("ADMIN_USERNAME","admin")
-                .withEnv("ADMIN_PASSWORD","password")
-                .withEnv("MYSQL_ROOT_PASSWORD","password")
-                .waitingFor(Wait.forLogMessage(".*ready for connection.*\\n", 1))
-                //      .withLogConsumer(logConsumer)
-                .withStartupTimeout(Duration.ofMinutes(3));
-        mysql.start();
-
-        keycloak = new FixedHostPortGenericContainer("quay.io/keycloak/keycloak:" + System.getProperty("keycloak.version"))
-                .withFixedExposedPort(8180, 8080)
-                .withFixedExposedPort(8543, 8443)
-                .withEnv("DB_VENDOR", "H2")
+    	
+    	Map<String, String> returnCollections = new HashMap<String,String>();
+    	
+    	
+        keycloak = new FixedHostPortGenericContainer("quay.io/keycloak/keycloak:" + KEYCLOAK_VERSION)
                 .withEnv("KEYCLOAK_USER", "admin")
                 .withEnv("KEYCLOAK_PASSWORD", "admin")
+                .withEnv("KEYCLOAK_LOGLEVEL", "debug")
                 .withEnv("KEYCLOAK_IMPORT", "/config/realm.json")
+                 .dependsOn(MySqlServer.mysql)
+                .withEnv("DB_VENDOR", "mysql")
+                //.withEnv("DB_VENDOR", "h2")
+                .withEnv("DB_ADDR", "mysql")
+                .withEnv("DB_PORT", "3306")
+                .withEnv("DB_DATABASE", "gennydb")
+                .withEnv("DB_USER", "genny")
+                .withNetwork(SharedNetwork.network)
+                .withEnv("DB_PASSWORD", "password")
                 .withClasspathResourceMapping("quarkus-realm.json", "/config/realm.json", BindMode.READ_ONLY)
-                .waitingFor(Wait.forHttp("/auth"))
+                .waitingFor(Wait.forLogMessage(".*Admin console listening.*\\n", 1))
                 .withStartupTimeout(Duration.ofMinutes(2));
         keycloak.start();
-        return Collections.emptyMap();
+        
+        keycloakUrl = "http://"+keycloak.getContainerIpAddress()+":"+keycloak.getMappedPort(8080)+"/auth/realms/quarkus";
+
+        
+        returnCollections.putAll(Collections.singletonMap("%test.quarkus.oidc.auth-server-url", keycloakUrl));
+        returnCollections.putAll(Collections.singletonMap("%test.quarkus.oidc.client-id", "backend-service"));
+        returnCollections.putAll(Collections.singletonMap("%test.quarkus.oidc.credentials.secret", "secret"));
+        returnCollections.putAll(Collections.singletonMap("%test.keycloak.admin.password","admin"));
+        returnCollections.putAll(Collections.singletonMap("%test.keycloak.admin.realm","quarkus"));
+        returnCollections.putAll(Collections.singletonMap("quarkus.oidc.auth-server-url", keycloakUrl));
+        returnCollections.putAll(Collections.singletonMap("quarkus.oidc.client-id", "backend-service"));
+        returnCollections.putAll(Collections.singletonMap("quarkus.oidc.credentials.secret", "secret"));
+        returnCollections.putAll(Collections.singletonMap("keycloak.admin.password","admin"));
+        returnCollections.putAll(Collections.singletonMap("keycloak.admin.realm","quarkus"));
+
+        return returnCollections;
     }
 
     @Override
     public void stop() {
         keycloak.stop();
-        mysql.stop();
     }
 }

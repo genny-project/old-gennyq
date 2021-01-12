@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 import javax.json.bind.Jsonb;
 import javax.json.bind.JsonbBuilder;
 
-import life.genny.qwanda.DateTimeDeserializer;
+
 import org.jboss.logging.Logger;
 import org.junit.Test;
 
@@ -14,27 +14,29 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import io.quarkus.test.junit.QuarkusTest;
-import life.genny.qwanda.attribute.Attribute;
-import life.genny.qwanda.attribute.AttributeText;
-import life.genny.qwanda.datatype.LocalDateConverter;
-import life.genny.qwanda.message.QDataAttributeMessage;
-import life.genny.qwanda.validation.Validation;
+import life.genny.models.DateTimeDeserializer;
+import life.genny.models.attribute.Attribute;
+import life.genny.models.attribute.AttributeText;
+import life.genny.models.converter.LocalDateConverter;
+import life.genny.models.message.QDataAttributeMessage;
+import life.genny.models.validation.Validation;
+
 
 @QuarkusTest
 public class AttributeJsonTest {
 	
 	private static final Logger log = Logger.getLogger(AttributeJsonTest.class);
 	
-	static GsonBuilder gsonBuilder = new GsonBuilder();       
-
-	static public Gson gson = gsonBuilder
-			.registerTypeAdapter(LocalDateTime.class, new DateTimeDeserializer())
-			.registerTypeAdapter(LocalDate.class, new LocalDateConverter())
-		//	.excludeFieldsWithModifiers(Modifier.STATIC, Modifier.TRANSIENT, Modifier.VOLATILE)
-		//	.excludeFieldsWithoutExposeAnnotation()
-		//    .disableHtmlEscaping()
-		    .setPrettyPrinting()
-			.create();
+//	static GsonBuilder gsonBuilder = new GsonBuilder();       
+//
+//	static public Gson gson = gsonBuilder
+//			.registerTypeAdapter(LocalDateTime.class, new DateTimeDeserializer())
+//			.registerTypeAdapter(LocalDate.class, new LocalDateConverter())
+//		//	.excludeFieldsWithModifiers(Modifier.STATIC, Modifier.TRANSIENT, Modifier.VOLATILE)
+//		//	.excludeFieldsWithoutExposeAnnotation()
+//		//    .disableHtmlEscaping()
+//		    .setPrettyPrinting()
+//			.create();
 	@Test
 	public void attributeJsonTest()
 	{
@@ -66,7 +68,7 @@ public class AttributeJsonTest {
 	          "}");
 		
 		 try {
-			 Validation validation = gson.fromJson(vjson, Validation.class);
+			 Validation validation = jsonb.fromJson(vjson, Validation.class);
 			 log.info(validation);
  
        } catch (Exception e) {
