@@ -52,7 +52,7 @@
 		<module>quarkus-genny</module>
 		<module>apiq</module>
 		<module>bridgeq</module>
-		<!--<module>shleemy</module>-->
+		<module>shleemy</module>
 		<module>genny-proxy</module>
 		<module>notes</module>
 		<!-- order important !!! qwandaq ======>>>> contains stardnad genny pojo 
