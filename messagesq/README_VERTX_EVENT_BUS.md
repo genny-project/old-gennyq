@@ -1,4 +1,7 @@
 # quarkus-vertx-chat
+
+#MAKE SURE QWANDAQ IS BUILD BEFORE RUNNING 
+
 A rudimentary messaging application showcasing Quarkus, Vert.x, Reactive Streams and server-sent events (SSE).
 
 For some more backround be sure to read the associated [article](https://quad.team/blog/messaging-with-quarkus-and-vertx).
