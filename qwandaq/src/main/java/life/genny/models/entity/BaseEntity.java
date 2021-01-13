@@ -802,61 +802,116 @@ public class BaseEntity extends PanacheEntity {
     result = prime * result + ((updated == null) ? 0 : updated.hashCode());
     return result;
   }
+	public static boolean compareSet(Set<?> set1, Set<?> set2){
+
+		if(set1 == null || set2 ==null){
+			return false;
+		}
+		if(set1.size()!=set2.size()){
+			return false;
+		}
+		return set1.containsAll(set2);
+	}
 
   @Override
   public boolean equals(Object obj) {
-    if (this == obj)
-      return true;
-    if (obj == null)
-      return false;
-    if (getClass() != obj.getClass())
-      return false;
+    if (this == obj) {
+        System.out.println("1");
+		return true;
+	}
+    if (obj == null) {
+		System.out.println("2");
+		return false;
+	}
+    if (getClass() != obj.getClass()) {
+		System.out.println("3");
+		return false;
+	}
     BaseEntity other = (BaseEntity) obj;
     if (active == null) {
-      if (other.active != null)
-        return false;
-    } else if (!active.equals(other.active))
-      return false;
+      if (other.active != null) {
+		  System.out.println("4");
+		  return false;
+	  }
+    } else if (!active.equals(other.active)) {
+		System.out.println("5");
+		return false;
+	}
     if (baseEntityAttributes == null) {
-      if (other.baseEntityAttributes != null)
-        return false;
-    } else if (!baseEntityAttributes.equals(other.baseEntityAttributes))
-      return false;
+      if (other.baseEntityAttributes != null) {
+		  System.out.println("6");
+		  return false;
+	  }
+    } else if (compareSet(baseEntityAttributes, other.baseEntityAttributes)) {
+		System.out.println("7");
+    	System.out.println(baseEntityAttributes);
+		System.out.println(other.baseEntityAttributes);
+		return false;
+	}
     if (code == null) {
-      if (other.code != null)
-        return false;
-    } else if (!code.equals(other.code))
-      return false;
+      if (other.code != null) {
+		  System.out.println("8");
+		  return false;
+	  }
+    } else if (!code.equals(other.code)) {
+		System.out.println("9");
+		return false;
+	}
     if (created == null) {
-      if (other.created != null)
-        return false;
-    } else if (!created.equals(other.created))
-      return false;
+      if (other.created != null) {
+		  System.out.println("10");
+		  return false;
+	  }
+    } else if (!created.equals(other.created)) {
+		System.out.println("11");
+		return false;
+	}
     if (links == null) {
-      if (other.links != null)
-        return false;
-    } else if (!links.equals(other.links))
-      return false;
+      if (other.links != null) {
+		  System.out.println("12");
+		  return false;
+	  }
+    } else if (!links.equals(other.links)) {
+		System.out.println("13");
+		return false;
+	}
+
     if (name == null) {
-      if (other.name != null)
-        return false;
-    } else if (!name.equals(other.name))
-      return false;
+      if (other.name != null) {
+		  System.out.println("14");
+		  return false;
+	  }
+    } else if (!name.equals(other.name)) {
+		System.out.println("15");
+		return false;
+	}
     if (questions == null) {
-      if (other.questions != null)
-        return false;
-    } else if (!questions.equals(other.questions))
-      return false;
+      if (other.questions != null) {
+		  System.out.println("16");
+		  return false;
+	  }
+    } else if (!questions.equals(other.questions)) {
+		System.out.println("17");
+		return false;
+	}
     if (realm == null) {
-      if (other.realm != null)
-        return false;
-    } else if (!realm.equals(other.realm))
-      return false;
+      if (other.realm != null) {
+		  System.out.println("18");
+		  return false;
+	  }
+    } else if (!realm.equals(other.realm)) {
+		System.out.println("19");
+		return false;
+	}
     if (updated == null) {
-      if (other.updated != null)
-        return false;
-    } else if (!updated.equals(other.updated))
-      return false;
+      if (other.updated != null) {
+		  System.out.println("20");
+		  return false;
+	  }
+    } else if (!updated.equals(other.updated)) {
+		System.err.println("21");
+		return false;
+	}
     return true;
   }
 
