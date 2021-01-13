@@ -18,7 +18,8 @@ public class EntityAttributeTestUtil {
     entityAttributeObject.setWeight(1.0);
     entityAttributeObject.setValue("just a name");
     try {
-      BaseEntityTestUtil.baseEntityObject.addAttribute(attribute);
+      //BaseEntityTestUtil.baseEntityObject.addAttribute(attribute);
+      BaseEntityTestUtil.baseEntityObject.addAttribute(entityAttributeObject);
     } catch (BadDataException e) {
       e.printStackTrace();
     }

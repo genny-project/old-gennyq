@@ -27,7 +27,7 @@ public class BaseEntityMarshaller implements MessageMarshaller<BaseEntity> {
     writer.writeString("name", b.getName());
     writer.writeString("code", b.getCode());
     writer.writeString("created", b.getCreated().toString());
-    //writer.writeCollection("baseEntityAttributes", b.baseEntityAttributes, EntityAttribute.class);
+    writer.writeCollection("baseEntityAttributes", b.baseEntityAttributes, EntityAttribute.class);
   }
 
   @Override
@@ -36,13 +36,13 @@ public class BaseEntityMarshaller implements MessageMarshaller<BaseEntity> {
     String name = reader.readString("name");
     String created = reader.readString("created");
 
-    //Set<EntityAttribute> baseEntityAttributes = reader.readCollection(
-        //"baseEntityAttributes",
-        //new HashSet<>(), 
-        //EntityAttribute.class);
+    Set<EntityAttribute> baseEntityAttributes = reader.readCollection(
+        "baseEntityAttributes",
+        new HashSet<>(), 
+        EntityAttribute.class);
 
     BaseEntity b = new BaseEntity(code, name);
-    //b.baseEntityAttributes = baseEntityAttributes;
+    b.baseEntityAttributes = baseEntityAttributes;
     b.setCreated(LocalDateTime.parse(created));
     return b;
   }

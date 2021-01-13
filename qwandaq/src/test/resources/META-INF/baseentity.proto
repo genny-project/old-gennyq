@@ -4,7 +4,7 @@ message BaseEntity {
   required string code = 1;
   required string name = 2;
   required string created = 3;
-  //repeated EntityAttribute baseEntityAttributes = 4;
+  repeated EntityAttribute baseEntityAttributes = 4;
 }
 
 message Attribute {
