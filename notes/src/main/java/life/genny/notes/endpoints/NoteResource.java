@@ -41,21 +41,21 @@ import io.quarkus.panache.common.Parameters;
 import io.quarkus.runtime.ShutdownEvent;
 import io.quarkus.runtime.StartupEvent;
 import io.quarkus.security.identity.SecurityIdentity;
-import life.genny.notes.models.DataTable;
-import life.genny.notes.models.GennyToken;
-import life.genny.notes.models.Note;
-import life.genny.notes.models.NoteStatus;
-import life.genny.notes.models.ParentNote;
-import life.genny.notes.models.QDataNoteMessage;
-import life.genny.notes.models.Tag;
-import life.genny.notes.utils.WriteToBridge;
+import life.genny.models.DataTable;
+import life.genny.models.GennyToken;
+import life.genny.models.Tag;
+import life.genny.models.message.QDataNoteMessage;
+import life.genny.models.notes.Note;
+import life.genny.models.notes.NoteStatus;
+import life.genny.models.notes.ParentNote;
+import life.genny.qwandautils.WriteToBridge;
 
 @Path("/v7/notes")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class NoteResource {
 
-	private static final Logger log = Logger.getLogger(Note.class);
+	private static final Logger log = Logger.getLogger(NoteResource.class);
 
 	@ConfigProperty(name = "default.realm", defaultValue = "genny")
 	String defaultRealm;
@@ -269,7 +269,7 @@ public class NoteResource {
 		GennyToken userToken = new GennyToken(accessToken.getRawToken());
 		log.info("GennyToken = " + userToken);
 
-		life.genny.notes.models.DataTable<Note> result = new DataTable<>();
+		DataTable<Note> result = new DataTable<>();
 		if (userToken.hasRole("admin")) {
 
 			searchVal = "";

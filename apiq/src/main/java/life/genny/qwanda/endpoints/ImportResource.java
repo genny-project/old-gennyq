@@ -30,8 +30,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
 
-import life.genny.qwanda.GennyToken;
-import life.genny.qwanda.Value;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.client.ClientProtocolException;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
@@ -47,16 +46,16 @@ import io.quarkus.runtime.ShutdownEvent;
 import io.quarkus.runtime.StartupEvent;
 import io.quarkus.runtime.annotations.RegisterForReflection;
 import io.quarkus.security.identity.SecurityIdentity;
-import life.genny.notes.utils.LocalDateTimeAdapter;
-import life.genny.qwanda.attribute.Attribute;
-import life.genny.qwanda.attribute.EntityAttribute;
-import life.genny.qwanda.datatype.DataType;
-import life.genny.qwanda.entity.BaseEntity;
-import life.genny.qwanda.entity.EntityEntity;
-import life.genny.qwanda.entity.EntityQuestion;
-import life.genny.qwanda.message.QDataAttributeMessage;
-import life.genny.qwanda.message.QDataBaseEntityMessage;
-import life.genny.qwanda.validation.Validation;
+import life.genny.models.GennyToken;
+import life.genny.models.Value;
+import life.genny.models.attribute.Attribute;
+import life.genny.models.attribute.EntityAttribute;
+import life.genny.models.datatype.DataType;
+import life.genny.models.entity.BaseEntity;
+import life.genny.models.entity.EntityEntity;
+import life.genny.models.entity.EntityQuestion;
+import life.genny.models.message.QDataAttributeMessage;
+import life.genny.models.validation.Validation;
 import life.genny.qwandautils.JsonUtils;
 import life.genny.qwandautils.QwandaUtils;
 

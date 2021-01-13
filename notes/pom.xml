@@ -5,9 +5,21 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
 
- 	<properties>
- 		<compiler-plugin.version>3.8.1</compiler-plugin.version>
-   		<maven.compiler.parameters>true</maven.compiler.parameters>
+	<parent>
+		<groupId>life.genny</groupId>
+		<artifactId>gennyq</artifactId>
+		<version>8.0.0</version>
+		<relativePath>../pom.xml</relativePath>
+	</parent>
+
+	<groupId>life.genny</groupId>
+	<artifactId>notes</artifactId>
+	<packaging>jar</packaging>
+
+
+	<properties>
+		<compiler-plugin.version>3.8.1</compiler-plugin.version>
+		<maven.compiler.parameters>true</maven.compiler.parameters>
 		<commons-lang3.version>3.10</commons-lang3.version>
 		<docker-plugin.version>0.33.0</docker-plugin.version>
 		<keycloak.test.port>8580</keycloak.test.port>
@@ -26,16 +38,6 @@
 		<testcontainers.version>1.14.1</testcontainers.version>
 	</properties>
 
-	<parent>
-		<groupId>life.genny</groupId>
-		<artifactId>gennyq</artifactId>
-		<version>8.0.0</version>
-		<relativePath>../pom.xml</relativePath>
-	</parent>
-
-	<groupId>life.genny</groupId>
-	<artifactId>notes</artifactId>
-	<packaging>jar</packaging>
 
 	<dependencyManagement>
 		<dependencies>
@@ -49,6 +51,12 @@
 		</dependencies>
 	</dependencyManagement>
 	<dependencies>
+<dependency>
+            <groupId>life.genny</groupId>
+            <artifactId>quarkus-genny</artifactId>
+            <version>8.0.0</version>
+        </dependency>
+
 		<dependency>
 			<groupId>io.quarkus</groupId>
 			<artifactId>quarkus-resteasy-jsonb</artifactId>

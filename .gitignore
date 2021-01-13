@@ -10,8 +10,8 @@ buildNumber.properties
 # https://github.com/takari/maven-wrapper#usage-without-binary-jar
 .mvn/wrapper/maven-wrapper.jar
 .idea/
-.iml
-apiq/src/main/resources/apiq-git.properties
-quarkus-genny/runtime/src/main/resources/Quarkus Genny - Runtime-git.properties
+*.iml
+#ignore {module}-git.properties
 qwandaq/src/main/resources/QwandaQ-git.properties
-
+quarkus-genny/runtime/src/main/resources/Quarkus Genny - Runtime-git.properties
+apiq/src/main/resources/apiq-git.properties

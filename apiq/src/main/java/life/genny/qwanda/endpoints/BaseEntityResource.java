@@ -25,8 +25,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
 
-import life.genny.qwanda.DataTable;
-import life.genny.qwanda.GennyToken;
+
 import org.eclipse.microprofile.jwt.JsonWebToken;
 import org.jboss.logging.Logger;
 
@@ -35,8 +34,11 @@ import io.quarkus.panache.common.Parameters;
 import io.quarkus.runtime.ShutdownEvent;
 import io.quarkus.runtime.StartupEvent;
 import io.quarkus.runtime.annotations.RegisterForReflection;
-import life.genny.qwanda.attribute.EntityAttribute;
-import life.genny.qwanda.entity.BaseEntity;
+import life.genny.models.DataTable;
+import life.genny.models.GennyToken;
+import life.genny.models.attribute.EntityAttribute;
+import life.genny.models.entity.BaseEntity;
+
 
 
 @Path("/qwanda/baseentitys")
@@ -199,7 +201,7 @@ public class BaseEntityResource {
     ) {
         GennyToken userToken = new GennyToken(accessToken.getRawToken());
 
-        life.genny.qwanda.DataTable<BaseEntity> result = new DataTable<>();
+        DataTable<BaseEntity> result = new DataTable<>();
         
         if (!userToken.hasRole("dev") && !userToken.hasRole("superadmin")) {
  			throw new WebApplicationException("User not recognised. Entities not being fetched",

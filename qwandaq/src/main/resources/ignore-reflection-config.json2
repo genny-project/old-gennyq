@@ -1,6 +1,6 @@
 #[
 #  {
-#    "name" : "life.genny.qwanda.entity.BaseEntity",
+#    "name" : "life.genny.models.entity.BaseEntity",
 #    "allDeclaredConstructors" : true,
 #    "allPublicConstructors" : true,
 #    "allDeclaredMethods" : true,
@@ -9,7 +9,7 @@
 ##    "allPublicFields" : true
 # },
     {
-    "name" : "life.genny.qwanda.Answer",
+    "name" : "life.genny.models.Answer",
     "allDeclaredConstructors" : true,
     "allPublicConstructors" : true,
     "allDeclaredMethods" : true,
@@ -18,7 +18,7 @@
     "allPublicFields" : true
   },
     {
-    "name" : "life.genny.qwanda.AnswerLink",
+    "name" : "life.genny.models.AnswerLink",
     "allDeclaredConstructors" : true,
     "allPublicConstructors" : true,
     "allDeclaredMethods" : true,
@@ -27,7 +27,7 @@
     "allPublicFields" : true
   },
     {
-    "name" : "life.genny.qwanda.attribute.Attribute",
+    "name" : "life.genny.models.attribute.Attribute",
     "allDeclaredConstructors" : true,
     "allPublicConstructors" : true,
     "allDeclaredMethods" : true,
@@ -36,7 +36,7 @@
     "allPublicFields" : true
   },
     {
-    "name" : "life.genny.qwanda.attribute.EntityAttribute",
+    "name" : "life.genny.models.attribute.EntityAttribute",
     "allDeclaredConstructors" : true,
     "allPublicConstructors" : true,
     "allDeclaredMethods" : true,
@@ -45,7 +45,7 @@
     "allPublicFields" : true
   },
     {
-    "name" : "life.genny.qwanda.attribute.EntityAttributeId",
+    "name" : "life.genny.models.attribute.EntityAttributeId",
     "allDeclaredConstructors" : true,
     "allPublicConstructors" : true,
     "allDeclaredMethods" : true,
@@ -54,7 +54,7 @@
     "allPublicFields" : true
   },
     {
-    "name" : "life.genny.qwanda.datatype.DataType",
+    "name" : "life.genny.models.datatype.DataType",
     "allDeclaredConstructors" : true,
     "allPublicConstructors" : true,
     "allDeclaredMethods" : true,
@@ -63,7 +63,7 @@
     "allPublicFields" : true
   },
     {
-    "name" : "life.genny.qwanda.validation.Validation",
+    "name" : "life.genny.models.validation.Validation",
     "allDeclaredConstructors" : true,
     "allPublicConstructors" : true,
     "allDeclaredMethods" : true,
@@ -72,7 +72,7 @@
     "allPublicFields" : true
   },
     {
-    "name" : "life.genny.qwanda.validation.ValidationList",
+    "name" : "life.genny.models.validation.ValidationList",
     "allDeclaredConstructors" : true,
     "allPublicConstructors" : true,
     "allDeclaredMethods" : true,
