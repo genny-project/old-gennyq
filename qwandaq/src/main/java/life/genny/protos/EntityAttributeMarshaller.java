@@ -28,7 +28,7 @@ public class EntityAttributeMarshaller implements MessageMarshaller<EntityAttrib
     writer.writeString("realm", ba.realm);
     writer.writeString("created", ba.created.toString());
     writer.writeObject("attribute", ba.attribute, Attribute.class);
-    writer.writeObject("baseentity", ba.baseentity, BaseEntity.class);
+    //writer.writeObject("baseentity", ba.baseentity, BaseEntity.class);
     writer.writeDouble("weight", ba.getWeight());
     writer.writeBytes("value", SerializationUtils.serialize(ba.getValue()));
     writer.writeBoolean("privacyFlag", ba.privacyFlag);
@@ -43,7 +43,7 @@ public class EntityAttributeMarshaller implements MessageMarshaller<EntityAttrib
     String attributeCode = reader.readString("attributeCode");
     String baseEntityCode = reader.readString("baseEntityCode");
     Attribute attribute = reader.readObject("attribute", Attribute.class);
-    BaseEntity baseentity = reader.readObject("baseentity",BaseEntity.class);
+    //BaseEntity baseentity = reader.readObject("baseentity",BaseEntity.class);
     Double weight = reader.readDouble("weight");
     Object value = SerializationUtils.deserialize(reader.readBytes("value"));
     Boolean privacyFlag = reader.readBoolean("privacyFlag");

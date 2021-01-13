@@ -4,7 +4,7 @@ message BaseEntity {
   required string code = 1;
   required string name = 2;
   required string created = 3;
-  //repeated EntityAttribute baseEntityAttributes = 4;
+  repeated EntityAttribute baseEntityAttributes = 4;
 }
 
 message Attribute {
@@ -39,7 +39,7 @@ message EntityAttribute {
   required string realm = 1;
   required string created = 3;
   required Attribute attribute = 4;
-  optional BaseEntity baseentity = 5;
+  //optional BaseEntity baseentity = 5;
   required double weight  = 6;
   required bytes value  = 7;
   required bool privacyFlag = 8;
