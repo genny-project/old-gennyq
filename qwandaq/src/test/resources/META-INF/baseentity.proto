@@ -4,7 +4,7 @@ message BaseEntity {
   required string code = 1;
   required string name = 2;
   required string created = 3;
-  repeated EntityAttribute baseEntityAttributes = 4;
+  //repeated EntityAttribute baseEntityAttributes = 4;
 }
 
 message Attribute {
@@ -12,8 +12,8 @@ message Attribute {
   required string code = 2;
   required string created = 3;
   required string name = 4;
-  required DataType dataType = 6;
   optional bool defaultPrivacyFlag = 5;
+  required DataType dataType = 6;
   optional string description = 7;
   optional string help = 8;
   optional string placeholder = 9;
@@ -39,8 +39,10 @@ message EntityAttribute {
   required string realm = 1;
   required string created = 3;
   required Attribute attribute = 4;
-  required BaseEntity baseentity = 5;
+  optional BaseEntity baseentity = 5;
   required double weight  = 6;
   required bytes value  = 7;
   required bool privacyFlag = 8;
+  required string baseEntityCode = 9;
+  optional string attributeCode = 10;
 }

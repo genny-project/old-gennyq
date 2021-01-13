@@ -883,4 +883,11 @@ public class BaseEntity extends PanacheEntity {
   public void setCreated(LocalDateTime created) {
     this.created = created;
   }
+
+@Override
+public String toString() {
+  return "BaseEntity [active=" + active + ", baseEntityAttributes=" + baseEntityAttributes + ", code=" + code
+      + ", created=" + created + ", links=" + links + ", name=" + name + ", questions=" + questions + ", realm="
+      + realm + ", updated=" + updated + "]";
+}
 }

@@ -31,6 +31,8 @@ public class ClientBaseEntityTest {
 
   @Test 
   public void testBaseEntityIntegrity(){
+    System.out.println(BaseEntityTestUtil.baseEntityObject);
+    System.out.println(fetchedBaseEntity);
     Assertions.assertTrue(BaseEntityTestUtil.baseEntityObject.equals(fetchedBaseEntity));
   }
 
