@@ -803,60 +803,93 @@ public class BaseEntity extends PanacheEntity {
     return result;
   }
 
+  public static boolean compareSet(Set<?> set1, Set<?> set2){
+
+    if(set1 == null || set2 ==null){
+      return false;
+    }
+    if(set1.size()!=set2.size()){
+      return false;
+    }
+    return set1.containsAll(set2);
+  }
+
   @Override
   public boolean equals(Object obj) {
-    if (this == obj)
+    if (this == obj) {
       return true;
-    if (obj == null)
+    }
+    if (obj == null) {
       return false;
-    if (getClass() != obj.getClass())
+    }
+    if (getClass() != obj.getClass()) {
       return false;
+    }
     BaseEntity other = (BaseEntity) obj;
     if (active == null) {
-      if (other.active != null)
+      if (other.active != null) {
         return false;
-    } else if (!active.equals(other.active))
+      }
+    } else if (!active.equals(other.active)) {
       return false;
+    }
     if (baseEntityAttributes == null) {
-      if (other.baseEntityAttributes != null)
+      if (other.baseEntityAttributes != null) {
         return false;
-    } else if (!baseEntityAttributes.equals(other.baseEntityAttributes))
+      }
+    } else if (compareSet(baseEntityAttributes, other.baseEntityAttributes)) {
       return false;
+    }
     if (code == null) {
-      if (other.code != null)
+      if (other.code != null) {
         return false;
-    } else if (!code.equals(other.code))
+      }
+    } else if (!code.equals(other.code)) {
       return false;
+    }
     if (created == null) {
-      if (other.created != null)
+      if (other.created != null) {
         return false;
-    } else if (!created.equals(other.created))
+      }
+    } else if (!created.equals(other.created)) {
       return false;
+    }
     if (links == null) {
-      if (other.links != null)
+      if (other.links != null) {
         return false;
-    } else if (!links.equals(other.links))
+      }
+    } else if (!links.equals(other.links)) {
       return false;
+    }
+
     if (name == null) {
-      if (other.name != null)
+      if (other.name != null) {
         return false;
-    } else if (!name.equals(other.name))
+      }
+    } else if (!name.equals(other.name)) {
       return false;
+    }
     if (questions == null) {
-      if (other.questions != null)
+      if (other.questions != null) {
         return false;
-    } else if (!questions.equals(other.questions))
+      }
+    } else if (!questions.equals(other.questions)) {
       return false;
+    }
     if (realm == null) {
-      if (other.realm != null)
+      if (other.realm != null) {
         return false;
-    } else if (!realm.equals(other.realm))
+      }
+    } else if (!realm.equals(other.realm)) {
       return false;
+    }
     if (updated == null) {
-      if (other.updated != null)
+      if (other.updated != null) {
         return false;
-    } else if (!updated.equals(other.updated))
+      }
+    } else if (!updated.equals(other.updated)) {
       return false;
+    }
     return true;
   }
 
@@ -882,5 +915,12 @@ public class BaseEntity extends PanacheEntity {
 
   public void setCreated(LocalDateTime created) {
     this.created = created;
+  }
+
+  @Override
+  public String toString() {
+    return "BaseEntity [active=" + active + ", baseEntityAttributes=" + baseEntityAttributes + ", code=" + code
+      + ", created=" + created + ", links=" + links + ", name=" + name + ", questions=" + questions + ", realm="
+      + realm + ", updated=" + updated + "]";
   }
 }
