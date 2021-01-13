@@ -1,4 +1,4 @@
-package team.quad;
+package life.genny.vertx.eventbus;
 
 import static java.lang.System.getProperties;
 import static javax.mail.Message.RecipientType.TO;

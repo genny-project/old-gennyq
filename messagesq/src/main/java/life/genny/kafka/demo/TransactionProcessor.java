@@ -1,9 +1,8 @@
-package org.acme.demo;
+package life.genny.kafka.demo;
 
 import io.smallrye.mutiny.Uni;
-import io.smallrye.reactive.messaging.annotations.Blocking;
-import org.acme.model.Transaction;
-import org.acme.model.TransactionResult;
+import life.genny.kafka.model.Transaction;
+import life.genny.kafka.model.TransactionResult;
 import org.eclipse.microprofile.reactive.messaging.Incoming;
 import org.eclipse.microprofile.reactive.messaging.Outgoing;
 import org.eclipse.microprofile.rest.client.inject.RestClient;

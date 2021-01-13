@@ -1,27 +1,20 @@
-package team.quad;
+package life.genny.vertx.eventbus;
 
 //import io.vertx.axle.core.eventbus.EventBus;
 //import io.vertx.axle.core.eventbus.Message;
-import io.smallrye.mutiny.Uni;
-import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.mutiny.core.eventbus.EventBus;
 import io.vertx.mutiny.core.eventbus.Message;
 //import life.genny.models.entity.BaseEntity;
-import org.reactivestreams.Publisher;
 
 import javax.inject.Inject;
-import javax.validation.Valid;
-import javax.validation.constraints.Email;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import java.time.Duration;
-import java.util.concurrent.CompletionStage;
+
 @Path("/")
 public class ChatResource {
 

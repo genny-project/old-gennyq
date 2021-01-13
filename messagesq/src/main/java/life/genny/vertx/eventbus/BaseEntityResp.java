@@ -1,4 +1,4 @@
-package team.quad;
+package life.genny.vertx.eventbus;
 
 //import life.genny.models.attribute.EntityAttribute;
 //import life.genny.models.entity.EntityEntity;

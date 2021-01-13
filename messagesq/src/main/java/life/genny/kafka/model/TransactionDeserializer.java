@@ -1,4 +1,4 @@
-package org.acme.model;
+package life.genny.kafka.model;
 
 import io.quarkus.kafka.client.serialization.JsonbDeserializer;
 import io.quarkus.runtime.annotations.RegisterForReflection;

@@ -1,18 +1,9 @@
-package team.quad;
+package life.genny.vertx.eventbus;
 
-import com.github.javafaker.Faker;
-import com.icegreen.greenmail.util.GreenMail;
-import com.icegreen.greenmail.util.ServerSetup;
 import io.quarkus.test.junit.QuarkusTest;
 
 //import life.genny.models.entity.BaseEntity;
-import org.junit.Assert;
 import org.junit.jupiter.api.Test;
-
-import javax.mail.Message;
-import javax.mail.internet.MimeMessage;
-
-import java.io.Serializable;
 
 import static io.restassured.RestAssured.given;
 import static org.junit.Assert.assertNotNull;

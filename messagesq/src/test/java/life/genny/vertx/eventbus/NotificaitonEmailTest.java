@@ -1,4 +1,4 @@
-package team.quad;
+package life.genny.vertx.eventbus;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;

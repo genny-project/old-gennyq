@@ -1,7 +1,7 @@
-package org.acme.transaction;
+package life.genny.kafka.transaction;
 
-import org.acme.model.Transaction;
-import org.acme.model.TransactionResult;
+import life.genny.kafka.model.Transaction;
+import life.genny.kafka.model.TransactionResult;
 import org.jboss.logging.Logger;
 
 import javax.ws.rs.Consumes;

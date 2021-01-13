@@ -1,18 +1,14 @@
-package team.quad;
+package life.genny.vertx.eventbus;
 
 import io.vertx.core.Context;
 import io.vertx.core.Future;
 import io.vertx.core.Vertx;
-import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.reactivex.core.AbstractVerticle;
 //import life.genny.models.entity.BaseEntity;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 public class GroupChatService extends AbstractVerticle {
 

@@ -1,10 +1,9 @@
-package org.acme.demo;
+package life.genny.kafka.demo;
 
-import org.acme.model.Transaction;
+import life.genny.kafka.model.Transaction;
 import org.eclipse.microprofile.reactive.messaging.Channel;
 import org.eclipse.microprofile.reactive.messaging.Emitter;
 
-import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;

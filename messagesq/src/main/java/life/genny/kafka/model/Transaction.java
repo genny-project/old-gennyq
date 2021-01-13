@@ -1,4 +1,4 @@
-package org.acme.model;
+package life.genny.kafka.model;
 
 public class Transaction {
 

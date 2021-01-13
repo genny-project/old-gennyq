@@ -1,4 +1,4 @@
-package team.quad;
+package life.genny.vertx.eventbus;
 
 
 

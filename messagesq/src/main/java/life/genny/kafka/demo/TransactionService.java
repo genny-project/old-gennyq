@@ -1,8 +1,8 @@
-package org.acme.demo;
+package life.genny.kafka.demo;
 
 import io.smallrye.mutiny.Uni;
-import org.acme.model.Transaction;
-import org.acme.model.TransactionResult;
+import life.genny.kafka.model.Transaction;
+import life.genny.kafka.model.TransactionResult;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 
 import javax.ws.rs.Consumes;

@@ -1,4 +1,4 @@
-package team.quad;
+package life.genny.vertx.eventbus;
 
 import io.quarkus.runtime.StartupEvent;
 import io.vertx.core.Vertx;
