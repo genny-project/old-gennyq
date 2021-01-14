@@ -12,21 +12,22 @@ import java.util.stream.Collectors;
 
 import io.vertx.core.json.JsonObject;
 import life.genny.bootxport.bootx.*;
+import life.genny.bootxport.xlsimport.BatchLoading;
 import life.genny.qwanda.Answer;
-import life.genny.qwanda.attribute.Attribute;
-import life.genny.qwanda.attribute.EntityAttribute;
-import life.genny.qwanda.datatype.DataType;
-import life.genny.qwanda.entity.BaseEntity;
+import life.genny.models.attribute.Attribute;
+import life.genny.models.attribute.EntityAttribute;
+import life.genny.models.datatype.DataType;
+import life.genny.models.entity.BaseEntity;
 import life.genny.qwandautils.GennySettings;
 import life.genny.qwandautils.JsonUtils;
+import life.genny.security.SecureResources;
+import life.genny.utils.VertxUtils;
 import org.apache.logging.log4j.Logger;
 
 import javax.persistence.NoResultException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-
-import life.genny.services.ServiceTokenService;
 
 
 public class ImportSheetService {
@@ -82,8 +83,8 @@ public class ImportSheetService {
             answer.setChangeEvent(false);
             be.addAnswer(answer);
             EntityAttribute ea = be.findEntityAttribute(attribute);
-            ea.setPrivacyFlag(privacy);
-            ea.setRealm(be.getRealm());
+            ea.privacyFlag = privacy;
+            ea.realm = be.realm;
         } catch (Exception e) {
             log.error("CANNOT UPDATE PROJECT " + be.getCode() + " " + e.getLocalizedMessage());
         }
@@ -201,7 +202,15 @@ public class ImportSheetService {
         }
     }
 
+    private boolean checkWriteCache(JsonObject jsonOb, String jsonString) {
+        if ((jsonOb == null) || ("error".equals(jsonOb.getString("status")))) {
+            return false;
+        } else {
+            return jsonOb.getString("value").equals(jsonString);
+        }
+    }
 
+/*
     private void pushProjectsUrlsToDTT(RealmUnit realmUnit) {
         String realm = realmUnit.getCode();
 
@@ -257,7 +266,7 @@ public class ImportSheetService {
                                 GennySettings.GENNY_REALM, cleanUrl.toUpperCase()));
                     }
                 } catch (MalformedURLException e) {
-                    log.error("Bad URL for realm " + be.getRealm() + "=" + url);
+                    log.error("Bad URL for realm " + be.realm + "=" + url);
                 }
             }
 
@@ -278,6 +287,7 @@ public class ImportSheetService {
             });
         }
     }
+    */
 
 
     public void persistEnabledProject(RealmUnit realmUnit) {
@@ -318,7 +328,7 @@ public class ImportSheetService {
         // TODO
         rx.getDataUnits().forEach(this::saveProjectBes);
         rx.getDataUnits().forEach(this::saveServiceBes);
-        rx.getDataUnits().forEach(this::pushProjectsUrlsToDTT);
+//        rx.getDataUnits().forEach(this::pushProjectsUrlsToDTT);
 
         if (!GennySettings.skipGoogleDocInStartup) {
             log.info("Starting Transaction for loading *********************");

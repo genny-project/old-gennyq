@@ -5,11 +5,11 @@ import life.genny.qwanda.Ask;
 import life.genny.qwanda.CodedEntity;
 import life.genny.qwanda.Question;
 import life.genny.qwanda.QuestionQuestion;
-import life.genny.qwanda.attribute.Attribute;
-import life.genny.qwanda.entity.BaseEntity;
-import life.genny.qwanda.entity.EntityEntity;
+import life.genny.models.attribute.Attribute;
+import life.genny.models.entity.BaseEntity;
+import life.genny.models.entity.EntityEntity;
 import life.genny.qwanda.message.QBaseMSGMessageTemplate;
-import life.genny.qwanda.validation.Validation;
+import life.genny.models.validation.Validation;
 import life.genny.qwandautils.GennySettings;
 import org.hibernate.exception.ConstraintViolationException;
 
@@ -18,6 +18,8 @@ import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import static io.quarkus.hibernate.orm.panache.Panache.getEntityManager;
 
 public class Service implements QwandaRepository {
     String currentRealm = GennySettings.mainrealm; // permit temprorary override
@@ -229,27 +231,27 @@ public class Service implements QwandaRepository {
 
             this.pushAttributes();
         } catch (final ConstraintViolationException e) {
-            Attribute existing = findAttributeByCode(attribute.getCode());
+            Attribute existing = findAttributeByCode(attribute.code);
 
-            existing.setRealm(getRealm());
+            existing.realm = getRealm();
 
             existing = getEntityManager().merge(existing);
-            return existing.getId();
+            return existing.id;
         } catch (final PersistenceException e) {
-            Attribute existing = findAttributeByCode(attribute.getCode());
+            Attribute existing = findAttributeByCode(attribute.code);
 
-            existing.setRealm(getRealm());
+            existing.realm = getRealm();
 
             existing = getEntityManager().merge(existing);
-            return existing.getId();
+            return existing.id;
         } catch (final IllegalStateException e) {
-            Attribute existing = findAttributeByCode(attribute.getCode());
+            Attribute existing = findAttributeByCode(attribute.code);
 
-            existing.setRealm(getRealm());
+            existing.realm = getRealm();
 
             existing = getEntityManager().merge(existing);
-            return existing.getId();
+            return existing.id;
         }
-        return attribute.getId();
+        return attribute.id;
     }
 }

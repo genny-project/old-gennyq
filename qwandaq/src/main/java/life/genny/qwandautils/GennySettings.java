@@ -11,6 +11,7 @@ public class GennySettings {
     public static final String defaultServiceKey = System.getenv("ENV_SECURITY_KEY") == null ? "WubbaLubbaDubDub" : System.getenv("ENV_SECURITY_KEY");
     public static final String defaultServiceEncryptedPassword = System.getenv("ENV_SERVICE_PASSWORD") == null ? "vRO+tCumKcZ9XbPWDcAXpU7tcSltpNpktHcgzRkxj8o=" : System.getenv("ENV_SERVICE_PASSWORD");
     public static int ACCESS_TOKEN_EXPIRY_LIMIT_SECONDS = 60;
+    public final static String GENNY_REALM = "jenny"; //deliberatly not genny
 
     public static String dynamicKey(final String realm) {
         String envSecurityKey = System.getenv("ENV_SECURITY_KEY" + "_" + realm.toUpperCase());

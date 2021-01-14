@@ -4,7 +4,7 @@ import java.lang.invoke.MethodHandles;
 import javax.inject.Inject;
 
 import life.genny.nest.utils.KeycloakUtils;
-import life.genny.notes.utils.SecurityUtils;
+import life.genny.utils.SecurityUtils;
 import life.genny.security.SecureResources;
 import org.apache.logging.log4j.Logger;
 import io.vertx.core.json.JsonObject;

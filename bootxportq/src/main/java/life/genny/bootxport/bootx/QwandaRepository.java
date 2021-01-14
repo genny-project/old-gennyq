@@ -3,11 +3,12 @@ package life.genny.bootxport.bootx;
 import javax.validation.constraints.NotNull;
 
 import life.genny.qwanda.*;
-import life.genny.qwanda.attribute.Attribute;
-import life.genny.qwanda.entity.BaseEntity;
-import life.genny.qwanda.entity.EntityEntity;
+import life.genny.models.attribute.Attribute;
+import life.genny.models.entity.BaseEntity;
+import life.genny.models.entity.EntityEntity;
+import life.genny.qwanda.CodedEntity;
 import life.genny.qwanda.message.QBaseMSGMessageTemplate;
-import life.genny.qwanda.validation.Validation;
+import life.genny.models.validation.Validation;
 
 import java.util.ArrayList;
 import java.util.HashMap;
