@@ -837,7 +837,7 @@ public class BaseEntity extends PanacheEntity {
       if (other.baseEntityAttributes != null) {
         return false;
       }
-    } else if (compareSet(baseEntityAttributes, other.baseEntityAttributes)) {
+    } else if (!compareSet(baseEntityAttributes, other.baseEntityAttributes)) {
       return false;
     }
     if (code == null) {

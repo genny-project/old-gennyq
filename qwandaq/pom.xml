@@ -175,10 +175,6 @@
 			<version>${version.moneta}</version>
 			<type>pom</type>
 		</dependency>
-		<dependency>
-			<groupId>io.quarkus</groupId>
-			<artifactId>quarkus-keycloak-authorization</artifactId>
-		</dependency>
 
 	</dependencies>
 
