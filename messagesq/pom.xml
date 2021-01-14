@@ -66,6 +66,11 @@
     </dependencies>
   </dependencyManagement>
   <dependencies>
+      <dependency>
+      <groupId>life.genny</groupId>
+      <artifactId>quarkus-genny</artifactId>
+      <version>8.0.0</version>
+    </dependency>
     <dependency>
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-arc</artifactId>
@@ -165,11 +170,7 @@
       <scope>test</scope>
     </dependency>
 
-    <dependency>
-      <groupId>life.genny</groupId>
-      <artifactId>quarkus-genny</artifactId>
-      <version>8.0.0</version>
-    </dependency>
+
   </dependencies>
   <build>
     <plugins>
