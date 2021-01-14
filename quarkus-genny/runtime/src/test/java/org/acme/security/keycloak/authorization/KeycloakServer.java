@@ -48,7 +48,7 @@ public class KeycloakServer implements QuarkusTestResourceLifecycleManager {
                 .withEnv("DB_PASSWORD", "password")
                 .withClasspathResourceMapping("quarkus-realm.json", "/config/realm.json", BindMode.READ_ONLY)
                 .waitingFor(Wait.forLogMessage(".*Admin console listening.*\\n", 1))
-                .withStartupTimeout(Duration.ofMinutes(2));
+                .withStartupTimeout(Duration.ofMinutes(5));
         keycloak.start();
         
         keycloakUrl = "http://"+keycloak.getContainerIpAddress()+":"+keycloak.getMappedPort(8080)+"/auth/realms/quarkus";
