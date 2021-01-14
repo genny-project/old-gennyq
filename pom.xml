@@ -55,6 +55,7 @@
 		<module>messagesq</module>
 		<module>genny-proxy</module>
 		<module>notes</module>
+		<module>shleemy</module>
 		<!-- order important !!! qwandaq ======>>>> contains stardnad genny pojo 
 			util -->
 		<!-- bootxportq===>>> import base entity from google doc, needs qwandaq -->
