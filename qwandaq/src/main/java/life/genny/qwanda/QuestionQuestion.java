@@ -3,13 +3,11 @@ package life.genny.qwanda;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.AssociationOverride;
 import javax.persistence.AssociationOverrides;
 import javax.persistence.Cacheable;
 import javax.persistence.Column;
-import javax.persistence.Convert;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Index;
@@ -26,23 +24,17 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.gson.annotations.Expose;
-
-import life.genny.models.converter.StringListConverter;
-import life.genny.models.entity.EntityEntity;
-
 import org.apache.commons.lang3.builder.CompareToBuilder;
 
 
-
-
 @Entity
-@Table(name = "question_question", uniqueConstraints = @UniqueConstraint(columnNames= {"sourceCode","targetCode", "realm"}),
+@Table(name = "question_question", uniqueConstraints = @UniqueConstraint(columnNames = {"sourceCode", "targetCode", "realm"}),
         indexes = {
                 @Index(columnList = "sourceCode", name = "source_idx"),
                 @Index(columnList = "realm", name = "code_idx")
         })
 @AssociationOverrides(
-        { @AssociationOverride(name = "pk.source", joinColumns = @JoinColumn(name = "SOURCE_ID"))
+        {@AssociationOverride(name = "pk.source", joinColumns = @JoinColumn(name = "SOURCE_ID"))
         }
 )
 @Cacheable
@@ -85,7 +77,7 @@ public class QuestionQuestion extends PanacheEntity implements java.io.Serializa
 
 
     @Expose
-    private Boolean disabled=false;
+    private Boolean disabled = false;
     @Expose
     private Boolean hidden = false;
 
@@ -110,22 +102,15 @@ public class QuestionQuestion extends PanacheEntity implements java.io.Serializa
     /**
      * Constructor.
      *
-     * @param source
-     *            the source baseEntity
-     * @param target
-     *            the target entity that is linked to
-     * @param weight
-     *            the associated weight
-     * @param mandatory
-     *            Is the question mandatory
-     * @param disabled
-     *            Is the question read only
-     * @param readonly
-     *            Is the question readonly
-     * @param hidden
-     *            Is the question hidden	 * @param Weight
-     *            the weighted importance of this attribute (relative to the other
-     *            attributes)
+     * @param source    the source baseEntity
+     * @param targetCode    the target entity that is linked to
+     * @param weight    the associated weight
+     * @param mandatory Is the question mandatory
+     * @param disabled  Is the question read only
+     * @param readonly  Is the question readonly
+     * @param hidden    Is the question hidden	 * @param Weight
+     *                  the weighted importance of this attribute (relative to the other
+     *                  attributes)
      */
     public QuestionQuestion(final Question source, final String targetCode, Double weight, boolean mandatory, boolean disabled, boolean hidden, boolean readonly) {
         autocreateCreated();
@@ -141,81 +126,58 @@ public class QuestionQuestion extends PanacheEntity implements java.io.Serializa
         }
         setWeight(weight);
     }
+
     /**
      * Constructor.
      *
-     * @param source
-     *            the source baseEntity
-     * @param target
-     *            the target entity that is linked to
-     * @param weight
-     *            the associated weight
-     * @param mandatory
-     *            Is the question mandatory
-     * @param disabled
-     *            Is the question read only
-     * @param hidden
-     *            Is the question hidden
-     * @param Weight
-     *            the weighted importance of this attribute (relative to the other
-     *            attributes)
+     * @param source    the source baseEntity
+     * @param targetCode    the target entity that is linked to
+     * @param weight    the associated weight
+     * @param mandatory Is the question mandatory
+     * @param disabled  Is the question read only
+     * @param hidden    Is the question hidden
+     * @param weight    the weighted importance of this attribute (relative to the other
+     *                  attributes)
      */
     public QuestionQuestion(final Question source, final String targetCode, Double weight, boolean mandatory, boolean disabled, boolean hidden) {
-        this(source,targetCode,weight,mandatory,disabled,hidden,false);;
-    }
-    /**
-     * Constructor.
-     *
-     * @param source
-     *            the source baseEntity
-     * @param target
-     *            the target entity that is linked to
-     * @param weight
-     *            the associated weight
-     * @param mandatory
-     *            Is the question mandatory
-     * @param disabled
-     *            Is the question read only
-     * @param Weight
-     *            the weighted importance of this attribute (relative to the other
-     *            attributes)
-     */
-    public QuestionQuestion(final Question source, final String targetCode, Double weight, boolean mandatory, boolean disabled) {
-        this(source,targetCode,weight,mandatory,disabled,false);;
-    }
-    /**
-     * Constructor.
-     *
-     * @param source
-     *            the source baseEntity
-     * @param target
-     *            the target entity that is linked to
-     * @param linkAttribute
-     *            the associated linkAttribute
-     * @param linkValue
-     *            the associated linkValue
-     * @param Weight
-     *            the weighted importance of this attribute (relative to the other
-     *            attributes)
-     */
-    public QuestionQuestion(final Question source, final String targetCode, Double weight, boolean mandatory) {
-        this(source,targetCode,weight,mandatory,false);
+        this(source, targetCode, weight, mandatory, disabled, hidden, false);
+        ;
     }
 
     /**
      * Constructor.
      *
-     * @param Question
-     *            the entity that needs to contain attributes
-     * @param Attribute
-     *            the associated Attribute
-     * @param linkAttribute
-     *            the associated linkAttribute
-     * @param Weight
-     *            the weighted importance of this attribute (relative to the other
-     *            attributes)
-     * @param Value
-     *            the value associated with this attribute
+     * @param source    the source baseEntity
+     * @param targetCode    the target entity that is linked to
+     * @param weight    the associated weight
+     * @param mandatory Is the question mandatory
+     * @param disabled  Is the question read only
+     * @param weight    the weighted importance of this attribute (relative to the other
+     *                  attributes)
+     */
+    public QuestionQuestion(final Question source, final String targetCode, Double weight, boolean mandatory, boolean disabled) {
+        this(source, targetCode, weight, mandatory, disabled, false);
+        ;
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param source        the source baseEntity
+     * @param targetCode        the target entity that is linked to
+     * @param weight        the weighted importance of this attribute (relative to the other
+     *                      attributes)
+     */
+    public QuestionQuestion(final Question source, final String targetCode, Double weight, boolean mandatory) {
+        this(source, targetCode, weight, mandatory, false);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param source      the entity that needs to contain attributes
+     * @param weight        the weighted importance of this attribute (relative to the other
+     *                      attributes)
      */
     public QuestionQuestion(final Question source, final Question target, Double weight) {
         autocreateCreated();
@@ -248,8 +210,7 @@ public class QuestionQuestion extends PanacheEntity implements java.io.Serializa
     }
 
     /**
-     * @param created
-     *            the created to set
+     * @param created the created to set
      */
     public void setCreated(final LocalDateTime created) {
         this.created = created;
@@ -263,8 +224,7 @@ public class QuestionQuestion extends PanacheEntity implements java.io.Serializa
     }
 
     /**
-     * @param updated
-     *            the updated to set
+     * @param updated the updated to set
      */
     public void setUpdated(final LocalDateTime updated) {
         this.updated = updated;
@@ -278,8 +238,7 @@ public class QuestionQuestion extends PanacheEntity implements java.io.Serializa
     }
 
     /**
-     * @param weight
-     *            the weight to set
+     * @param weight the weight to set
      */
     public void setWeight(final Double weight) {
         this.weight = weight;
@@ -293,8 +252,7 @@ public class QuestionQuestion extends PanacheEntity implements java.io.Serializa
     }
 
     /**
-     * @param version
-     *            the version to set
+     * @param version the version to set
      */
     public void setVersion(final Long version) {
         this.version = version;
@@ -308,13 +266,11 @@ public class QuestionQuestion extends PanacheEntity implements java.io.Serializa
     }
 
     /**
-     * @param mandatory
-     *            the mandatory to set
+     * @param mandatory the mandatory to set
      */
     public void setMandatory(Boolean mandatory) {
         this.mandatory = mandatory;
     }
-
 
 
     /**
@@ -330,7 +286,6 @@ public class QuestionQuestion extends PanacheEntity implements java.io.Serializa
     public void setOneshot(Boolean oneshot) {
         this.oneshot = oneshot;
     }
-
 
 
     /**
@@ -453,7 +408,6 @@ public class QuestionQuestion extends PanacheEntity implements java.io.Serializa
     }
 
 
-
     /**
      * @return the formTrigger
      */
@@ -484,10 +438,10 @@ public class QuestionQuestion extends PanacheEntity implements java.io.Serializa
 
     @Override
     public String toString() {
-        return "SRC:"+getPk().getSourceCode()+" - "+getPk().getTargetCode()+" "+(this.getMandatory()?"MANDATORY":"OPTIONAL")+" "+(this.getReadonly()?"RO":"RW")+" "+(this.getFormTrigger()?"FT":"NFT")+" "+(this.getCreateOnTrigger()?"COT":"NCOT");
+        return "SRC:" + getPk().getSourceCode() + " - " + getPk().getTargetCode() + " " + (this.getMandatory() ? "MANDATORY" : "OPTIONAL") + " " + (this.getReadonly() ? "RO" : "RW") + " " + (this.getFormTrigger() ? "FT" : "NFT") + " " + (this.getCreateOnTrigger() ? "COT" : "NCOT");
     }
 
-    public String getSourceCode(){
+    public String getSourceCode() {
         return pk.getSourceCode();
     }
 
