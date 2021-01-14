@@ -71,7 +71,6 @@ public class AttributeTime extends Attribute implements Serializable {
 	/**
 	  * Constructor.
 	  * 
-	  * @param none
 	  */
 	@SuppressWarnings("unused")
 	public AttributeTime()
