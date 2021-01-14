@@ -26,8 +26,6 @@ import javax.persistence.Embeddable;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import org.jboss.logging.Logger;
-
 import life.genny.models.converter.ValidationListConverter;
 import life.genny.models.validation.Validation;
 import life.genny.models.validation.ValidationList;
@@ -54,8 +52,6 @@ import life.genny.models.validation.ValidationList;
 
 @Embeddable
 public class DataType implements Serializable {
-	private static final Logger log = Logger.getLogger(DataType.class);
-
 	public static final String DTT_LINK = "LNK_ATTRIBUTE"; // This datatype classname indicates the datatype belongs to
 															// the BaseEntity set with parent
 	@NotNull
@@ -80,7 +76,7 @@ public class DataType implements Serializable {
 
     @Column(name = "validation_list", length = 512)
     @Convert(converter = ValidationListConverter.class)
-	private List<Validation> validationList = new CopyOnWriteArrayList<Validation>();
+	private List<Validation> validationList = new CopyOnWriteArrayList<>();
 
     /**
      * Constructor.
@@ -222,48 +218,13 @@ public class DataType implements Serializable {
         + typeName + ", validationList=" + validationList + "]";
   }
 
-	static public DataType getInstance(final String className) {
+	public static DataType getInstance(final String className) {
 		final List<Validation> validationList = new CopyOnWriteArrayList<Validation>();
 		ValidationList vlist = new ValidationList(validationList);
-		DataType dataTypeInstance = new DataType(className, vlist);
-		return dataTypeInstance;
+		return new DataType(className, vlist);
 	}
 
-	// Is DataType summable?
-
-	static public boolean summable(DataType dtype) {
-		switch (dtype.getClassName()) {
-		case "java.lang.Integer":
-		case "Integer":
-		case "java.lang.Long":
-		case "Long":
-		case "java.lang.Double":
-		case "Double":
-		case "org.javamoney.moneta.Money":
-			return true;
-		default:
-			return false;
-		}
-	}
-
-	static public Object Zero(DataType dtype) {
-		switch (dtype.getClassName()) {
-		case "java.lang.Integer":
-		case "Integer":
-			return new Integer(0);
-		case "java.lang.Long":
-		case "Long":
-			return new Long(0);
-		case "java.lang.Double":
-		case "Double":
-			return new Double(0.0);
-		case "org.javamoney.moneta.Money":
-		default:
-			return null;
-		}
-	}
-
-	static public Object add(DataType dtype, Object v1, Object v2) {
+	public static Object add(DataType dtype, Object v1, Object v2) {
 		switch (dtype.getClassName()) {
 		case "java.lang.Integer":
 		case "Integer":
