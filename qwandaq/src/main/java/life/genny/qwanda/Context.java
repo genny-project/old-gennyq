@@ -42,7 +42,9 @@ import org.apache.commons.lang3.builder.CompareToBuilder;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.google.gson.annotations.Expose;
 
-import life.genny.qwanda.entity.BaseEntity;
+import life.genny.models.entity.BaseEntity;
+import life.genny.qwanda.VisualControlType;
+import life.genny.qwanda.ContextType;
 
 /**
  * Context is the class for all entity contexts managed in the Qwanda library. A

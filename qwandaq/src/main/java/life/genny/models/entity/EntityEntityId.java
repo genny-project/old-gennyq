@@ -4,13 +4,14 @@ import javax.persistence.Embeddable;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 
+import life.genny.models.entity.BaseEntity;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
-import life.genny.qwanda.attribute.Attribute;
+import life.genny.models.attribute.Attribute;
 
 @Embeddable
 public class EntityEntityId implements java.io.Serializable {

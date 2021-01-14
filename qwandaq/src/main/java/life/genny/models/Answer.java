@@ -55,10 +55,10 @@ import org.hibernate.annotations.Type;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.gson.annotations.Expose;
 
-import life.genny.qwanda.attribute.Attribute;
+import life.genny.models.attribute.Attribute;
 import life.genny.qwanda.datatype.LocalDateTimeAdapter;
-import life.genny.qwanda.entity.BaseEntity;
-import life.genny.qwanda.exception.BadDataException;
+import life.genny.models.entity.BaseEntity;
+import life.genny.models.exception.BadDataException;
 
 /**
  * Answer is the abstract base class for all answers managed in the Qwanda

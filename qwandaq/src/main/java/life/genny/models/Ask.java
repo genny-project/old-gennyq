@@ -38,14 +38,14 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import org.apache.commons.lang3.builder.CompareToBuilder;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.google.gson.annotations.Expose;
 
-import life.genny.qwanda.exception.BadDataException;
+import life.genny.models.exception.BadDataException;
+import life.genny.qwanda.Answer;
 
 /**
  * Ask represents the presentation of a Question to a source entity. A Question

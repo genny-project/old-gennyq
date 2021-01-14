@@ -27,8 +27,8 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.gson.annotations.Expose;
 
-import life.genny.qwanda.converter.StringListConverter;
-import life.genny.qwanda.entity.EntityEntity;
+import life.genny.models.converter.StringListConverter;
+import life.genny.models.entity.EntityEntity;
 
 import org.apache.commons.lang3.builder.CompareToBuilder;
 
