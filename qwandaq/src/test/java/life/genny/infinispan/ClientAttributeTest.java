@@ -37,8 +37,8 @@ public class ClientAttributeTest {
   @BeforeAll
   public void initCacheConfig(){
     cache = remoteCacheManager.administration().getOrCreateCache("attribute","example.PROTOBUF_DIST");
-    cache.put("attribute",AttributeTestUtil.attributeObject);
-    fetchedAttribute = cache.get("attribute");
+    cache.put("PRI_TEST",AttributeTestUtil.attributeObject);
+    fetchedAttribute = cache.get("PRI_TEST");
   }
 
 }

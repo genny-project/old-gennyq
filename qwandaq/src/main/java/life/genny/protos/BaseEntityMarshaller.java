@@ -27,6 +27,7 @@ public class BaseEntityMarshaller implements MessageMarshaller<BaseEntity> {
     writer.writeString("name", b.getName());
     writer.writeString("code", b.getCode());
     writer.writeString("created", b.getCreated().toString());
+    b.baseEntityAttributes.forEach(d -> d.baseEntityCode = b.code);
     writer.writeCollection("baseEntityAttributes", b.baseEntityAttributes, EntityAttribute.class);
   }
 

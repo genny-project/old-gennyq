@@ -237,7 +237,7 @@ public class EntityAttribute extends PanacheEntity {
 	@Override
   public String toString() {
     return "EntityAttribute [attribute=" + attribute + ", attributeCode=" + attributeCode + ", attributeName="
-        + attributeName + ", baseEntityCode=" + baseEntityCode + ", baseentity=" + baseentity + ", created="
+        + attributeName + ", baseEntityCode=" + baseEntityCode + ", created="
         + created + ", index=" + index + ", inferred=" + inferred + ", privacyFlag=" + privacyFlag
         + ", readonly=" + readonly + ", realm=" + realm + ", updated=" + updated + ", value=" + value + "]";
   }
@@ -333,6 +333,7 @@ public class EntityAttribute extends PanacheEntity {
 		}
 		value.weight = weight;
 	}
+
 
   @Override
   public int hashCode() {

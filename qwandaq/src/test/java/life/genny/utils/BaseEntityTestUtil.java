@@ -12,11 +12,6 @@ public class BaseEntityTestUtil {
 
   static {
     baseEntityObject = new BaseEntity(CODE,NAME);
-    try {
-      baseEntityObject.addAttribute(EntityAttributeTestUtil.entityAttributeObject);
-    } catch (BadDataException e) {
-      e.printStackTrace();
-    }
   }
   
 }

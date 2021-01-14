@@ -3,6 +3,7 @@ package life.genny.utils;
 import life.genny.models.attribute.Attribute;
 import life.genny.models.attribute.EntityAttribute;
 import life.genny.models.entity.BaseEntity;
+import life.genny.models.exception.BadDataException;
 
 public class EntityAttributeTestUtil {
 
@@ -11,7 +12,16 @@ public class EntityAttributeTestUtil {
   static {
     Attribute attribute = AttributeTestUtil.attributeObject;
     BaseEntity baseentity = BaseEntityTestUtil.baseEntityObject;
-    entityAttributeObject = new EntityAttribute(baseentity,attribute,1.0,"just a name");
+    entityAttributeObject = new EntityAttribute();
+    entityAttributeObject.baseEntityCode = baseentity.code;
+    entityAttributeObject.attribute = attribute;
+    entityAttributeObject.setWeight(1.0);
+    entityAttributeObject.setValue("just a name");
+    try {
+      BaseEntityTestUtil.baseEntityObject.addAttribute(attribute);
+    } catch (BadDataException e) {
+      e.printStackTrace();
+    }
   }
-  
+
 }

@@ -37,8 +37,8 @@ public class ClientBaseEntityTest {
   @BeforeAll
   public void initCacheConfig(){
     cache = remoteCacheManager.administration().getOrCreateCache("baseentity","example.PROTOBUF_DIST");
-    cache.put("baseentity",BaseEntityTestUtil.baseEntityObject);
-    fetchedBaseEntity = cache.get("baseentity");
+    cache.put("PRJ_TEST",BaseEntityTestUtil.baseEntityObject);
+    fetchedBaseEntity = cache.get("PRJ_TEST");
   }
 
 }
