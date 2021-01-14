@@ -1,0 +1,126 @@
+version: "3.9"
+services:
+
+  apiq:
+    image: gennyproject/apiq:latest
+    container_name: apiq 
+    environment:
+      - FULL_MYSQL_URL=mysqlq:3306/gennydb?zeroDateTimeBehavior=convertToNull
+    ports:
+      - 8280:8080
+    networks:
+      - mainproxy
+    depends_on:
+      - mysqlq
+    deploy:
+      replicas: 1
+      labels: [APP=JAR]
+      update_config:
+        parallelism: 2
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+        delay: 10s
+        max_attempts: 3
+        window: 120s
+
+  apiq-native:
+    image: gennyproject/apiq:native
+    container_name:  apiq-native
+    restart: always
+    environment:
+      - FULL_MYSQL_URL=mysqlq:3306/gennydb?zeroDateTimeBehavior=convertToNull
+    ports:
+      - 8281:8080
+    networks:
+      - mainproxy
+    depends_on:
+      - mysqlq
+    deploy:
+      replicas: 1
+      labels: [APP=NATIVE]
+      update_config:
+        parallelism: 2
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+        delay: 10s
+        max_attempts: 3
+        window: 120s
+
+  mysqlq:
+    image: gennyproject/mysql:8x 
+    container_name: mysqlq
+    environment:
+      - MYSQL_URL=mysqlq
+      - MYSQL_DB=gennydb
+      - MYSQL_PORT=3306
+      - MYSQL_ALLOW_EMPTY=
+      - MYSQL_RANDOM_ROOT_PASSWORD=no
+      - MYSQL_DATABASE=gennydb
+      - MYSQL_USER=genny
+      - MYSQL_PASSWORD=password
+      - MYSQL_ROOT_PASSWORD=AdamDavidMoeSame2020
+      - ADMIN_USERNAME=admin
+      - ADMIN_PASSWORD=password
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - mainproxy
+    ports:
+      - 3310:3306
+    command: --sql_mode=""  --default_authentication_plugin=mysql_native_password  --sort_buffer_size=1073741824
+    deploy:
+      placement:
+        max_replicas_per_node: 1
+        constraints:
+          - "node.role==manager"
+      restart_policy:
+        condition: on-failure
+        delay: 10s
+        max_attempts: 3
+        window: 120s
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+#  keycloakq:
+#    image: jboss/keycloak:12.0.1
+#    container_name: keycloakq
+#    environment:
+#        - KEYCLOAK_USER=admin
+#        - KEYCLOAK_PASSWORD=admin
+#        - DB_VENDOR=mysql
+#        - DB_ADDR=mysqlq
+#        - DB_PORT=3306
+#        - DB_DATABASE=gennydb
+#        - DB_USER=genny
+#        - DB_PASSWORD=password
+#        - PROXY_ADDRESS_FORWARDING=true
+#        - KEYCLOAK_LOGLEVEL=debug
+#        - JAVA_OPTS_APPEND="-Djava.awt.headless=true"
+#        - PREPEND_JAVA_OPTS=-Dkeycloak.profile=preview -Dkeycloak.profile.feature.token_exchange=enabled -Dkeycloak.profile.feature.account_api=enabled
+#        - KEYCLOAK_IMPORT=/config/quarkus-realm.json
+#    volumes:
+#      - ./config:/config 
+#    ports:
+#      - 8180:8080
+#    networks:
+#      - mainproxy
+#    depends_on:
+#      - mysqlq
+
+
+  
+volumes:
+  mysql_data:
+  minio_conf:
+  minio_data:
+  maildata:
+    driver: local
+  mailstate:
+    driver: local
+networks:
+  mainproxy:
+    driver: bridge
