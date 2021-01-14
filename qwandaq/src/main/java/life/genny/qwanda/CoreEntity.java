@@ -97,16 +97,6 @@ public abstract class CoreEntity extends PanacheEntity implements Serializable, 
     private LocalDateTime updated;
 
     /**
-     * Stores the hibernate generated Id value for this object
-     */
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "id", updatable = false, nullable = false)
-    @Expose
-    private Long id;
-
-    /**
      * A field that stores the human readable summary name of the attribute.
      * <p>
      * Note that this field is in English.
