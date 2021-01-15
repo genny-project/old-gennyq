@@ -129,7 +129,6 @@ public class Validation extends PanacheEntity {
 	/**
 	 * Constructor.
 	 * 
-	 * @param none
 	 */
 	@SuppressWarnings("unused")
 	public Validation() {
@@ -157,6 +156,19 @@ public class Validation extends PanacheEntity {
 		aSelectionBaseEntityGroupList.add(aSelectionBaseEntityGroup);
 		setSelectionBaseEntityGroupList(aSelectionBaseEntityGroupList);
 		setMultiAllowed(multiAllowed);
+	}
+
+	public Validation(String aCode, String aName, String aSelectionBaseEntityGroup, Boolean recursive, Boolean multiAllowed,String aOptions) throws PatternSyntaxException
+	{
+		this.code = aCode;
+		this.name = aName;
+		this.recursiveGroup = recursive;
+		setRegex(DEFAULT_REGEX);
+		List<String> aSelectionBaseEntityGroupList = new CopyOnWriteArrayList<String>();
+		aSelectionBaseEntityGroupList.add(aSelectionBaseEntityGroup);
+		setSelectionBaseEntityGroupList(aSelectionBaseEntityGroupList);
+		setMultiAllowed(multiAllowed);
+		setOptions(aOptions);
 	}
 
 	public Validation(String code, String name, List<String> aSelectionBaseEntityGroupList, Boolean recursive,
@@ -241,6 +253,13 @@ public class Validation extends PanacheEntity {
 	 */
 	public void setOptions(String options) {
 		this.options = options;
+	}
+
+	public void setRealm(String realm) {
+		this.realm = realm;
+	}
+	public String getRealm() {
+		return this.realm;
 	}
 
 	/**

@@ -68,6 +68,8 @@ public class DataType implements Serializable {
 
     private String inputmask;
 
+	public String component;
+
     /**
      * A fieldlist that stores the validations for this object.
      * <p>
@@ -77,6 +79,7 @@ public class DataType implements Serializable {
     @Column(name = "validation_list", length = 512)
     @Convert(converter = ValidationListConverter.class)
 	private List<Validation> validationList = new CopyOnWriteArrayList<>();
+
 
     /**
      * Constructor.
@@ -102,6 +105,16 @@ public class DataType implements Serializable {
 		setValidationList(aValidationList.getValidationList());
 		setTypeName(name);
 		setInputmask(inputmask);
+	}
+
+	public DataType(final String className, final ValidationList aValidationList, final String name,
+					final String inputmask, final  String component) {
+		setDttCodeFromClassName(className);
+		setClassName(className);
+		setValidationList(aValidationList.getValidationList());
+		setTypeName(name);
+		setInputmask(inputmask);
+		setComponent(component);
 	}
 
 	public DataType(final String className, final ValidationList aValidationList, final String name) {
@@ -210,6 +223,15 @@ public class DataType implements Serializable {
 	public void setClass(final Class clazz) {
 		final String simpleClassName = clazz.getCanonicalName();
 		setClassName(simpleClassName);
+	}
+
+
+	public String getComponent() {
+		return component;
+	}
+
+	public void setComponent(String component) {
+		this.component = component;
 	}
 
 	@Override

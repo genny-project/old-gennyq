@@ -5,20 +5,12 @@ import java.time.ZoneId;
 
 import javax.json.bind.annotation.JsonbTransient;
 import javax.json.bind.annotation.JsonbTypeAdapter;
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.Column;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
+import life.genny.qwanda.entity.EntityEntityId;
 import org.jboss.logging.Logger;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
@@ -80,6 +72,10 @@ public class EntityEntity  extends PanacheEntity  implements java.io.Serializabl
 	@JoinColumn(name = "TARGET_ID", nullable = true)
 	public BaseEntity target;
 
+	/**
+	 * Store the String value of the attribute for the baseEntity
+	 */
+	public String valueString;
 	// For compatibility initially
 	
 	public String attributeCode;
@@ -92,6 +88,9 @@ public class EntityEntity  extends PanacheEntity  implements java.io.Serializabl
 
 	@Embedded
 	public Link link = new Link();
+
+	@EmbeddedId
+	public EntityEntityId pk = new EntityEntityId();
 	
 //
 //

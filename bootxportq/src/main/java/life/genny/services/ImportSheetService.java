@@ -1,11 +1,5 @@
 package life.genny.services;
 
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -19,15 +13,7 @@ import life.genny.models.attribute.EntityAttribute;
 import life.genny.models.datatype.DataType;
 import life.genny.models.entity.BaseEntity;
 import life.genny.qwandautils.GennySettings;
-import life.genny.qwandautils.JsonUtils;
-import life.genny.security.SecureResources;
-import life.genny.utils.VertxUtils;
 import org.apache.logging.log4j.Logger;
-
-import javax.persistence.NoResultException;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 
 
 public class ImportSheetService {
@@ -91,88 +77,6 @@ public class ImportSheetService {
         return be;
     }
 
-
-    private void saveProjectBes(RealmUnit realmUnit) {
-        log.info("Updating Project BaseEntitys ");
-
-        if ("FALSE".equals((String) realmUnit.getDisable().toString().toUpperCase())) {
-
-            String realmCode = realmUnit.getCode();
-            service.setCurrentRealm(realmCode);
-            log.info("Project: " + realmCode);
-
-            if ("FALSE".equals((String) realmUnit.getDisable().toString().toUpperCase())) {
-                String realm = realmCode;
-                String keycloakUrl = (String) realmUnit.getKeycloakUrl();
-                String name = (String) realmUnit.getName();
-                String sheetID = (String) realmUnit.getUri();
-                String urlList = (String) realmUnit.getUrlList();
-                String code = (String) realmUnit.getCode();
-                String disable = (String) realmUnit.getDisable().toString().toUpperCase();
-                String secret = (String) realmUnit.getClientSecret();
-                String key = (String) realmUnit.getSecurityKey();
-                String encryptedPassword = realmUnit.getServicePassword();
-                String realmToken = serviceTokens.getServiceToken(realm);
-                String skipGoogleDoc = (String) realmUnit.getSkipGoogleDoc().toString().toUpperCase();
-                String projectCode = "PRJ_" + realm.toUpperCase();
-                BaseEntity projectBe = null;
-
-                try {
-                    projectBe = service.findBaseEntityByCode(projectCode);
-                } catch (javax.persistence.NoResultException e) {
-                    projectBe = new BaseEntity(projectCode, name);
-                    projectBe = service.upsert(projectBe);
-                }
-
-                projectBe = createAnswer(projectBe, "PRI_NAME", name, false);
-                projectBe = createAnswer(projectBe, "PRI_CODE", projectCode, false);
-                projectBe = createAnswer(projectBe, "ENV_SECURITY_KEY", key, true);
-                projectBe = createAnswer(projectBe, "ENV_SERVICE_PASSWORD", encryptedPassword, true);
-                projectBe = createAnswer(projectBe, "ENV_SERVICE_TOKEN", realmToken, true);
-                projectBe = createAnswer(projectBe, "ENV_SECRET", secret, true);
-                projectBe = createAnswer(projectBe, "ENV_SHEET_ID", sheetID, true);
-                projectBe = createAnswer(projectBe, "ENV_URL_LIST", urlList, true);
-                projectBe = createAnswer(projectBe, "ENV_DISABLE", disable, true);
-                projectBe = createAnswer(projectBe, "ENV_REALM", realm, true);
-                projectBe = createAnswer(projectBe, "ENV_KEYCLOAK_URL", keycloakUrl, true);
-                projectBe = createAnswer(projectBe, "ENV_KEYCLOAK_REDIRECTURI", keycloakUrl, true);
-                BatchLoading bl = new BatchLoading(service);
-                String keycloakJson = bl.constructKeycloakJson(realmUnit);
-                projectBe = createAnswer(projectBe, "ENV_KEYCLOAK_JSON", keycloakJson, true);
-                //	BaseEntity projectBe3 = service.findBaseEntityByCode(projectBe.getCode());
-                projectBe = service.upsert(projectBe);
-
-                // Set up temp keycloak.json Maps
-                String[] urls = urlList.split(",");
-                SecureResources.addRealm(realm, keycloakJson);
-                SecureResources.addRealm(realm + ".json", keycloakJson);
-                // redundant
-                if (("genny".equals(realm))) {
-                    SecureResources.addRealm("genny", keycloakJson);
-                    SecureResources.addRealm("genny.json", keycloakJson);
-                    SecureResources.addRealm("qwanda-service.genny.life.json", keycloakJson);
-                }
-
-                // Overwrite all the time, must have localhost
-                SecureResources.addRealm("localhost.json", keycloakJson);
-                SecureResources.addRealm("localhost", keycloakJson);
-                SecureResources.addRealm("localhost:8080", keycloakJson);
-                for (String url : urls) {
-                    // Remove space in url
-                    url = url.replaceAll("\\s", "");
-                    SecureResources.addRealm(url + ".json", keycloakJson);
-                    SecureResources.addRealm(url, keycloakJson);
-                }
-
-                //	projectBe = service.findBaseEntityByCode(projectBe.getCode());
-                // Save project BE in a consistent place
-                VertxUtils.putObject(realm, "", "PROJECT", JsonUtils.toJson(projectBe),
-                        serviceTokens.getServiceToken(realm));
-
-            }
-        }
-
-    }
 
     private void saveServiceBes(RealmUnit realmUnit) {
         log.info("Updating Service BaseEntitys ");
@@ -326,8 +230,9 @@ public class ImportSheetService {
         rx.getDataUnits().forEach(serviceTokens::init);
         // Save projects
         // TODO
-        rx.getDataUnits().forEach(this::saveProjectBes);
+//        rx.getDataUnits().forEach(this::saveProjectBes);
         rx.getDataUnits().forEach(this::saveServiceBes);
+
 //        rx.getDataUnits().forEach(this::pushProjectsUrlsToDTT);
 
         if (!GennySettings.skipGoogleDocInStartup) {

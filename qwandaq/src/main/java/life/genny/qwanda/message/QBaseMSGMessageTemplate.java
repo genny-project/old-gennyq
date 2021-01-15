@@ -1,13 +1,9 @@
 package life.genny.qwanda.message;
 
-import javax.persistence.Column;
-import javax.persistence.DiscriminatorColumn;
-import javax.persistence.DiscriminatorType;
-import javax.persistence.Entity;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
+import javax.json.bind.annotation.JsonbTransient;
+import javax.json.bind.annotation.JsonbTypeAdapter;
+import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -15,24 +11,33 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.gson.annotations.Expose;
-import life.genny.qwanda.CoreEntity;
+import io.quarkus.hibernate.orm.panache.PanacheEntity;
+import life.genny.utils.LocalDateTimeAdapter;
+
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 
 
-@SuppressWarnings("deprecation")
 @XmlRootElement
 @XmlAccessorType(value = XmlAccessType.FIELD)
 @Table(name = "template", uniqueConstraints = @UniqueConstraint(columnNames = {"code", "realm"}))
 @Entity
 @DiscriminatorColumn(name = "dtype", discriminatorType = DiscriminatorType.STRING)
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-public class QBaseMSGMessageTemplate extends CoreEntity {
+public class QBaseMSGMessageTemplate extends PanacheEntity {
 
     /**
      *
      */
-    private static final long serialVersionUID = 1L;
-    static public final String REGEX_CODE = "[A-Z]{3}\\_[A-Z0-9\\.\\-\\@\\_]*";
+    public static final String REGEX_CODE = "[A-Z]{3}\\_[A-Z0-9\\.\\-\\@\\_]*";
+    public static final String REGEX_NAME = "[\\pL0-9/\\:\\ \\_\\.\\,\\?\\>\\<\\%\\$\\&\\!\\*" + ""
+            + "\\[\\]\\'\\-\\@\\(\\)]+.?";
+    private static final String REGEX_REALM = "[a-zA-Z0-9]+";
+    private static final String DEFAULT_REALM = "genny";
+
 
     /**
      * A field that stores the unique code name of the attribute.
@@ -45,8 +50,18 @@ public class QBaseMSGMessageTemplate extends CoreEntity {
     @Pattern(regexp = REGEX_CODE, message = "Must be valid Code!")
     @Column(name = "code", updatable = false, nullable = false)
     @Expose
-    private String code;
+    public String code;
 
+    @NotNull
+    @Size(max = 128)
+    @Pattern(regexp = REGEX_NAME, message = "Must contain valid characters for name")
+    @Column(name = "name")
+    public String name;
+
+    @NotEmpty
+    @JsonbTransient
+    @Pattern(regexp = REGEX_REALM, message = "Must be valid Realm Format!")
+    public String realm = DEFAULT_REALM;
 
     /**
      * A field that stores the description.
@@ -96,6 +111,12 @@ public class QBaseMSGMessageTemplate extends CoreEntity {
     @Expose
     private String toast_template;
 
+
+    @JsonbTypeAdapter(LocalDateTimeAdapter.class)
+    public LocalDateTime created = LocalDateTime.now(ZoneId.of("UTC"));
+
+    @JsonbTypeAdapter(LocalDateTimeAdapter.class)
+    public LocalDateTime updated;
 
     public String getDescription() {
         return description;
@@ -157,6 +178,23 @@ public class QBaseMSGMessageTemplate extends CoreEntity {
     }
 
 
+    @Transient
+    @JsonIgnore
+    public Date getCreatedDate() {
+        final Date out = Date.from(created.atZone(ZoneId.systemDefault()).toInstant());
+        return out;
+    }
+
+    @Transient
+    @JsonIgnore
+    public Date getUpdatedDate() {
+        if (updated != null) {
+            final Date out = Date.from(updated.atZone(ZoneId.systemDefault()).toInstant());
+            return out;
+        } else
+            return null;
+    }
+
     /* (non-Javadoc)
      * @see java.lang.Object#toString()
      */
@@ -169,17 +207,16 @@ public class QBaseMSGMessageTemplate extends CoreEntity {
                 + (toast_template != null ? "toast_template=" + toast_template + ", " : "")
                 + (getCode() != null ? "getCode()=" + getCode() + ", " : "")
                 + (super.toString() != null ? "toString()=" + super.toString() + ", " : "") + "hashCode()=" + hashCode()
-                + ", " + (getId() != null ? "getId()=" + getId() + ", " : "")
-                + (getName() != null ? "getName()=" + getName() + ", " : "")
-                + (getCreated() != null ? "getCreated()=" + getCreated() + ", " : "")
-                + (getUpdated() != null ? "getUpdated()=" + getUpdated() + ", " : "")
-                + (getRealm() != null ? "getRealm()=" + getRealm() + ", " : "")
+                + ", " + (this.id != null ? "getId()=" + this.id + ", " : "")
+                + (this.name != null ? "getName()=" + this.name + ", " : "")
+                + (this.created != null ? "getCreated()=" + this.created + ", " : "")
+                + (this.updated != null ? "getUpdated()=" + this.updated + ", " : "")
+                + (this.realm != null ? "getRealm()=" + realm + ", " : "")
                 + (getCreatedDate() != null ? "getCreatedDate()=" + getCreatedDate() + ", " : "")
                 + (getUpdatedDate() != null ? "getUpdatedDate()=" + getUpdatedDate() + ", " : "")
                 + (getClass() != null ? "getClass()=" + getClass() : "") + "]";
     }
 
-    @Override
     public int compareTo(Object o) {
         return 0;
     }

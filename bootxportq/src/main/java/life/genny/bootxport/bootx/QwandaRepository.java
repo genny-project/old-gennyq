@@ -2,11 +2,11 @@ package life.genny.bootxport.bootx;
 
 import javax.validation.constraints.NotNull;
 
+import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import life.genny.qwanda.*;
 import life.genny.models.attribute.Attribute;
 import life.genny.models.entity.BaseEntity;
 import life.genny.models.entity.EntityEntity;
-import life.genny.qwanda.CodedEntity;
 import life.genny.qwanda.message.QBaseMSGMessageTemplate;
 import life.genny.models.validation.Validation;
 
@@ -29,6 +29,8 @@ public interface QwandaRepository {
     Question upsert(Question q);
 
     Long insert(final Ask ask);
+
+    void insert(Attribute attribute);
 
     Validation findValidationByCode(@NotNull final String code);
 
@@ -70,13 +72,9 @@ public interface QwandaRepository {
     <T> List<T> queryTableByRealm(String tableName, String realm);
 
     // For Validation, Attribute, AttributeLink, QuestionQuestion, QBaseMSGMessageTemplate
-    void bulkUpdate(ArrayList<CodedEntity> objectList, HashMap<String, CodedEntity> mapping);
+    void bulkUpdate(ArrayList<PanacheEntity> objectList, HashMap<String, PanacheEntity> mapping);
 
-    void bulkInsert(ArrayList<CodedEntity> objectList);
-
-    void bulkInsertAsk(ArrayList<Ask> objectList);
-
-    void bulkUpdateAsk(ArrayList<Ask> objectList, HashMap<String, Ask> mapping);
+    void bulkInsert(ArrayList<PanacheEntity> objectList);
 
     void bulkInsertQuestionQuestion(ArrayList<QuestionQuestion> objectList);
 

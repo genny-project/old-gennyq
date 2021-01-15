@@ -16,28 +16,21 @@
 
 package life.genny.qwanda;
 
-import java.io.Serializable;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import javax.persistence.DiscriminatorColumn;
-import javax.persistence.DiscriminatorType;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Index;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-import javax.persistence.UniqueConstraint;
+import javax.json.bind.annotation.JsonbTransient;
+import javax.persistence.*;
 import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import org.apache.commons.lang3.builder.CompareToBuilder;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -45,7 +38,6 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.google.gson.annotations.Expose;
 
 import life.genny.models.exception.BadDataException;
-import life.genny.qwanda.Answer;
 
 /**
  * Ask represents the presentation of a Question to a source entity. A Question
@@ -83,11 +75,29 @@ import life.genny.qwanda.Answer;
 @DiscriminatorColumn(name = "dtype", discriminatorType = DiscriminatorType.STRING)
 @Inheritance(strategy = InheritanceType.JOINED)
 
-public class Ask extends CoreEntity {
+public class Ask extends PanacheEntity {
     /**
      *
      */
-    private static final long serialVersionUID = 1L;
+    public static final String REGEX_NAME = "[\\pL0-9/\\:\\ \\_\\.\\,\\?\\>\\<\\%\\$\\&\\!\\*" + ""
+            + "\\[\\]\\'\\-\\@\\(\\)]+.?";
+    private static final String REGEX_REALM = "[a-zA-Z0-9]+";
+    private static final String DEFAULT_REALM = "genny";
+    /**
+     * A field that stores the human readable summary name of the attribute.
+     * <p>
+     * Note that this field is in English.
+     */
+    @NotNull
+    @Size(max = 128)
+    @Pattern(regexp = REGEX_NAME, message = "Must contain valid characters for name")
+    @Column(name = "name", updatable = true, nullable = true)
+    public String name;
+
+    @NotEmpty
+    @JsonbTransient
+    @Pattern(regexp = REGEX_REALM, message = "Must be valid Realm Format!")
+    public String realm = DEFAULT_REALM;
 
     @XmlTransient
     @ManyToOne(fetch = FetchType.EAGER)
@@ -147,59 +157,6 @@ public class Ask extends CoreEntity {
         // dummy for hibernate
     }
 
-    /**
-     * Constructor.
-     *
-     * @param aQuestion The associated Question
-     */
-    public Ask(final Question aQuestion) {
-        super(aQuestion.getName());
-        setQuestion(aQuestion);
-        contextList = new ContextList(new CopyOnWriteArrayList<Context>());
-        this.disabled = false;
-        this.hidden = false;
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param aAttributeCode The associated Attribute
-     * @param aSourceCode    The person answering the question
-     * @param aTargetCode    The BaseEntity that the question is about
-     */
-    public Ask(final String aAttributeCode, final String aSourceCode, final String aTargetCode, final String name) {
-        super(name);
-        this.sourceCode = aSourceCode;
-        this.targetCode = aTargetCode;
-        this.attributeCode = aAttributeCode;
-        contextList = new ContextList(new CopyOnWriteArrayList<Context>());
-        this.disabled = false;
-        this.hidden = false;
-        this.readonly = false;
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param aQuestion   The associated Question
-     * @param aSourceCode The person answering the question
-     * @param aTargetCode The BaseEntity that the question is about
-     */
-    public Ask(final Question aQuestion, final String aSourceCode, final String aTargetCode) {
-        this(aQuestion, aSourceCode, aTargetCode, false);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param aQuestion   The associated Question
-     * @param aSourceCode The person answering the question
-     * @param aTargetCode The BaseEntity that the question is about
-     * @param aMandatory  Is this ask mandatory?
-     */
-    public Ask(final Question aQuestion, final String aSourceCode, final String aTargetCode, final Boolean aMandatory) {
-        this(aQuestion, aSourceCode, aTargetCode, aMandatory, 0.0);
-    }
 
     /**
      * Constructor.
@@ -242,7 +199,7 @@ public class Ask extends CoreEntity {
      */
     public Ask(final Question aQuestion, final String aSourceCode, final String aTargetCode, final Boolean aMandatory,
                final Double weight, final Boolean disabled, final Boolean hidden, final Boolean readonly) {
-        super(aQuestion.getName());
+        this.name = aQuestion.getName();
         setQuestion(aQuestion);
 
         this.sourceCode = aSourceCode;
@@ -422,7 +379,6 @@ public class Ask extends CoreEntity {
 
     }
 
-    @Override
     public int compareTo(Object o) {
         Ask myClass = (Ask) o;
         return new CompareToBuilder().append(questionCode, myClass.getQuestionCode())
@@ -501,23 +457,6 @@ public class Ask extends CoreEntity {
         this.createOnTrigger = createOnTrigger;
     }
 
-    @XmlTransient
-    @Transient
-    public Boolean hasTriggerQuestion() {
-        // recurse through the childAsks
-        // this is used to tell if intermediate BaseEntity is to be created and then
-        // copied in upon a trigger question
-        if (this.formTrigger) {
-            return true;
-        } else {
-            if ((this.childAsks != null) && (this.childAsks.length > 0)) {
-                for (Ask childAsk : this.childAsks) {
-                    return childAsk.hasTriggerQuestion();
-                }
-            }
-        }
-        return false;
-    }
 
     public static Ask clone(Ask ask) {
         Ask newAsk = new Ask();

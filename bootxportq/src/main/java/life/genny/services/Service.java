@@ -1,8 +1,8 @@
 package life.genny.services;
 
+import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import life.genny.bootxport.bootx.QwandaRepository;
 import life.genny.qwanda.Ask;
-import life.genny.qwanda.CodedEntity;
 import life.genny.qwanda.Question;
 import life.genny.qwanda.QuestionQuestion;
 import life.genny.models.attribute.Attribute;
@@ -13,6 +13,7 @@ import life.genny.models.validation.Validation;
 import life.genny.qwandautils.GennySettings;
 import org.hibernate.exception.ConstraintViolationException;
 
+import javax.inject.Inject;
 import javax.persistence.PersistenceException;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
@@ -64,6 +65,11 @@ public class Service implements QwandaRepository {
     @Override
     public Long insert(Ask ask) {
         return null;
+    }
+
+    @Override
+    public void insert(Attribute attribute) {
+
     }
 
     @Override
@@ -162,22 +168,12 @@ public class Service implements QwandaRepository {
     }
 
     @Override
-    public void bulkUpdate(ArrayList<CodedEntity> objectList, HashMap<String, CodedEntity> mapping) {
+    public void bulkUpdate(ArrayList<PanacheEntity> objectList, HashMap<String, PanacheEntity> mapping) {
 
     }
 
     @Override
-    public void bulkInsert(ArrayList<CodedEntity> objectList) {
-
-    }
-
-    @Override
-    public void bulkInsertAsk(ArrayList<Ask> objectList) {
-
-    }
-
-    @Override
-    public void bulkUpdateAsk(ArrayList<Ask> objectList, HashMap<String, Ask> mapping) {
+    public void bulkInsert(ArrayList<PanacheEntity> objectList) {
 
     }
 
@@ -201,23 +197,23 @@ public class Service implements QwandaRepository {
 
     }
 
-    @Override
-    protected String getRealm() {
+//    protected String getRealm() {
+//
+//        String realm = null;
+//        try {
+//            realm = securityService.getRealm();
+//        } catch (Exception e) {
+//            return currentRealm;
+//        }
+//        if (realm == null)
+//            return currentRealm;
+//        else
+//            return realm;
+//
+//    }
 
-        String realm = null;
-        try {
-            realm = securityService.getRealm();
-        } catch (Exception e) {
-            return currentRealm;
-        }
-        if (realm == null)
-            return currentRealm;
-        else
-            return realm;
 
-    }
-
-
+/*
     public Long insert(final Attribute attribute) {
         // always check if baseentity exists through check for unique code
         try {
@@ -254,4 +250,5 @@ public class Service implements QwandaRepository {
         }
         return attribute.id;
     }
+    */
 }

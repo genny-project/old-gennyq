@@ -7,19 +7,19 @@ import life.genny.bootxport.bootx.RealmUnit;
 import life.genny.qwanda.Ask;
 import life.genny.qwanda.Question;
 import life.genny.qwanda.QuestionQuestion;
-import life.genny.qwanda.attribute.Attribute;
-import life.genny.qwanda.attribute.AttributeLink;
-import life.genny.qwanda.attribute.EntityAttribute;
-import life.genny.qwanda.datatype.DataType;
-import life.genny.qwanda.entity.BaseEntity;
-import life.genny.qwanda.entity.EntityEntity;
-import life.genny.qwanda.exception.BadDataException;
+import life.genny.models.attribute.Attribute;
+import life.genny.models.attribute.AttributeLink;
+import life.genny.models.attribute.EntityAttribute;
+import life.genny.models.datatype.DataType;
+import life.genny.models.entity.BaseEntity;
+import life.genny.models.entity.EntityEntity;
+import life.genny.models.exception.BadDataException;
 import life.genny.qwanda.message.QBaseMSGMessageTemplate;
-import life.genny.qwanda.validation.Validation;
-import life.genny.qwanda.validation.ValidationList;
+import life.genny.models.validation.Validation;
+import life.genny.models.validation.ValidationList;
 import life.genny.qwandautils.GennySettings;
 import life.genny.nest.utils.KeycloakUtils;
-import life.genny.notes.utils.SecurityUtils;
+import life.genny.utils.SecurityUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Logger;
 
@@ -115,7 +115,7 @@ public class BatchLoading {
                 }
             }
 
-            val.setRealm(realmName);
+            val.realm = realmName;
             log.info(String.format("realm:%s, code:%s, name:%s, val:%s, grp:%s", validations.get("realm"), code, name, val, (groupCodesStr != null ? groupCodesStr : "X")));
             Set<ConstraintViolation<Validation>> constraints = validator.validate(val);
             for (ConstraintViolation<Validation> constraint : constraints) {
@@ -370,11 +370,11 @@ public class BatchLoading {
                     try {
                         EntityEntity ee = service.findEntityEntity(parentCode, targetCode, linkCode);
                         ee.setWeight(weight);
-                        ee.setValueString(valueString);
+                        ee.valueString = valueString;
                         service.updateEntityEntity(ee);
                     } catch (final NoResultException e) {
                         EntityEntity ee = new EntityEntity(sbe, tbe, linkAttribute, weight);
-                        ee.setValueString(valueString);
+                        ee.valueString = valueString;
                         service.insertEntityEntity(ee);
                     }
                     return;
@@ -499,9 +499,9 @@ public class BatchLoading {
                 Boolean privacy = "TRUE".equalsIgnoreCase(privacyStr);
 
                 linkAttribute = new AttributeLink(code, name);
-                linkAttribute.setDefaultPrivacyFlag(privacy);
-                linkAttribute.setDataType(dataTypeRecord);
-                linkAttribute.setRealm(realmName);
+                linkAttribute.defaultPrivacyFlag = privacy;
+                linkAttribute.dataType = dataTypeRecord;
+                linkAttribute.realm = realmName;
                 service.upsert(linkAttribute);
             } catch (Exception e) {
                 String name = attributeLink.get("name").replaceAll("^\"|\"$", "");
@@ -509,8 +509,8 @@ public class BatchLoading {
                 Boolean privacy = "TRUE".equalsIgnoreCase(privacyStr);
 
                 linkAttribute = new AttributeLink(code, name);
-                linkAttribute.setDefaultPrivacyFlag(privacy);
-                linkAttribute.setRealm(attributeLink.get("realm"));
+                linkAttribute.defaultPrivacyFlag = privacy;
+                linkAttribute.realm = attributeLink.get("realm");
             }
             service.upsert(linkAttribute);
 
@@ -598,10 +598,10 @@ public class BatchLoading {
             Boolean hidden = "TRUE".equalsIgnoreCase(hiddenStr);
             Question question = service.findQuestionByCode(qCode);
             final Ask ask = new Ask(question, sourceCode, targetCode, mandatory, weight);
-            ask.setName(name);
+            ask.name = name;
             ask.setHidden(hidden);
             ask.setReadonly(readonly);
-            ask.setRealm(realmName);
+            ask.realm = realmName;
 
             service.insert(ask);
         });
@@ -632,9 +632,9 @@ public class BatchLoading {
                 toastTemplate = template.get("toasttemplate");
 
             final QBaseMSGMessageTemplate templateObj = new QBaseMSGMessageTemplate();
-            templateObj.setCode(code);
-            templateObj.setName(name);
-            templateObj.setCreated(LocalDateTime.now());
+            templateObj.code = code;
+            templateObj.name = name;
+            templateObj.created  = LocalDateTime.now();
             templateObj.setDescription(description);
             templateObj.setEmail_templateId(emailTemplateDocId);
             templateObj.setSms_template(smsTemplate);
@@ -648,7 +648,7 @@ public class BatchLoading {
                     QBaseMSGMessageTemplate msg = service.findTemplateByCode(code);
                     try {
                         if (msg != null) {
-                            msg.setName(name);
+                            msg.name = name;
                             msg.setDescription(description);
                             msg.setEmail_templateId(emailTemplateDocId);
                             msg.setSms_template(smsTemplate);
@@ -669,7 +669,7 @@ public class BatchLoading {
                         if (isSynchronise()) {
                             QBaseMSGMessageTemplate val = service.findTemplateByCode(templateObj.getCode(), "hidden");
                             if (val != null) {
-                                val.setRealm("genny");
+                                val.name = "genny";
                                 service.updateRealm(val);
                                 return;
                             }
@@ -679,7 +679,7 @@ public class BatchLoading {
                     } catch (javax.validation.ConstraintViolationException ce) {
                         log.error("Error in saving message due to constraint issue:" + templateObj + " :" + ce.getLocalizedMessage());
                         log.info("Trying to update realm from hidden to genny");
-                        templateObj.setRealm("genny");
+                        templateObj.realm = "genny";
                         service.updateRealm(templateObj);
                     }
 
@@ -703,7 +703,7 @@ public class BatchLoading {
             DataType dataType = new DataType("DTT_TEXT");
             dataType.setDttCode("DTT_TEXT");
             attr = new Attribute("ENV_KEYCLOAK_JSON", "Keycloak Json", dataType);
-            attr.setRealm(mainRealm);
+            attr.realm = mainRealm;
             Set<ConstraintViolation<Attribute>> constraints = validator.validate(attr);
             for (ConstraintViolation<Attribute> constraint : constraints) {
                 log.info(String.format("[\"%s\"], %s, %s.", this.mainRealm,
@@ -729,7 +729,7 @@ public class BatchLoading {
         ValidatorFactory factory = javax.validation.Validation.buildDefaultValidatorFactory();
         Validator validator = factory.getValidator();
         Attribute attr = service.findAttributeByCode("ENV_URL_LIST");
-        attr.setRealm(mainRealm);
+        attr.realm = mainRealm;
         DataType dataType = new DataType("DTT_TEXT");
         dataType.setDttCode("DTT_TEXT");
         attr = new Attribute("ENV_URL_LIST", "Url List", dataType);

@@ -958,4 +958,30 @@ public class BaseEntity extends PanacheEntity {
 
         return answerLink;
     }
+
+    /**
+     * addTarget This links this baseEntity to a target BaseEntity and associated
+     * weight,value to the baseEntity. It auto creates the EntityEntity object and
+     * sets itself to be the source. For efficiency we assume the link does not
+     * already exist
+     *
+     * @param target
+     * @param linkAttribute
+     * @param weight
+     * @param value         (of type String, LocalDateTime, Long, Integer, Boolean
+     * @throws BadDataException
+     */
+    public EntityEntity addTarget(final BaseEntity target, final Attribute linkAttribute, final Double weight,
+                                  final Object value) throws BadDataException {
+        if (target == null)
+            throw new BadDataException("missing Target Entity");
+        if (linkAttribute == null)
+            throw new BadDataException("missing Link Attribute");
+        if (weight == null)
+            throw new BadDataException("missing weight");
+
+        final EntityEntity entityEntity = new EntityEntity(this, target, linkAttribute, value, weight);
+        links.add(entityEntity);
+        return entityEntity;
+    }
 }

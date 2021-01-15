@@ -428,7 +428,7 @@ public class Answer implements Serializable {
      * @throws BadDataException
      */
     public Answer(final Ask aAsk, final String value) throws BadDataException {
-        this.askId = aAsk.getId();
+        this.askId = aAsk.id;
         this.attributeCode = aAsk.getQuestion().getAttribute().code;
         this.attribute = aAsk.getQuestion().getAttribute();
         this.sourceCode = aAsk.getSourceCode();
