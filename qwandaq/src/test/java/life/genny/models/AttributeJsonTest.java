@@ -6,28 +6,17 @@ import javax.json.bind.JsonbBuilder;
 import org.jboss.logging.Logger;
 import org.junit.jupiter.api.Test;
 
-import io.quarkus.test.junit.QuarkusTest;
 import life.genny.models.attribute.Attribute;
 import life.genny.models.attribute.AttributeText;
 import life.genny.models.message.QDataAttributeMessage;
 import life.genny.models.validation.Validation;
 
 
-//@QuarkusTest
+
 public class AttributeJsonTest {
 	
 	private static final Logger log = Logger.getLogger(AttributeJsonTest.class);
 	
-//	static GsonBuilder gsonBuilder = new GsonBuilder();       
-//
-//	static public Gson gson = gsonBuilder
-//			.registerTypeAdapter(LocalDateTime.class, new DateTimeDeserializer())
-//			.registerTypeAdapter(LocalDate.class, new LocalDateConverter())
-//		//	.excludeFieldsWithModifiers(Modifier.STATIC, Modifier.TRANSIENT, Modifier.VOLATILE)
-//		//	.excludeFieldsWithoutExposeAnnotation()
-//		//    .disableHtmlEscaping()
-//		    .setPrettyPrinting()
-//			.create();
 	@Test
 	public void attributeJsonTest()
 	{
