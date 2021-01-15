@@ -16,7 +16,8 @@ public class EntityAttributeTestUtil {
     entityAttributeObject.baseEntityCode = baseentity.code;
     entityAttributeObject.attribute = attribute;
     entityAttributeObject.setWeight(1.0);
-    entityAttributeObject.setValue("just a name");
+    //entityAttributeObject.setValue("just a name");
+    entityAttributeObject.value = ValueTestUtil.valueObject;
     try {
       BaseEntityTestUtil.baseEntityObject.addAttribute(attribute);
     } catch (BadDataException e) {

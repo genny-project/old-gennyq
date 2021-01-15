@@ -20,6 +20,21 @@ message Attribute {
   optional string defaultValue = 10;
 }
 
+message Value {
+  required DataType dataType = 1; 
+  optional double valueDouble = 2;
+  optional int32 valueInteger = 3;
+  optional int64 valueLong = 4;
+  optional string valueDateTime = 5;
+  optional string valueDate = 6;
+  optional string valueTime = 7;
+  optional bool valueBoolean = 8;
+  optional string valueString = 9;
+  optional bool expired = 10;
+  optional bool refused = 11;
+  optional double weight = 12;
+}
+
 message DataType {
   required string dttCode = 1;
   required string className = 2;
@@ -37,12 +52,33 @@ message Validation {
 
 message EntityAttribute {
   required string realm = 1;
-  required string created = 3;
-  required Attribute attribute = 4;
-  //optional BaseEntity baseentity = 5;
-  required double weight  = 6;
-  required bytes value  = 7;
-  required bool privacyFlag = 8;
-  required string baseEntityCode = 9;
-  optional string attributeCode = 10;
+  required string created = 2;
+  required Attribute attribute = 3;
+  //optional BaseEntity baseentity = 4;
+  required double weight  = 4;
+  required Value value  = 5;
+  required bool privacyFlag = 6;
+  required string baseEntityCode = 7;
+  optional string attributeCode = 8;
+}
+
+message EntityEntity {
+  required string realm = 1;
+  required string created = 2;
+  required Attribute attribute = 3;
+  required string attributeCode  = 4;
+  required string sourceCode  = 5;
+  required string targetCode = 6;
+  required Value value = 7;
+}
+
+message Link {
+  required string attributeCode  = 1;
+  required string targetCode = 2;
+  required string sourceCode  = 3;
+  optional string linkValue = 4;
+  optional double weight = 5;
+  optional string childColor = 6;
+  optional string parentColor = 7;
+  optional string rule = 8;
 }

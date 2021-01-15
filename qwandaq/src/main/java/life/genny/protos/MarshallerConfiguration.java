@@ -27,4 +27,12 @@ public class MarshallerConfiguration {
   MessageMarshaller entityAttributeMarshaller() {
     return new EntityAttributeMarshaller();
   }
+  @Produces
+  MessageMarshaller valueMarshaller() {
+    return new ValueMarshaller();
+  }
+  @Produces
+  MessageMarshaller linkMarshaller() {
+    return new LinkMarshaller();
+  }
 }

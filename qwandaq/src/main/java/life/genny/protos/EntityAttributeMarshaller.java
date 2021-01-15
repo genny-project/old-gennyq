@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import org.apache.commons.lang3.SerializationUtils;
 import org.infinispan.protostream.MessageMarshaller;
 
+import life.genny.models.Value;
 import life.genny.models.attribute.Attribute;
 import life.genny.models.attribute.EntityAttribute;
 import life.genny.models.entity.BaseEntity;
@@ -30,7 +31,7 @@ public class EntityAttributeMarshaller implements MessageMarshaller<EntityAttrib
     writer.writeObject("attribute", ba.attribute, Attribute.class);
     //writer.writeObject("baseentity", ba.baseentity, BaseEntity.class);
     writer.writeDouble("weight", ba.getWeight());
-    writer.writeBytes("value", SerializationUtils.serialize(ba.getValue()));
+    writer.writeObject("value", ba.value, Value.class);
     writer.writeBoolean("privacyFlag", ba.privacyFlag);
     writer.writeString("baseEntityCode", ba.baseEntityCode);
     writer.writeString("attributeCode", ba.attributeCode);
@@ -45,13 +46,13 @@ public class EntityAttributeMarshaller implements MessageMarshaller<EntityAttrib
     Attribute attribute = reader.readObject("attribute", Attribute.class);
     //BaseEntity baseentity = reader.readObject("baseentity",BaseEntity.class);
     Double weight = reader.readDouble("weight");
-    Object value = SerializationUtils.deserialize(reader.readBytes("value"));
+    Value value = reader.readObject("value",Value.class);
     Boolean privacyFlag = reader.readBoolean("privacyFlag");
     EntityAttribute ba = new EntityAttribute();
     ba.attribute = attribute;
     ba.baseEntityCode = baseEntityCode;
     ba.setWeight(weight);
-    ba.setValue(value);
+    ba.value = value;
     ba.privacyFlag = privacyFlag;
     ba.realm = realm;
     ba.created = LocalDateTime.parse(created);

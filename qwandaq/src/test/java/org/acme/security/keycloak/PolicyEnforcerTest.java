@@ -12,8 +12,8 @@ import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.RestAssured;
 
 @QuarkusTest
-@QuarkusTestResource(KeycloakServer.class)
-@QuarkusTestResource(MySqlServer.class)
+//@QuarkusTestResource(KeycloakServer.class)
+//@QuarkusTestResource(MySqlServer.class)
 public class PolicyEnforcerTest {
 
     @ConfigProperty(name = "quarkus.oidc.auth-server-url")
@@ -24,7 +24,7 @@ public class PolicyEnforcerTest {
     }
 
     
-    @Test
+    //@Test
     public void testAccessToken()
     {
     	System.out.println("Starting test");
