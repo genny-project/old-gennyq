@@ -34,16 +34,17 @@ public class DataTypeMarshaller implements MessageMarshaller<DataType> {
 
   @Override
   public DataType readFrom(ProtoStreamReader reader) throws IOException {
-    String dttCode = reader.readString("dttCode");
-    String className = reader.readString("className");
-    String typeName = reader.readString("typeName");
     ValidationList validationList = new ValidationList();
-
     validationList.setValidationList(
         reader.readCollection("validationList", new ArrayList<Validation>(), Validation.class));
 
-    String inputmask = reader.readString("inputmask");
-    DataType d = new DataType(className,validationList,typeName,inputmask);
+    DataType d = new DataType(
+        reader.readString("className"),
+        validationList,
+        reader.readString("typeName"),
+        reader.readString("inputmask"));
+
+    d.setDttCode(reader.readString("dttCode"));
     return d;
   }
 }

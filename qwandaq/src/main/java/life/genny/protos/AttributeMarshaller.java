@@ -37,25 +37,19 @@ public class AttributeMarshaller implements MessageMarshaller<Attribute> {
 
   @Override
   public Attribute readFrom(ProtoStreamReader reader) throws IOException {
-    String realm = reader.readString("realm");
-    String code = reader.readString("code");
-    String created = reader.readString("created");
-    String name = reader.readString("name");
-    DataType dataType = reader.readObject("dataType", DataType.class);
-    Boolean defaultPrivacyFlag = reader.readBoolean("defaultPrivacyFlag");
-    String description = reader.readString("description");
 
-    String help = reader.readString("help");
-    String placeholder = reader.readString("placeholder");
-    String defaultValue = reader.readString("defaultValue");
-    Attribute a = new Attribute(code, name, dataType);
-    a.realm = realm;
-    a.defaultPrivacyFlag = defaultPrivacyFlag;
-    a.description = description;
-    a.help = help;
-    a.placeholder = placeholder;
-    a.defaultValue = defaultValue;
-    a.created = LocalDateTime.parse(created);
+    Attribute a = new Attribute(
+        reader.readString("code"), 
+        reader.readString("name"), 
+        reader.readObject("dataType", DataType.class));
+
+    a.realm = reader.readString("realm");
+    a.created = LocalDateTime.parse(reader.readString("created"));
+    a.defaultPrivacyFlag = reader.readBoolean("defaultPrivacyFlag");
+    a.description = reader.readString("description");
+    a.help = reader.readString("help");
+    a.placeholder = reader.readString("placeholder");
+    a.defaultValue = reader.readString("defaultValue");
     return a;
   }
 }

@@ -29,7 +29,6 @@ public class EntityAttributeMarshaller implements MessageMarshaller<EntityAttrib
     writer.writeString("realm", ba.realm);
     writer.writeString("created", ba.created.toString());
     writer.writeObject("attribute", ba.attribute, Attribute.class);
-    //writer.writeObject("baseentity", ba.baseentity, BaseEntity.class);
     writer.writeDouble("weight", ba.getWeight());
     writer.writeObject("value", ba.value, Value.class);
     writer.writeBoolean("privacyFlag", ba.privacyFlag);
@@ -39,23 +38,15 @@ public class EntityAttributeMarshaller implements MessageMarshaller<EntityAttrib
 
   @Override
   public EntityAttribute readFrom(ProtoStreamReader reader) throws IOException {
-    String realm = reader.readString("realm");
-    String created = reader.readString("created");
-    String attributeCode = reader.readString("attributeCode");
-    String baseEntityCode = reader.readString("baseEntityCode");
-    Attribute attribute = reader.readObject("attribute", Attribute.class);
-    //BaseEntity baseentity = reader.readObject("baseentity",BaseEntity.class);
-    Double weight = reader.readDouble("weight");
-    Value value = reader.readObject("value",Value.class);
-    Boolean privacyFlag = reader.readBoolean("privacyFlag");
     EntityAttribute ba = new EntityAttribute();
-    ba.attribute = attribute;
-    ba.baseEntityCode = baseEntityCode;
-    ba.setWeight(weight);
-    ba.value = value;
-    ba.privacyFlag = privacyFlag;
-    ba.realm = realm;
-    ba.created = LocalDateTime.parse(created);
+    ba.realm = reader.readString("realm");
+    ba.created = LocalDateTime.parse(reader.readString("created"));
+    ba.attributeCode = reader.readString("attributeCode");
+    ba.baseEntityCode = reader.readString("baseEntityCode");
+    ba.attribute = reader.readObject("attribute", Attribute.class);
+    ba.setWeight(reader.readDouble("weight"));
+    ba.value = reader.readObject("value",Value.class);
+    ba.privacyFlag = reader.readBoolean("privacyFlag");
     return ba;
   }
 }

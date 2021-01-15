@@ -54,7 +54,6 @@ message EntityAttribute {
   required string realm = 1;
   required string created = 2;
   required Attribute attribute = 3;
-  //optional BaseEntity baseentity = 4;
   required double weight  = 4;
   required Value value  = 5;
   required bool privacyFlag = 6;
@@ -64,12 +63,13 @@ message EntityAttribute {
 
 message EntityEntity {
   required string realm = 1;
-  required string created = 2;
-  required Attribute attribute = 3;
+  optional string created = 2;
+  optional Attribute attribute = 3;
   required string attributeCode  = 4;
   required string sourceCode  = 5;
   required string targetCode = 6;
-  required Value value = 7;
+  optional Value value = 7;
+  optional Link link = 8;
 }
 
 message Link {

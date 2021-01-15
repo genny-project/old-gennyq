@@ -33,18 +33,18 @@ public class BaseEntityMarshaller implements MessageMarshaller<BaseEntity> {
 
   @Override
   public BaseEntity readFrom(ProtoStreamReader reader) throws IOException {
-    String code = reader.readString("code");
-    String name = reader.readString("name");
-    String created = reader.readString("created");
 
-    Set<EntityAttribute> baseEntityAttributes = reader.readCollection(
+    BaseEntity b = new BaseEntity(
+        reader.readString("code"), 
+        reader.readString("name"));
+
+    b.setCreated(LocalDateTime.parse(reader.readString("created")));
+
+    b.baseEntityAttributes = reader.readCollection(
         "baseEntityAttributes",
         new HashSet<>(), 
         EntityAttribute.class);
 
-    BaseEntity b = new BaseEntity(code, name);
-    b.baseEntityAttributes = baseEntityAttributes;
-    b.setCreated(LocalDateTime.parse(created));
     return b;
   }
 }

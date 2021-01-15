@@ -29,12 +29,12 @@ public class ValidationMarshaller implements MessageMarshaller<Validation> {
 
   @Override
   public Validation readFrom(ProtoStreamReader reader) throws IOException {
-    String code = reader.readString("code");
-    String name = reader.readString("name");
-    String regex = reader.readString("regex");
-    String created = reader.readString("created");
-    Validation v = new Validation(code, name,regex);
-    v.created = LocalDateTime.parse(created);
+    Validation v = new Validation(
+        reader.readString("code"), 
+        reader.readString("name"),
+        reader.readString("regex"));
+
+    v.created  = LocalDateTime.parse(reader.readString("created"));
     return v;
   }
 }
