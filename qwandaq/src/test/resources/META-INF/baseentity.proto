@@ -62,7 +62,7 @@ message EntityAttribute {
 }
 
 message EntityEntity {
-  required string realm = 1;
+  optional string realm = 1;
   optional string created = 2;
   optional Attribute attribute = 3;
   required string attributeCode  = 4;

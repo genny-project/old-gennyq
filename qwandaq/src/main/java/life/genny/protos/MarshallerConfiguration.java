@@ -35,4 +35,8 @@ public class MarshallerConfiguration {
   MessageMarshaller linkMarshaller() {
     return new LinkMarshaller();
   }
+  @Produces
+  MessageMarshaller entityEntityMarshaller() {
+    return new EntityEntityMarshaller();
+  }
 }

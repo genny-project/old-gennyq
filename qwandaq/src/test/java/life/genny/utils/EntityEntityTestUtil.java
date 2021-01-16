@@ -4,9 +4,14 @@ import life.genny.models.entity.EntityEntity;
 
 public class EntityEntityTestUtil {
 
-  public final static String CODE = "XYZ_ATTRTEST";
-  public final static String NAME = "attrtestxyz";
-
-  public final static EntityEntity entityEntityObject = new EntityEntity();
+  public final static EntityEntity entityEntityObject;
   
+  static {
+    entityEntityObject = new EntityEntity(
+        BaseEntityTestUtil.baseEntityObject,
+        BaseEntityTestUtil.baseEntityObject,
+        AttributeTestUtil.attributeObject, 
+        1.0
+        );
+  }
 }

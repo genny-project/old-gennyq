@@ -14,6 +14,7 @@ import org.junit.jupiter.api.BeforeAll;
 import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.junit.QuarkusTest;
 import life.genny.models.entity.EntityEntity;
+import life.genny.utils.EntityEntityTestUtil;
 
 @QuarkusTest
 @QuarkusTestResource(InfinispanServer.class)
@@ -31,16 +32,15 @@ public class ClientEntityEntityTest {
 
   @Test 
   public void testEntityEntityIntegrity(){
-    //Assertions.assertTrue(EntityEntityTestUtil.valueObject.equals(fetchedEntityEntity));
+    //Assertions.assertTrue(EntityEntityTestUtil.entityEntityObject.equals(fetchedEntityEntity));
   }
 
   @BeforeAll
   public void initCacheConfig(){
-    cache = remoteCacheManager.administration().getOrCreateCache("valueObject","example.PROTOBUF_DIST");
-    EntityEntity val = EntityEntityTestUtil.valueObject;
-    System.out.println("hereeeee ::: "+val.getEntityEntity());
-    cache.put("valueKey",val);
-    fetchedEntityEntity = cache.get("valueKey");
+    cache = remoteCacheManager.administration().getOrCreateCache("entityEntityObject","example.PROTOBUF_DIST");
+    EntityEntity ee = EntityEntityTestUtil.entityEntityObject;
+    cache.put("baseentitycode+baseentitycode",ee);
+    fetchedEntityEntity = cache.get("baseentitycode+baseentitycode");
   }
 
 }

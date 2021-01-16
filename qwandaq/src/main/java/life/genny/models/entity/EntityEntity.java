@@ -119,7 +119,6 @@ public class EntityEntity  extends PanacheEntity  implements java.io.Serializabl
   public EntityEntity(final BaseEntity source, final BaseEntity target,
       final Attribute attribute, Double weight) {
    this(source,target,attribute, "DUMMY",weight);
-   this.link.linkValue = null;
   }
 
   /**
@@ -136,6 +135,9 @@ public class EntityEntity  extends PanacheEntity  implements java.io.Serializabl
     this.source = source;
     this.attribute = attribute;
     this.realm = target.realm;
+    this.sourceCode = source.code;
+    this.targetCode = target.code;
+    this.attributeCode = attribute.code;
     this.target = target;
     link = new Link(source.code,target.code,attribute.code,null);
 
