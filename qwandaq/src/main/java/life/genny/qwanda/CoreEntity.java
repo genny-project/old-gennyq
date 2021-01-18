@@ -22,11 +22,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 
-import javax.persistence.Basic;
 import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
@@ -75,15 +71,13 @@ public abstract class CoreEntity extends PanacheEntity implements Serializable, 
     protected static final Logger log = org.apache.logging.log4j.LogManager
             .getLogger(MethodHandles.lookup().lookupClass().getCanonicalName());
 
-    static public final String REGEX_NAME = "[\\pL0-9/\\:\\ \\_\\.\\,\\?\\>\\<\\%\\$\\&\\!\\*" + ""
-            + "\\[\\]\\'\\-\\@\\(\\)]+.?";
-    static public final String REGEX_REALM = "[a-zA-Z0-9]+";
-    static public final String DEFAULT_REALM = "genny";
+    public static final String REGEX_NAME = "[\\pL0-9/: _.,?><%$&!*" + "" + "\\[\\]'\\-@()]+.?";
+    public static final String REGEX_REALM = "[a-zA-Z0-9]+";
+    public static final String DEFAULT_REALM = "genny";
 
     /**
      * Stores the Created UMT DateTime that this object was created
      */
-    // @XmlJavaTypeAdapter(LocalDateTimeAdapter.class)
     @Expose
     @Column(name = "created")
     private LocalDateTime created;
@@ -104,7 +98,7 @@ public abstract class CoreEntity extends PanacheEntity implements Serializable, 
     @NotNull
     @Size(max = 128)
     @Pattern(regexp = REGEX_NAME, message = "Must contain valid characters for name")
-    @Column(name = "name", updatable = true, nullable = true)
+    @Column(name = "name")
     @Expose
     private String name;
 
@@ -116,7 +110,7 @@ public abstract class CoreEntity extends PanacheEntity implements Serializable, 
     @NotNull
     @Size(max = 48)
     @Pattern(regexp = REGEX_REALM, message = "Must contain valid characters for realm")
-    @Column(name = "realm", updatable = true, nullable = false)
+    @Column(name = "realm", nullable = false)
     @Expose
     private String realm = DEFAULT_REALM;
 
@@ -130,22 +124,9 @@ public abstract class CoreEntity extends PanacheEntity implements Serializable, 
     /**
      * Constructor.
      *
-     * @param realm the security realm of the core entity
-     * @param aName the name of the core entity
-     */
-    public CoreEntity(final String realm, final String aName) {
-        super();
-        this.realm = realm;
-        this.name = aName;
-        autocreateCreated();
-    }
-
-    /**
-     * Constructor.
-     *
      * @param aName the summary name of the core entity
      */
-    public CoreEntity(final String aName) {
+    protected CoreEntity(final String aName) {
         super();
         this.realm = DEFAULT_REALM;
         this.name = aName;
@@ -238,16 +219,14 @@ public abstract class CoreEntity extends PanacheEntity implements Serializable, 
     @Transient
     @JsonIgnore
     public Date getCreatedDate() {
-        final Date out = Date.from(created.atZone(ZoneId.systemDefault()).toInstant());
-        return out;
+        return Date.from(created.atZone(ZoneId.systemDefault()).toInstant());
     }
 
     @Transient
     @JsonIgnore
     public Date getUpdatedDate() {
         if (updated != null) {
-            final Date out = Date.from(updated.atZone(ZoneId.systemDefault()).toInstant());
-            return out;
+            return Date.from(updated.atZone(ZoneId.systemDefault()).toInstant());
         } else
             return null;
     }
@@ -260,9 +239,5 @@ public abstract class CoreEntity extends PanacheEntity implements Serializable, 
     @Override
     public String toString() {
         return "[id=" + id + ", created=" + created + ", updated=" + updated + ", name=" + name + "]";
-    }
-
-    public boolean hasName() {
-        return name != null && !"".equals(name.trim());
     }
 }

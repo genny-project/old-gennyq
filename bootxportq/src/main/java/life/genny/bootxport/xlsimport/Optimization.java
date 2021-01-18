@@ -1,7 +1,6 @@
 package life.genny.bootxport.xlsimport;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
-import life.genny.bootxport.bootx.QwandaRepository;
 import life.genny.qwanda.*;
 import life.genny.models.attribute.Attribute;
 import life.genny.models.attribute.AttributeLink;
@@ -14,6 +13,7 @@ import life.genny.models.validation.Validation;
 import life.genny.qwandautils.GennySettings;
 import life.genny.nest.utils.KeycloakUtils;
 
+import life.genny.services.QwandaRepository;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,28 +25,27 @@ import java.util.*;
 
 public class Optimization {
     private static final Logger log = LoggerFactory.getLogger(Optimization.class);
-
     private QwandaRepository service;
-
 
     public Optimization(QwandaRepository repo) {
         this.service = repo;
     }
 
-    private void printSummary(String tableName, int total, int invalid, int skipped, int updated, int newItem) {
+    private void printSummary(String tableName, Summary summary) {
         log.info(String.format("Table:%s: Total:%d, invalid:%d, skipped:%d, updated:%d, new item:%d.",
-                tableName, total, invalid, skipped, updated, newItem));
+                tableName, summary.getTotal(), summary.getInvalid(), summary.getSkipped(), summary.getUpdated(),
+                summary.getNewItem()));
     }
 
 
     private boolean isValid(PanacheEntity t) {
         if (t == null) return false;
-        if (t instanceof Validation || t instanceof  Attribute || t instanceof BaseEntity) {
+        if (t instanceof Validation || t instanceof Attribute || t instanceof BaseEntity) {
             ValidatorFactory factory = javax.validation.Validation.buildDefaultValidatorFactory();
             Validator validator = factory.getValidator();
             Set<ConstraintViolation<PanacheEntity>> constraints = validator.validate(t);
             for (ConstraintViolation<PanacheEntity> constraint : constraints) {
-            // TODO
+                // TODO
 //                log.error(String.format("Validates constraints failure, Code:%s, PropertyPath:%s,Error:%s.",
 //                        t.code, constraint.getPropertyPath(), constraint.getMessage()));
             }
@@ -84,52 +83,24 @@ public class Optimization {
             questionHashMap.put(q.getCode(), q);
         }
 
-        ArrayList<Ask> askInsertList = new ArrayList<>();
-        ArrayList<Ask> askUpdateList = new ArrayList<>();
-        int invalid = 0;
-        int total = 0;
-        int skipped = 0;
-        int newItem = 0;
-        int updated = 0;
+        Summary summary = new Summary();
 
         for (Map.Entry<String, Map<String, String>> entry : project.entrySet()) {
-            total += 1;
+            summary.addTotal();
             Map<String, String> asks = entry.getValue();
             Ask ask = GoogleSheetBuilder.buildAsk(asks, realmName, questionHashMap);
             if (ask == null) {
-                invalid++;
+                summary.addInvalid();
                 continue;
             }
             service.insert(ask);
-            newItem++;
+            summary.addNew();
         }
-        printSummary("Ask", total, invalid, skipped, updated, newItem);
-
-
-//            String qCode = asks.get("question_code".toLowerCase().replaceAll("^\"|\"$|_|-", ""));
-//            String attributeCode = asks.get("attributeCode".toLowerCase().replaceAll("^\"|\"$|_|-", ""));
-//            String sourceCode = asks.get("sourceCode".toLowerCase().replaceAll("^\"|\"$|_|-", ""));
-//            String targetCode = asks.get("targetCode".toLowerCase().replaceAll("^\"|\"$|_|-", ""));
-//            String uniqueCode = qCode + "-" + sourceCode + "-" + targetCode + "-" + attributeCode;
-//            if (codeAskMapping.containsKey(uniqueCode.toUpperCase())) {
-//                if (isChanged(ask, codeAskMapping.get(uniqueCode.toUpperCase()))) {
-//                    askUpdateList.add(ask);
-//                    updated++;
-//                }
-//                skipped++;
-//            } else {
-//                 insert new item
-//                askInsertList.add(ask);
-//                newItem++;
-//            }
-//        }
-//        service.bulkInsertAsk(askInsertList);
-//        service.bulkUpdateAsk(askUpdateList, codeAskMapping);
-//        printSummary(tableName, total, invalid, skipped, updated, newItem);
+        printSummary("Ask", summary);
     }
 
-    public void attributeLinksOptimization
-            (Map<String, Map<String, String>> project, Map<String, DataType> dataTypeMap, String realmName) {
+    public void attributeLinksOptimization(Map<String, Map<String, String>> project, Map<String, DataType> dataTypeMap,
+                                           String realmName) {
         String tableName = "Attribute";
         List<Attribute> attributeLinksFromDB = service.queryTableByRealm(tableName, realmName);
 
@@ -143,14 +114,10 @@ public class Optimization {
 
         ArrayList<PanacheEntity> attributeLinkInsertList = new ArrayList<>();
         ArrayList<PanacheEntity> attributeLinkUpdateList = new ArrayList<>();
-        int invalid = 0;
-        int total = 0;
-        int skipped = 0;
-        int newItem = 0;
-        int updated = 0;
+        Summary summary = new Summary();
 
         for (Map.Entry<String, Map<String, String>> entry : project.entrySet()) {
-            total += 1;
+            summary.addTotal();
             Map<String, String> attributeLink = entry.getValue();
             String code = attributeLink.get("code").replaceAll("^\"|\"$", "");
             AttributeLink attrlink = GoogleSheetBuilder.buildAttributeLink(attributeLink, dataTypeMap, realmName, code);
@@ -159,23 +126,23 @@ public class Optimization {
                 if (codeSet.contains(code.toUpperCase())) {
                     if (isChanged(attrlink, codeAttributeMapping.get(code.toUpperCase()))) {
                         attributeLinkUpdateList.add(attrlink);
-                        updated++;
+                        summary.addUpdated();
                     } else {
-                        skipped++;
+                        summary.addSkipped();
                     }
                 } else {
                     // insert new item
                     attributeLinkInsertList.add(attrlink);
-                    newItem++;
+                    summary.addNew();
                 }
             } else {
-                invalid++;
+                summary.addInvalid();
             }
         }
 
         service.bulkInsert(attributeLinkInsertList);
         service.bulkUpdate(attributeLinkUpdateList, codeAttributeMapping);
-        printSummary("AttributeLink", total, invalid, skipped, updated, newItem);
+        printSummary("AttributeLink", summary);
     }
 
     public void attributesOptimization(Map<String, Map<String, String>> project,
@@ -191,14 +158,10 @@ public class Optimization {
 
         ArrayList<PanacheEntity> attributeInsertList = new ArrayList<>();
         ArrayList<PanacheEntity> attributeUpdateList = new ArrayList<>();
-        int invalid = 0;
-        int total = 0;
-        int skipped = 0;
-        int newItem = 0;
-        int updated = 0;
+        Summary summary = new Summary();
 
         for (Map.Entry<String, Map<String, String>> data : project.entrySet()) {
-            total += 1;
+            summary.addTotal();
             Map<String, String> attributes = data.getValue();
             String code = attributes.get("code").replaceAll("^\"|\"$", "");
 
@@ -209,23 +172,23 @@ public class Optimization {
                 if (codeAttributeMapping.containsKey(code.toUpperCase())) {
                     if (isChanged(attr, codeAttributeMapping.get(code.toUpperCase()))) {
                         attributeUpdateList.add(attr);
-                        updated++;
+                        summary.addUpdated();
                     } else {
-                        skipped++;
+                        summary.addSkipped();
                     }
                 } else {
                     // insert new item
                     attributeInsertList.add(attr);
-                    newItem++;
+                    summary.addNew();
                 }
             } else {
-                invalid++;
+                summary.addInvalid();
             }
         }
 
         service.bulkInsert(attributeInsertList);
         service.bulkUpdate(attributeUpdateList, codeAttributeMapping);
-        printSummary(tableName, total, invalid, skipped, updated, newItem);
+        printSummary(tableName, summary);
     }
 
     public void baseEntityAttributesOptimization(Map<String, Map<String, String>> project, String realmName,
@@ -246,25 +209,21 @@ public class Optimization {
             attrHashMap.put(attribute.code, attribute);
         }
 
-        int invalid = 0;
-        int total = 0;
-        int skipped = 0;
-        int newItem = 0;
-        int updated = 0;
+        Summary summary = new Summary();
 
         for (Map.Entry<String, Map<String, String>> entry : project.entrySet()) {
-            total++;
+            summary.addTotal();
             Map<String, String> baseEntityAttr = entry.getValue();
 
             String baseEntityCode = GoogleSheetBuilder.getBaseEntityCodeFromBaseEntityAttribute(baseEntityAttr,
                     userCodeUUIDMapping);
             if (baseEntityCode == null) {
-                invalid++;
+                summary.addInvalid();
                 continue;
             }
             String attributeCode = GoogleSheetBuilder.getAttributeCodeFromBaseEntityAttribute(baseEntityAttr);
             if (attributeCode == null) {
-                invalid++;
+                summary.addInvalid();
                 continue;
             }
 
@@ -272,12 +231,12 @@ public class Optimization {
                     userCodeUUIDMapping);
             if (be != null) {
                 service.updateWithAttributes(be);
-                newItem++;
+                summary.addNew();
             } else {
-                invalid++;
+                summary.addInvalid();
             }
         }
-        printSummary("BaseEntityAttributes", total, invalid, skipped, updated, newItem);
+        printSummary("BaseEntityAttributes", summary);
     }
 
     public void baseEntitysOptimization(Map<String, Map<String, String>> project, String realmName,
@@ -293,14 +252,10 @@ public class Optimization {
 
         ArrayList<PanacheEntity> baseEntityInsertList = new ArrayList<>();
         ArrayList<PanacheEntity> baseEntityUpdateList = new ArrayList<>();
-        int invalid = 0;
-        int total = 0;
-        int skipped = 0;
-        int newItem = 0;
-        int updated = 0;
+        Summary summary = new Summary();
 
         for (Map.Entry<String, Map<String, String>> entry : project.entrySet()) {
-            total += 1;
+            summary.addTotal();
             Map<String, String> baseEntitys = entry.getValue();
             String code = baseEntitys.get("code").replaceAll("^\"|\"$", "");
             BaseEntity baseEntity = GoogleSheetBuilder.buildBaseEntity(baseEntitys, realmName);
@@ -315,22 +270,22 @@ public class Optimization {
                 if (codeBaseEntityMapping.containsKey(baseEntity.getCode())) {
                     if (isChanged(baseEntity, codeBaseEntityMapping.get(baseEntity.getCode()))) {
                         baseEntityUpdateList.add(baseEntity);
-                        updated++;
+                        summary.addUpdated();
                     } else {
-                        skipped++;
+                        summary.addSkipped();
                     }
                 } else {
                     // insert new item
                     baseEntityInsertList.add(baseEntity);
-                    newItem++;
+                    summary.addNew();
                 }
             } else {
-                invalid++;
+                summary.addInvalid();
             }
         }
         service.bulkInsert(baseEntityInsertList);
         service.bulkUpdate(baseEntityUpdateList, codeBaseEntityMapping);
-        printSummary(tableName, total, invalid, skipped, updated, newItem);
+        printSummary(tableName, summary);
     }
 
     public void entityEntitysOptimization(Map<String, Map<String, String>> project, String realmName,
@@ -356,9 +311,9 @@ public class Optimization {
 
         HashMap<String, EntityEntity> codeBaseEntityEntityMapping = new HashMap<>();
         for (EntityEntity entityEntity : entityEntityFromDB) {
-            String beCode = entityEntity.pk.getSource().getCode();
-            String attrCode = entityEntity.pk.getAttribute().code;
-            String targetCode = entityEntity.pk.getTargetCode();
+            String beCode = entityEntity.getPk().getSource().getCode();
+            String attrCode = entityEntity.getPk().getAttribute().code;
+            String targetCode = entityEntity.getPk().getTargetCode();
             if (targetCode.toUpperCase().startsWith("PER_")) {
                 targetCode = KeycloakUtils.getKeycloakUUIDByUserCode(targetCode.toUpperCase(), userCodeUUIDMapping);
             }
@@ -366,14 +321,10 @@ public class Optimization {
             codeBaseEntityEntityMapping.put(uniqueCode, entityEntity);
         }
 
-        int invalid = 0;
-        int total = 0;
-        int skipped = 0;
-        int newItem = 0;
-        int updated = 0;
+        Summary summary = new Summary();
 
         for (Map.Entry<String, Map<String, String>> entry : project.entrySet()) {
-            total++;
+            summary.addTotal();
             Map<String, String> entEnts = entry.getValue();
             String linkCode = entEnts.get("linkCode".toLowerCase().replaceAll("^\"|\"$|_|-", ""));
 
@@ -399,15 +350,15 @@ public class Optimization {
             BaseEntity tbe = beHashMap.get(targetCode.toUpperCase());
             if (linkAttribute == null) {
                 log.error("EntityEntity Link code:" + linkCode + " doesn't exist in Attribute table.");
-                invalid++;
+                summary.addInvalid();
                 continue;
             } else if (sbe == null) {
                 log.error("EntityEntity parent code:" + parentCode + " doesn't exist in BaseEntity table.");
-                invalid++;
+                summary.addInvalid();
                 continue;
             } else if (tbe == null) {
                 log.error("EntityEntity target Code:" + targetCode + " doesn't exist in BaseEntity table.");
-                invalid++;
+                summary.addInvalid();
                 continue;
             }
 
@@ -418,24 +369,24 @@ public class Optimization {
                     ee.setWeight(weight);
                     ee.valueString = valueString;
                     service.updateEntityEntity(ee);
-                    updated++;
+                    summary.addUpdated();
                 } else {
                     EntityEntity ee = new EntityEntity(sbe, tbe, linkAttribute, weight);
                     ee.valueString = valueString;
                     service.insertEntityEntity(ee);
-                    newItem++;
+                    summary.addNew();
                 }
             } else {
                 try {
                     sbe.addTarget(tbe, linkAttribute, weight, valueString);
                     service.updateWithAttributes(sbe);
-                    newItem++;
+                    summary.addNew();
                 } catch (BadDataException be) {
                     log.error(String.format("Should never reach here!, BaseEntity:%s, Attribute:%s ", tbe.getCode(), linkAttribute.code));
                 }
             }
         }
-        printSummary("EntityEntity", total, invalid, skipped, updated, newItem);
+        printSummary("EntityEntity", summary);
     }
 
     public void messageTemplatesOptimization(Map<String, Map<String, String>> project, String realmName) {
@@ -449,20 +400,16 @@ public class Optimization {
 
         ArrayList<PanacheEntity> messageInsertList = new ArrayList<>();
         ArrayList<PanacheEntity> messageUpdateList = new ArrayList<>();
-        int invalid = 0;
-        int total = 0;
-        int skipped = 0;
-        int newItem = 0;
-        int updated = 0;
+        Summary summary = new Summary();
 
         for (Map.Entry<String, Map<String, String>> data : project.entrySet()) {
-            total += 1;
+            summary.addTotal();
             Map<String, String> template = data.getValue();
             String code = template.get("code");
             String name = template.get("name");
             if (StringUtils.isBlank(name)) {
                 log.error("Templates:" + code + "has EMPTY name.");
-                invalid += 1;
+                summary.addInvalid();
                 continue;
             }
 
@@ -470,19 +417,19 @@ public class Optimization {
             if (codeMsgMapping.containsKey(code.toUpperCase())) {
                 if (isChanged(msg, codeMsgMapping.get(code.toUpperCase()))) {
                     messageUpdateList.add(msg);
-                    updated++;
+                    summary.addUpdated();
                 } else {
-                    skipped++;
+                    summary.addSkipped();
                 }
             } else {
                 // insert new item
                 messageInsertList.add(msg);
-                newItem++;
+                summary.addNew();
             }
         }
         service.bulkInsert(messageInsertList);
         service.bulkUpdate(messageUpdateList, codeMsgMapping);
-        printSummary(tableName, total, invalid, skipped, updated, newItem);
+        printSummary(tableName, summary);
     }
 
     public void questionQuestionsOptimization(Map<String, Map<String, String>> project, String realmName) {
@@ -510,19 +457,16 @@ public class Optimization {
 
         ArrayList<QuestionQuestion> questionQuestionInsertList = new ArrayList<>();
         ArrayList<QuestionQuestion> questionQuestionUpdateList = new ArrayList<>();
-        int invalid = 0;
-        int total = 0;
-        int skipped = 0;
-        int newItem = 0;
-        int updated = 0;
+
+        Summary summary = new Summary();
 
         for (Map.Entry<String, Map<String, String>> entry : project.entrySet()) {
-            total += 1;
+            summary.addTotal();
             Map<String, String> queQues = entry.getValue();
 
             QuestionQuestion qq = GoogleSheetBuilder.buildQuestionQuestion(queQues, realmName, questionHashMap);
             if (qq == null) {
-                invalid++;
+                summary.addInvalid();
                 continue;
             }
 
@@ -537,19 +481,19 @@ public class Optimization {
             if (codeQuestionMapping.containsKey(uniqueCode.toUpperCase())) {
                 if (isChanged(qq, codeQuestionMapping.get(uniqueCode.toUpperCase()))) {
                     questionQuestionUpdateList.add(qq);
-                    updated++;
+                    summary.addUpdated();
                 } else {
-                    skipped++;
+                    summary.addSkipped();
                 }
             } else {
                 // insert new item
                 questionQuestionInsertList.add(qq);
-                newItem++;
+                summary.addNew();
             }
         }
         service.bulkInsertQuestionQuestion(questionQuestionInsertList);
         service.bulkUpdateQuestionQuestion(questionQuestionUpdateList, codeQuestionMapping);
-        printSummary("QuestionQuestion", total, invalid, skipped, updated, newItem);
+        printSummary("QuestionQuestion", summary);
     }
 
     public void questionsOptimization(Map<String, Map<String, String>> project, String realmName, boolean isSynchronise) {
@@ -582,16 +526,13 @@ public class Optimization {
             attributeHashMap.put(attribute.code, attribute);
         }
 
-        int invalid = 0;
-        int total = 0;
-        int skipped = 0;
-        int newItem = 0;
-        int updated = 0;
+
+        Summary summary = new Summary();
 
         for (Map.Entry<String, Map<String, String>> rawData : project.entrySet()) {
-            total += 1;
+            summary.addTotal();
             if (rawData.getKey().isEmpty()) {
-                skipped += 1;
+                summary.addSkipped();
                 continue;
             }
 
@@ -600,7 +541,7 @@ public class Optimization {
 
             Question question = GoogleSheetBuilder.buildQuestion(questions, attributeHashMap, realmName);
             if (question == null) {
-                invalid++;
+                summary.addInvalid();
                 continue;
             }
 
@@ -611,12 +552,12 @@ public class Optimization {
                     if (val != null) {
                         val.setRealm(realmName);
                         service.updateRealm(val);
-                        updated++;
+                        summary.addUpdated();
                         continue;
                     }
                 }
                 service.insert(question);
-                newItem++;
+                summary.addNew();
             } else {
                 String name = questions.get("name");
                 String html = questions.get("html");
@@ -637,10 +578,10 @@ public class Optimization {
                 existing.setReadonly(readonly);
                 existing.setMandatory(mandatory);
                 service.upsert(existing);
-                updated++;
+                summary.addUpdated();
             }
         }
-        printSummary("Question", total, invalid, skipped, updated, newItem);
+        printSummary("Question", summary);
     }
 
     public void validationsOptimization(Map<String, Map<String, String>> project, String realmName) {
@@ -660,14 +601,9 @@ public class Optimization {
 
         ArrayList<PanacheEntity> validationInsertList = new ArrayList<>();
         ArrayList<PanacheEntity> validationUpdateList = new ArrayList<>();
-        int invalid = 0;
-        int total = 0;
-        int skipped = 0;
-        int newItem = 0;
-        int updated = 0;
-
+        Summary summary = new Summary();
         for (Map<String, String> validations : project.values()) {
-            total += 1;
+            summary.addTotal();
             String code = validations.get("code").replaceAll("^\"|\"$", "");
             Validation val = GoogleSheetBuilder.buildValidation(validations, realmName, code);
 
@@ -676,20 +612,20 @@ public class Optimization {
                 if (codeSet.contains(code.toUpperCase())) {
                     if (isChanged(val, codeValidationMapping.get(code.toUpperCase()))) {
                         validationUpdateList.add(val);
-                        updated++;
+                        summary.addUpdated();
                     } else {
-                        skipped++;
+                        summary.addSkipped();
                     }
                 } else {
                     validationInsertList.add(val);
-                    newItem++;
+                    summary.addNew();
                 }
             } else {
-                invalid += 1;
+                summary.addInvalid();
             }
         }
         service.bulkInsert(validationInsertList);
         service.bulkUpdate(validationUpdateList, codeValidationMapping);
-        printSummary(tableName, total, invalid, skipped, updated, newItem);
+        printSummary(tableName, summary);
     }
 }
