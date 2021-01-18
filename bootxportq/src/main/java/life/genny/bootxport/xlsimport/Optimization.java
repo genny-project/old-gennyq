@@ -46,8 +46,9 @@ public class Optimization {
             Validator validator = factory.getValidator();
             Set<ConstraintViolation<PanacheEntity>> constraints = validator.validate(t);
             for (ConstraintViolation<PanacheEntity> constraint : constraints) {
-                log.error(String.format("Validates constraints failure, Code:%s, PropertyPath:%s,Error:%s.",
-                        t.code, constraint.getPropertyPath(), constraint.getMessage()));
+            // TODO
+//                log.error(String.format("Validates constraints failure, Code:%s, PropertyPath:%s,Error:%s.",
+//                        t.code, constraint.getPropertyPath(), constraint.getMessage()));
             }
             return constraints.isEmpty();
         }
