@@ -37,7 +37,7 @@ public class MySqlServer implements QuarkusTestResourceLifecycleManager {
             .withEnv("MYSQL_ROOT_PASSWORD","password")
            .waitingFor(Wait.forLogMessage(".*ready for connection.*\\n", 1))
      //      .withLogConsumer(logConsumer)
-            .withStartupTimeout(Duration.ofMinutes(3));
+            .withStartupTimeout(Duration.ofMinutes(5));
     
  
 

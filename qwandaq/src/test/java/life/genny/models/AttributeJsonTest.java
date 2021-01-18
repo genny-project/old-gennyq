@@ -1,42 +1,22 @@
-package life.genny.pojos;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+package life.genny.models;
 
 import javax.json.bind.Jsonb;
 import javax.json.bind.JsonbBuilder;
 
-
 import org.jboss.logging.Logger;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
-import io.quarkus.test.junit.QuarkusTest;
-import life.genny.models.DateTimeDeserializer;
 import life.genny.models.attribute.Attribute;
 import life.genny.models.attribute.AttributeText;
-import life.genny.models.converter.LocalDateConverter;
 import life.genny.models.message.QDataAttributeMessage;
 import life.genny.models.validation.Validation;
 
 
-@QuarkusTest
+
 public class AttributeJsonTest {
 	
 	private static final Logger log = Logger.getLogger(AttributeJsonTest.class);
 	
-//	static GsonBuilder gsonBuilder = new GsonBuilder();       
-//
-//	static public Gson gson = gsonBuilder
-//			.registerTypeAdapter(LocalDateTime.class, new DateTimeDeserializer())
-//			.registerTypeAdapter(LocalDate.class, new LocalDateConverter())
-//		//	.excludeFieldsWithModifiers(Modifier.STATIC, Modifier.TRANSIENT, Modifier.VOLATILE)
-//		//	.excludeFieldsWithoutExposeAnnotation()
-//		//    .disableHtmlEscaping()
-//		    .setPrettyPrinting()
-//			.create();
 	@Test
 	public void attributeJsonTest()
 	{
@@ -53,6 +33,20 @@ public class AttributeJsonTest {
 		
 		String ja = jsonb.toJson(msg);
 		
+		Validation vv = new Validation("VLD_TEST", "Test Validation", ".*");
+		String validationJson = jsonb.toJson(vv);
+		System.out.println("Validation json = "+validationJson);
+		
+		try {
+			 Validation validation2 = jsonb.fromJson(validationJson, Validation.class);
+			 System.out.println(validation2);
+
+      } catch (Exception e) {
+//      	     log.error("The JSON file received is  :::  "+json);;
+           log.error("Bad Deserialisation ");
+      }
+		
+		
 		String vjson = String.join("\n", "{",
 	            "\"regex\": \".*\",",
 	            "\"selectionBaseEntityGroupList\": [",
@@ -62,7 +56,7 @@ public class AttributeJsonTest {
 	            "\"multiAllowed\": false,",
 	            "\"code\": \"VLD_ANYTHING\",",
 	            "\"index\": 0,",
-	            "\"created\": \"2020-08-25T09:34:56.979\",",
+	            "\"created\": \"2020-08-25T09:34:56.970Z\",",
 	            "\"name\": \"Anything\",",
 	            "\"realm\": \"genny\"",
 	          "}");
@@ -94,11 +88,12 @@ public class AttributeJsonTest {
 		            "\"multiAllowed\": false,",
 		            "\"code\": \"VLD_ANYTHING\",",
 		            "\"index\": 0,",
-		            "\"created\": \"2020-08-25T09:34:56.979\",",
+		            "\"created\": \"2020-08-25T09:34:56.979Z\",",
 		            "\"name\": \"Anything\",",
 		            "\"realm\": \"genny\"",
 		          "}",
 		        "]",
+		      "}",
 		      "}");
 		
 		

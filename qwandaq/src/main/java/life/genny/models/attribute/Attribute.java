@@ -189,7 +189,6 @@ public class Attribute extends PanacheEntity {
         return result;
     }
 
-
     @Override
     public boolean equals(Object obj) {
         if (this == obj)

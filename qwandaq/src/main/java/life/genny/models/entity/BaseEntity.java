@@ -16,7 +16,6 @@
 
 package life.genny.models.entity;
 
-import java.sql.Date;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.HashSet;
@@ -43,15 +42,11 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlTransient;
 
 import life.genny.qwanda.Answer;
 import life.genny.qwanda.AnswerLink;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.infinispan.protostream.descriptors.Type;
 import org.jboss.logging.Logger;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import io.quarkus.runtime.annotations.RegisterForReflection;
@@ -97,16 +92,12 @@ public class BaseEntity extends PanacheEntity {
 
     private static final String DEFAULT_CODE_PREFIX = "BAS_";
     private static final String REGEX_CODE = "[A-Z]{3}\\_[A-Z0-9\\.\\-\\@\\_]*";
+	private static final String REGEX_NAME = "[\\pL0-9/\\:\\ \\_\\.\\,\\?\\>\\<\\%\\$\\&\\!\\*\\[\\]\\'\\-\\@\\(\\)]+.?";
+	private static final String REGEX_REALM = "[a-zA-Z0-9]+";
+	private static final String DEFAULT_REALM = "genny";
 
-    static public final String REGEX_NAME = "[\\pL0-9/\\:\\ \\_\\.\\,\\?\\>\\<\\%\\$\\&\\!\\*" + ""
-            + "\\[\\]\\'\\-\\@\\(\\)]+.?";
-    private static final String REGEX_REALM = "[a-zA-Z0-9]+";
-    private static final String DEFAULT_REALM = "genny";
-
-
-    @Column(name = "active")
-    public Boolean active = true;
-
+	@Column(name = "active")
+	public Boolean active=true;
 
     @NotEmpty
     @JsonbTransient

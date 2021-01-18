@@ -54,6 +54,7 @@
 		<module>apiq</module>
 		<module>bridgeq</module>
 		<module>shleemy</module>
+		<module>messagesq</module>
 		<module>genny-proxy</module>
 		<module>notes</module>
 		<!-- order important !!! qwandaq ======>>>> contains stardnad genny pojo util -->
