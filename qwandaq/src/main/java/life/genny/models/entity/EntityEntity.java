@@ -75,6 +75,7 @@ public class EntityEntity  extends PanacheEntity  implements java.io.Serializabl
 	/**
 	 * Store the String value of the attribute for the baseEntity
 	 */
+	 @Column(name = "valueString", insertable = false, updatable = false)
 	public String valueString;
 	// For compatibility initially
 	
