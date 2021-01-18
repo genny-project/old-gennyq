@@ -79,8 +79,7 @@ public class Ask extends PanacheEntity {
     /**
      *
      */
-    public static final String REGEX_NAME = "[\\pL0-9/\\:\\ \\_\\.\\,\\?\\>\\<\\%\\$\\&\\!\\*" + ""
-            + "\\[\\]\\'\\-\\@\\(\\)]+.?";
+    public static final String REGEX_NAME = "[\\pL0-9/: _.,?><%$&!*" + "" + "\\[\\]'\\-@()]+.?";
     private static final String REGEX_REALM = "[a-zA-Z0-9]+";
     private static final String DEFAULT_REALM = "genny";
     /**
@@ -91,7 +90,7 @@ public class Ask extends PanacheEntity {
     @NotNull
     @Size(max = 128)
     @Pattern(regexp = REGEX_NAME, message = "Must contain valid characters for name")
-    @Column(name = "name", updatable = true, nullable = true)
+    @Column(name = "name")
     public String name;
 
     @NotEmpty
@@ -205,7 +204,7 @@ public class Ask extends PanacheEntity {
         this.sourceCode = aSourceCode;
         this.targetCode = aTargetCode;
         this.attributeCode = aQuestion.getAttributeCode();
-        contextList = new ContextList(new CopyOnWriteArrayList<Context>());
+        this.contextList = new ContextList(new CopyOnWriteArrayList<>());
         this.mandatory = aMandatory;
         this.weight = weight;
         this.disabled = disabled;

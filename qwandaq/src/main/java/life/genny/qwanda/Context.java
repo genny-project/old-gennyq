@@ -254,6 +254,4 @@ public class Context extends CoreEntity {
         return "Context [entity=" + entity + ", weight=" + weight + ", contextCode=" + contextCode + ", dataType="
                 + dataType + ", visualControlType=" + visualControlType + "]";
     }
-
-
 }
