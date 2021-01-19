@@ -302,7 +302,7 @@ public class BatchLoading {
                     if (attribute == null) {
                         log.error(String.format("BASE ENTITY CODE:%s, AttributeCode:%s is not in the Attribute Table!!!", baseEntityCode, attributeCode));
                     } else {
-                        be = service.findBaseEntityByCode(baseEntityCode);
+                        be = service.findBaseEntityByCode(baseEntityCode, realmName);
                         Double weightField = null;
                         try {
                             weightField = Double.valueOf(weight);
@@ -357,6 +357,7 @@ public class BatchLoading {
 
             String targetCode = entEnts.get("targetCode".toLowerCase().replaceAll("^\"|\"$|_|-", ""));
             String weightStr = entEnts.get("weight");
+            String realmStr= entEnts.get("realm");
             String valueString = entEnts.get("valueString".toLowerCase().replaceAll("^\"|\"$|_|-", ""));
             Optional<String> weightStrOpt = Optional.ofNullable(weightStr);
             final Double weight = weightStrOpt.filter(d -> !d.equals(" ")).map(Double::valueOf).orElse(0.0);
@@ -364,8 +365,8 @@ public class BatchLoading {
             BaseEntity tbe = null;
             Attribute linkAttribute = service.findAttributeByCode(linkCode);
             try {
-                sbe = service.findBaseEntityByCode(parentCode);
-                tbe = service.findBaseEntityByCode(targetCode);
+                sbe = service.findBaseEntityByCode(parentCode, realmStr);
+                tbe = service.findBaseEntityByCode(targetCode, realmStr);
                 if (isSynchronise) {
                     try {
                         EntityEntity ee = service.findEntityEntity(parentCode, targetCode, linkCode);
@@ -694,7 +695,7 @@ public class BatchLoading {
 
     public void upsertKeycloakJson(String keycloakJson) {
         final String PROJECT_CODE = "PRJ_" + this.mainRealm.toUpperCase();
-        BaseEntity be = service.findBaseEntityByCode(PROJECT_CODE);
+        BaseEntity be = service.findBaseEntityByCode(PROJECT_CODE, this.mainRealm);
 
         ValidatorFactory factory = javax.validation.Validation.buildDefaultValidatorFactory();
         Validator validator = factory.getValidator();
@@ -724,7 +725,7 @@ public class BatchLoading {
     public void upsertProjectUrls(String urlList) {
 
         final String PROJECT_CODE = "PRJ_" + this.mainRealm.toUpperCase();
-        BaseEntity be = service.findBaseEntityByCode(PROJECT_CODE);
+        BaseEntity be = service.findBaseEntityByCode(PROJECT_CODE, this.mainRealm);
 
         ValidatorFactory factory = javax.validation.Validation.buildDefaultValidatorFactory();
         Validator validator = factory.getValidator();
@@ -828,6 +829,7 @@ public class BatchLoading {
         optimization.messageTemplatesOptimization(rx.getMessages(), rx.getCode());
     }
 
+/*
     public void deleteFromProject(life.genny.bootxport.bootx.RealmUnit rx) {
         service.setRealm(rx.getCode());
         deleteAttributes(rx.getAttributes());
@@ -839,6 +841,7 @@ public class BatchLoading {
         deleteMessageTemplates(rx.getNotifications());
         deleteMessageTemplates(rx.getMessages());
     }
+ */
 
     public void deleteAttributes(Map<String, Map<String, String>> project) {
         project.entrySet().stream().forEach(d -> {
@@ -847,6 +850,7 @@ public class BatchLoading {
         });
     }
 
+/*
     public void deleteBaseEntitys(Map<String, Map<String, String>> project) {
         project.entrySet().stream().forEach(d -> {
             BaseEntity baseEntity = service.findBaseEntityByCode(d.getKey());
@@ -854,6 +858,7 @@ public class BatchLoading {
         });
 
     }
+ */
 
     public void deleteAttributeLinks(Map<String, Map<String, String>> project) {
         project.entrySet().stream().forEach(d -> {

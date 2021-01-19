@@ -14,11 +14,14 @@ import life.genny.qwandautils.GennySettings;
 import org.hibernate.exception.ConstraintViolationException;
 
 import javax.inject.Inject;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceException;
 import javax.validation.constraints.NotNull;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static io.quarkus.hibernate.orm.panache.Panache.getEntityManager;
 
@@ -54,6 +57,13 @@ public class Service implements QwandaRepository {
 
     @Override
     public BaseEntity upsert(BaseEntity baseEntity) {
+        BaseEntity existing = findBaseEntity(baseEntity);
+        if (existing == null) {
+            baseEntity.persist();
+            return baseEntity;
+        } else {
+            existing.getEntityManager().merge(baseEntity);
+        }
         return null;
     }
 
@@ -83,8 +93,17 @@ public class Service implements QwandaRepository {
     }
 
     @Override
-    public BaseEntity findBaseEntityByCode(@NotNull String baseEntityCode) {
-        return null;
+    public BaseEntity findBaseEntity(@NotNull BaseEntity baseEntity) {
+        return findBaseEntityByCode(baseEntity.code, baseEntity.realm);
+    }
+
+    @Override
+    public BaseEntity findBaseEntityByCode(String code, String realm) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("code", code);
+        params.put("realm", realm);
+        BaseEntity existing = BaseEntity.find("code = :code and realm= :realm", params).firstResult();
+        return existing;
     }
 
     @Override

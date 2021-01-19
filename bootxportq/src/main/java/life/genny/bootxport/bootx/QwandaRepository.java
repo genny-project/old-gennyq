@@ -36,7 +36,9 @@ public interface QwandaRepository {
 
     Attribute findAttributeByCode(@NotNull final String code);
 
-    BaseEntity findBaseEntityByCode(@NotNull final String baseEntityCode);
+    BaseEntity findBaseEntity(@NotNull final BaseEntity baseEntity);
+
+    BaseEntity findBaseEntityByCode(@NotNull final String code, final String realm);
 
     Long updateWithAttributes(BaseEntity entity);
 
