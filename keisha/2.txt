@@ -1,5 +1,0 @@
-BaseEntity [active=true, baseEntityAttributes=[EntityAttribute [attribute=Attribute [code=XYZ_ATTRTEST, created=2021-01-13T04:36:05.732751, dataType=DataType [className=class java.lang.String, dttCode=DTT_STRING, inputmask=, typeName=class java.la
-ng.String, validationList=[Validation [code=XYZ_TEST, created=2021-01-13T04:36:05.588472, multiAllowed=false, name=testxyz, options=null, realm=genny, recursiveGroup=false, regex=.*, selectionBaseEntityGroupList=null, updated=null]]], defaultPriva
-cyFlag=false, defaultValue=null, description=null, help=null, name=attrtestxyz, placeholder=attrtestxyz, realm=genny, updated=null], attributeCode=null, attributeName=null, baseEntityCode=XYZ_TEST, created=2021-01-13T04:36:05.733213, index=0, infe
-rred=false, privacyFlag=false, readonly=true, realm=genny, updated=null, value=]], code=XYZ_TEST, created=2021-01-13T04:36:05.733007, links=[], name=testxyz, questions=[], realm=genny, updated=null]
-
