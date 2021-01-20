@@ -1,7 +1,6 @@
 package life.genny.bootxport.xlsimport;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
-import life.genny.bootxport.bootx.QwandaRepository;
 import life.genny.qwanda.*;
 import life.genny.models.attribute.Attribute;
 import life.genny.models.attribute.AttributeLink;
@@ -14,6 +13,7 @@ import life.genny.models.validation.Validation;
 import life.genny.qwandautils.GennySettings;
 import life.genny.nest.utils.KeycloakUtils;
 
+import life.genny.services.QwandaRepository;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,9 +25,7 @@ import java.util.*;
 
 public class Optimization {
     private static final Logger log = LoggerFactory.getLogger(Optimization.class);
-
     private QwandaRepository service;
-
 
     public Optimization(QwandaRepository repo) {
         this.service = repo;
@@ -41,12 +39,12 @@ public class Optimization {
 
     private boolean isValid(PanacheEntity t) {
         if (t == null) return false;
-        if (t instanceof Validation || t instanceof  Attribute || t instanceof BaseEntity) {
+        if (t instanceof Validation || t instanceof Attribute || t instanceof BaseEntity) {
             ValidatorFactory factory = javax.validation.Validation.buildDefaultValidatorFactory();
             Validator validator = factory.getValidator();
             Set<ConstraintViolation<PanacheEntity>> constraints = validator.validate(t);
             for (ConstraintViolation<PanacheEntity> constraint : constraints) {
-            // TODO
+                // TODO
 //                log.error(String.format("Validates constraints failure, Code:%s, PropertyPath:%s,Error:%s.",
 //                        t.code, constraint.getPropertyPath(), constraint.getMessage()));
             }

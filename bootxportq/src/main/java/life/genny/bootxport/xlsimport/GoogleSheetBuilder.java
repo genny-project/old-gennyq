@@ -83,7 +83,7 @@ public class GoogleSheetBuilder {
         if (booleanString == null) {
             return false;
         }
-        return "TRUE".equalsIgnoreCase(booleanString) || "YES".equalsIgnoreCase(booleanString.toUpperCase())
+        return "TRUE".equalsIgnoreCase(booleanString) || "YES".equalsIgnoreCase(booleanString)
                 || "T".equalsIgnoreCase(booleanString)
                 || "Y".equalsIgnoreCase(booleanString) || "1".equalsIgnoreCase(booleanString);
 
@@ -177,7 +177,7 @@ public class GoogleSheetBuilder {
     public static AttributeLink buildAttributeLink(Map<String, String> attributeLink, Map<String, DataType> dataTypeMap, String realmName, String code) {
         String name = attributeLink.get("name").replaceAll(REGEX_1, "");
         String privacyStr = attributeLink.get(PRIVACY);
-        Boolean privacy = "TRUE".equalsIgnoreCase(privacyStr);
+        boolean privacy = "TRUE".equalsIgnoreCase(privacyStr);
 
         AttributeLink linkAttribute = new AttributeLink(code, name);
         linkAttribute.defaultPrivacyFlag = privacy;
@@ -187,8 +187,7 @@ public class GoogleSheetBuilder {
         if (attributeLink.containsKey(dataTypeStr)) {
             String dataType = attributeLink.get("dataType".toLowerCase().trim().replaceAll(REGEX_2, ""))
                     .replaceAll(REGEX_1, "");
-            DataType dataTypeRecord = dataTypeMap.get(dataType);
-            linkAttribute.dataType = dataTypeRecord;
+            linkAttribute.dataType = dataTypeMap.get(dataType);
         }
         return linkAttribute;
     }
@@ -370,8 +369,7 @@ public class GoogleSheetBuilder {
         if (baseEntityAttr.containsKey(searchKey)) {
             baseEntityCode = baseEntityAttr.get(searchKey).replaceAll("^\"|\"$", "");
             if (baseEntityCode.startsWith("PER_")) {
-                String keycloakUUID = KeycloakUtils.getKeycloakUUIDByUserCode(baseEntityCode, userCodeUUIDMapping);
-                baseEntityCode = keycloakUUID;
+                baseEntityCode = KeycloakUtils.getKeycloakUUIDByUserCode(baseEntityCode, userCodeUUIDMapping);
             }
         } else {
             log.error("Invalid record, BaseEntityCode not found [" + baseEntityAttr + "]");
@@ -392,7 +390,6 @@ public class GoogleSheetBuilder {
         try {
             valueString = asList.stream().map(baseEntityAttr::get).findFirst();
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
             log.error("NULL ERROR: " + baseEntityAttr.get("baseentitycode") + ":" + attributeCode);
         }
@@ -463,10 +460,8 @@ public class GoogleSheetBuilder {
     private static String getNameFromMap(Map<String, String> baseEntitys, String defaultString) {
         String key = "name";
         String ret = defaultString;
-        if (baseEntitys.containsKey(key)) {
-            if (baseEntitys.get(key) != null) {
-                ret = baseEntitys.get(key).replaceAll("^\"|\"$", "");
-            }
+        if (baseEntitys.containsKey(key) && baseEntitys.get(key) != null) {
+            ret = baseEntitys.get(key).replaceAll("^\"|\"$", "");
         }
         return ret;
     }

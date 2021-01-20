@@ -27,8 +27,8 @@ public class ServiceTokenService {
     protected static final Logger log = org.apache.logging.log4j.LogManager
             .getLogger(MethodHandles.lookup().lookupClass().getCanonicalName());
 
-    private HashMap<String, String> serviceTokens = new HashMap<String, String>();
-    private HashMap<String, String> refreshServiceTokens = new HashMap<String, String>();
+    private HashMap<String, String> serviceTokens = new HashMap<>();
+    private HashMap<String, String> refreshServiceTokens = new HashMap<>();
 
     @Inject
     private SecureResources secureResources;
@@ -45,11 +45,8 @@ public class ServiceTokenService {
             String key = multitenancy.getSecurityKey();
             String encryptedPassword = multitenancy.getServicePassword();
             String realmToken = generateServiceToken(realm, keycloakUrl, secret, key, encryptedPassword);
-
             serviceTokens.put(multitenancy.getCode(), realmToken);
         }
-
-
     }
 
 

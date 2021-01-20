@@ -18,8 +18,8 @@ public class RealmUnit extends DataUnit {
     private String urlList;
     private String clientSecret;
     private String keycloakUrl;
-    private Boolean disable;
-    private Boolean skipGoogleDoc;
+    private Boolean disable = true;
+    private Boolean skipGoogleDoc = true;
     private String securityKey;
     private String servicePassword;
     private String uri;
