@@ -119,7 +119,6 @@ public class EntityEntity  extends PanacheEntity  implements java.io.Serializabl
   public EntityEntity(final BaseEntity source, final BaseEntity target,
       final Attribute attribute, Double weight) {
    this(source,target,attribute, "DUMMY",weight);
-   this.link.linkValue = null;
   }
 
   /**
@@ -136,6 +135,9 @@ public class EntityEntity  extends PanacheEntity  implements java.io.Serializabl
     this.source = source;
     this.attribute = attribute;
     this.realm = target.realm;
+    this.sourceCode = source.code;
+    this.targetCode = target.code;
+    this.attributeCode = attribute.code;
     this.target = target;
     link = new Link(source.code,target.code,attribute.code,null);
 
@@ -343,6 +345,148 @@ public int compareTo(EntityEntity obj) {
 public int compareTo(Object o) {
 	// TODO Auto-generated method stub
 	return 0;
+}
+
+@Override
+public int hashCode() {
+  final int prime = 31;
+  int result = 1;
+  result = prime * result + ((attribute == null) ? 0 : attribute.hashCode());
+  result = prime * result + ((attributeCode == null) ? 0 : attributeCode.hashCode());
+  result = prime * result + ((created == null) ? 0 : created.hashCode());
+  result = prime * result + ((link == null) ? 0 : link.hashCode());
+  result = prime * result + ((realm == null) ? 0 : realm.hashCode());
+  result = prime * result + ((source == null) ? 0 : source.hashCode());
+  result = prime * result + ((sourceCode == null) ? 0 : sourceCode.hashCode());
+  result = prime * result + ((target == null) ? 0 : target.hashCode());
+  result = prime * result + ((targetCode == null) ? 0 : targetCode.hashCode());
+  result = prime * result + ((updated == null) ? 0 : updated.hashCode());
+  result = prime * result + ((value == null) ? 0 : value.hashCode());
+  return result;
+}
+
+@Override
+public boolean equals(Object obj) {
+  if (this == obj)
+  {
+    return true;
+  }
+  if (obj == null)
+  {
+    return false;
+  }
+  if (getClass() != obj.getClass())
+  {
+    return false;
+  }
+  EntityEntity other = (EntityEntity) obj;
+  if (attribute == null) {
+    if (other.attribute != null)
+    {
+      return false;
+    }
+  } else if (!attribute.equals(other.attribute))
+  {
+    return false;
+  }
+  if (attributeCode == null) {
+    if (other.attributeCode != null)
+    {
+      return false;
+    }
+  } else if (!attributeCode.equals(other.attributeCode))
+  {
+    return false;
+  }
+  if (created == null) {
+    if (other.created != null)
+    {
+      return false;
+    }
+  } else if (!created.equals(other.created))
+  {
+    return false;
+  }
+  if (link == null) {
+    if (other.link != null)
+    {
+      return false;
+    }
+  } else if (!link.equals(other.link))
+  {
+    return false;
+  }
+  if (realm == null) {
+    if (other.realm != null)
+    {
+      return false;
+    }
+  } else if (!realm.equals(other.realm))
+  {
+    return false;
+  }
+  if (source == null) {
+    if (other.source != null)
+    {
+      return false;
+    }
+  } else if (!source.equals(other.source))
+  {
+    return false;
+  }
+  if (sourceCode == null) {
+    if (other.sourceCode != null)
+    {
+      return false;
+    }
+  } else if (!sourceCode.equals(other.sourceCode))
+  {
+    return false;
+  }
+  if (target == null) {
+    if (other.target != null)
+    {
+      return false;
+    }
+  } else if (!target.equals(other.target))
+  {
+    return false;
+  }
+  if (targetCode == null) {
+    if (other.targetCode != null)
+    {
+      return false;
+    }
+  } else if (!targetCode.equals(other.targetCode))
+  {
+    return false;
+  }
+  if (updated == null) {
+    if (other.updated != null)
+    {
+      return false;
+    }
+  } else if (!updated.equals(other.updated))
+  {
+    return false;
+  }
+  if (value == null) {
+    if (other.value != null)
+    {
+      return false;
+    }
+  } else if (!value.equals(other.value))
+  {
+    return false;
+  }
+  return true;
+}
+
+@Override
+public String toString() {
+  return "EntityEntity [attribute=" + attribute + ", attributeCode=" + attributeCode + ", created=" + created
+      + ", link=" + link + ", realm=" + realm + ", source=" + source + ", sourceCode=" + sourceCode + ", target="
+      + target + ", targetCode=" + targetCode + ", updated=" + updated + ", value=" + value + "]";
 }
 
 }

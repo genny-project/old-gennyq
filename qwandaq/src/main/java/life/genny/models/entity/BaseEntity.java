@@ -98,7 +98,8 @@ public class BaseEntity extends PanacheEntity {
 	private static final String DEFAULT_CODE_PREFIX = "BAS_";
 	private static final String REGEX_CODE = "[A-Z]{3}\\_[A-Z0-9\\.\\-\\@\\_]*";
 
-	private static final String REGEX_NAME = "[\\pL0-9/\\:\\ \\_\\.\\,\\?\\>\\<\\%\\$\\&\\!\\*\\[\\]\\'\\-\\@\\(\\)]+.?";
+	private static final String REGEX_NAME = "[\\pL0-9/\\:\\ \\_\\.\\,\\?\\>\\<\\%\\$\\&\\!\\*" + ""
+			+ "\\[\\]\\'\\-\\@\\(\\)]+.?";
 	private static final String REGEX_REALM = "[a-zA-Z0-9]+";
 	private static final String DEFAULT_REALM = "genny";
 	
@@ -803,15 +804,22 @@ public class BaseEntity extends PanacheEntity {
     return result;
   }
 
-  public static boolean compareSet(Set<?> set1, Set<?> set2){
-
-    if(set1 == null || set2 ==null){
-      return false;
-    }
+  public static boolean compareBaseEntityAttributes(Set<EntityAttribute> set1, Set<EntityAttribute> set2){
     if(set1.size()!=set2.size()){
       return false;
     }
-    return set1.containsAll(set2);
+    List<EntityAttribute> array1 = set1.stream().sorted().collect(Collectors.toList());
+    List<EntityAttribute> array2 = set2.stream().sorted().collect(Collectors.toList());
+    Boolean areEqual = true;
+    for(int count = 0; count < array1.size(); count++){
+      EntityAttribute ea1 = array1.get(count);
+      EntityAttribute ea2 = array2.get(count);
+      if(!ea1.baseEntityCode.equals(ea2.baseEntityCode)){
+        areEqual = false;
+        break;
+      }
+    }
+    return areEqual;
   }
 
   @Override
@@ -837,7 +845,8 @@ public class BaseEntity extends PanacheEntity {
       if (other.baseEntityAttributes != null) {
         return false;
       }
-    } else if (!compareSet(baseEntityAttributes, other.baseEntityAttributes)) {
+    } 
+    else if (!compareBaseEntityAttributes(baseEntityAttributes, other.baseEntityAttributes)) {
       return false;
     }
     if (code == null) {

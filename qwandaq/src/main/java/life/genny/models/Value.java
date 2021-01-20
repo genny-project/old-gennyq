@@ -72,10 +72,6 @@ public class Value implements Serializable,Comparable<Value> {
 		setValue(value);
 	}
 
-	public Value(Object value, DataType dataType) {
-		this.dataType = dataType;
-		setValue(dataType);
-	}
 
 	@SuppressWarnings("unchecked")
 	@JsonbTransient
@@ -250,69 +246,104 @@ public class Value implements Serializable,Comparable<Value> {
 		return (T)valueString;
 	}
 	
-	@JsonbTransient
-	@Transient
 	@Override
-	public String toString() {
-		String ret = "";
-		if( valueString != null) {
-			return valueString;
-		}
-		if(valueBoolean != null) {
-			return valueBoolean ? "TRUE" : "FALSE";
-		}
-
-		if(valueInteger != null) {
-			return valueInteger.toString();
-		}
-		if(valueDateTime != null) {
-			String dateTimePattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
-			DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(dateTimePattern);
-			String localDateTimeStr = valueDateTime.format(dateFormatter);
-			return localDateTimeStr;
-		}
-		if(valueDate != null) {
-			DateFormat df2 = new SimpleDateFormat("yyyy-MM-dd");
-			Date date = Date.from(valueDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
-			String dout2 = df2.format(date);
-			return dout2;
-		}
-		if(valueTime != null) {
-			DateFormat df2 = new SimpleDateFormat("HH:mm");			
-			String dout2 = df2.format(valueTime);
-			return dout2;
-		}
-		if(valueLong != null) {
-		    return valueLong.toString();
-		}
-		if(valueDouble != null) {
-		    return valueDouble.toString();
-		}
-		
-		return ret;
-		
-	}
+  public String toString() {
+    return "Value [dataType=" + dataType + ", expired=" + expired + ", refused=" + refused + ", valueBoolean="
+        + valueBoolean + ", valueDate=" + valueDate + ", valueDateTime=" + valueDateTime + ", valueDouble="
+        + valueDouble + ", valueInteger=" + valueInteger + ", valueLong=" + valueLong + ", valueString="
+        + valueString + ", valueTime=" + valueTime + ", weight=" + weight + "]";
+  }
 
 	@Override
-	public int hashCode() {
-		return Objects.hash(dataType, expired, refused, valueBoolean, valueDate, valueDateTime, valueDouble,
-				valueInteger, valueLong, valueString, valueTime, weight);
-	}
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + ((dataType == null) ? 0 : dataType.hashCode());
+    result = prime * result + ((expired == null) ? 0 : expired.hashCode());
+    result = prime * result + ((refused == null) ? 0 : refused.hashCode());
+    result = prime * result + ((valueBoolean == null) ? 0 : valueBoolean.hashCode());
+    result = prime * result + ((valueDate == null) ? 0 : valueDate.hashCode());
+    result = prime * result + ((valueDateTime == null) ? 0 : valueDateTime.hashCode());
+    result = prime * result + ((valueDouble == null) ? 0 : valueDouble.hashCode());
+    result = prime * result + ((valueInteger == null) ? 0 : valueInteger.hashCode());
+    result = prime * result + ((valueLong == null) ? 0 : valueLong.hashCode());
+    result = prime * result + ((valueString == null) ? 0 : valueString.hashCode());
+    result = prime * result + ((valueTime == null) ? 0 : valueTime.hashCode());
+    result = prime * result + ((weight == null) ? 0 : weight.hashCode());
+    return result;
+  }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (!(obj instanceof Value))
-			return false;
-		Value other = (Value) obj;
-		return Objects.equals(dataType, other.dataType) && Objects.equals(expired, other.expired)
-				&& Objects.equals(refused, other.refused) && Objects.equals(valueBoolean, other.valueBoolean)
-				&& Objects.equals(valueDate, other.valueDate) && Objects.equals(valueDateTime, other.valueDateTime)
-				&& Objects.equals(valueDouble, other.valueDouble) && Objects.equals(valueInteger, other.valueInteger)
-				&& Objects.equals(valueLong, other.valueLong) && Objects.equals(valueString, other.valueString)
-				&& Objects.equals(valueTime, other.valueTime) && Objects.equals(weight, other.weight);
-	}
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj)
+      return true;
+    if (obj == null)
+      return false;
+    if (getClass() != obj.getClass())
+      return false;
+    Value other = (Value) obj;
+    if (dataType == null) {
+      if (other.dataType != null)
+        return false;
+    } else if (!dataType.equals(other.dataType))
+      return false;
+    if (expired == null) {
+      if (other.expired != null)
+        return false;
+    } else if (!expired.equals(other.expired))
+      return false;
+    if (refused == null) {
+      if (other.refused != null)
+        return false;
+    } else if (!refused.equals(other.refused))
+      return false;
+    if (valueBoolean == null) {
+      if (other.valueBoolean != null)
+        return false;
+    } else if (!valueBoolean.equals(other.valueBoolean))
+      return false;
+    if (valueDate == null) {
+      if (other.valueDate != null)
+        return false;
+    } else if (!valueDate.equals(other.valueDate))
+      return false;
+    if (valueDateTime == null) {
+      if (other.valueDateTime != null)
+        return false;
+    } else if (!valueDateTime.equals(other.valueDateTime))
+      return false;
+    if (valueDouble == null) {
+      if (other.valueDouble != null)
+        return false;
+    } else if (!valueDouble.equals(other.valueDouble))
+      return false;
+    if (valueInteger == null) {
+      if (other.valueInteger != null)
+        return false;
+    } else if (!valueInteger.equals(other.valueInteger))
+      return false;
+    if (valueLong == null) {
+      if (other.valueLong != null)
+        return false;
+    } else if (!valueLong.equals(other.valueLong))
+      return false;
+    if (valueString == null) {
+      if (other.valueString != null)
+        return false;
+    } else if (!valueString.equals(other.valueString))
+      return false;
+    if (valueTime == null) {
+      if (other.valueTime != null)
+        return false;
+    } else if (!valueTime.equals(other.valueTime))
+      return false;
+    if (weight == null) {
+      if (other.weight != null)
+        return false;
+    } else if (!weight.equals(other.weight))
+      return false;
+    return true;
+  }
 
 	@Override
 	public int compareTo(Value obj) {

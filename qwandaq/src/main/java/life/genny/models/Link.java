@@ -156,4 +156,75 @@ public class Link implements Serializable {
   }
 
 
+
+@Override
+public int hashCode() {
+  final int prime = 31;
+  int result = 1;
+  result = prime * result + ((attributeCode == null) ? 0 : attributeCode.hashCode());
+  result = prime * result + ((childColor == null) ? 0 : childColor.hashCode());
+  result = prime * result + ((linkValue == null) ? 0 : linkValue.hashCode());
+  result = prime * result + ((parentColor == null) ? 0 : parentColor.hashCode());
+  result = prime * result + ((rule == null) ? 0 : rule.hashCode());
+  result = prime * result + ((sourceCode == null) ? 0 : sourceCode.hashCode());
+  result = prime * result + ((targetCode == null) ? 0 : targetCode.hashCode());
+  result = prime * result + ((weight == null) ? 0 : weight.hashCode());
+  return result;
+}
+
+
+
+@Override
+public boolean equals(Object obj) {
+  if (this == obj)
+    return true;
+  if (obj == null)
+    return false;
+  if (getClass() != obj.getClass())
+    return false;
+  Link other = (Link) obj;
+  if (attributeCode == null) {
+    if (other.attributeCode != null)
+      return false;
+  } else if (!attributeCode.equals(other.attributeCode))
+    return false;
+  if (childColor == null) {
+    if (other.childColor != null)
+      return false;
+  } else if (!childColor.equals(other.childColor))
+    return false;
+  if (linkValue == null) {
+    if (other.linkValue != null)
+      return false;
+  } else if (!linkValue.equals(other.linkValue))
+    return false;
+  if (parentColor == null) {
+    if (other.parentColor != null)
+      return false;
+  } else if (!parentColor.equals(other.parentColor))
+    return false;
+  if (rule == null) {
+    if (other.rule != null)
+      return false;
+  } else if (!rule.equals(other.rule))
+    return false;
+  if (sourceCode == null) {
+    if (other.sourceCode != null)
+      return false;
+  } else if (!sourceCode.equals(other.sourceCode))
+    return false;
+  if (targetCode == null) {
+    if (other.targetCode != null)
+      return false;
+  } else if (!targetCode.equals(other.targetCode))
+    return false;
+  if (weight == null) {
+    if (other.weight != null)
+      return false;
+  } else if (!weight.equals(other.weight))
+    return false;
+  return true;
+}
+
+
 }
