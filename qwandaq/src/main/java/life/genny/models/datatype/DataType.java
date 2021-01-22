@@ -26,6 +26,7 @@ import javax.persistence.Embeddable;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.google.gson.annotations.Expose;
 import org.jboss.logging.Logger;
 
 import life.genny.models.converter.ValidationListConverter;
@@ -229,6 +230,8 @@ public class DataType implements Serializable {
 		setClassName(simpleClassName);
 	}
 
+
+	private String component;
 
 	public String getComponent() {
 		return component;
