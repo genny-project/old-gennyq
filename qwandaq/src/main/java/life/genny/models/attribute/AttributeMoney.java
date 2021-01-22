@@ -70,6 +70,7 @@ public class AttributeMoney extends Attribute implements Serializable {
 	/**
 	  * Constructor.
 	  * 
+	  * @param none
 	  */
 	@SuppressWarnings("unused")
 	public AttributeMoney()

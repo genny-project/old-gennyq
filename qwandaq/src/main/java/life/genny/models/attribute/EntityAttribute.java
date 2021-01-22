@@ -107,9 +107,9 @@ public class EntityAttribute extends PanacheEntity {
 	/**
 	 * Constructor.
 	 * 
-	 * @param baseEntity the entity that needs to contain attributes
-	 * @param attribute  the associated Attribute
-	 * @param weight     the weighted importance of this attribute (relative to the
+	 * @param BaseEntity the entity that needs to contain attributes
+	 * @param Attribute  the associated Attribute
+	 * @param Weight     the weighted importance of this attribute (relative to the
 	 *                   other attributes)
 	 */
 	public EntityAttribute(final BaseEntity baseEntity, final Attribute attribute, Double weight) {
@@ -119,11 +119,11 @@ public class EntityAttribute extends PanacheEntity {
 	/**
 	 * Constructor.
 	 * 
-	 * @param baseEntity the entity that needs to contain attributes
-	 * @param attribute  the associated Attribute
-	 * @param weight     the weighted importance of this attribute (relative to the
+	 * @param BaseEntity the entity that needs to contain attributes
+	 * @param Attribute  the associated Attribute
+	 * @param Weight     the weighted importance of this attribute (relative to the
 	 *                   other attributes)
-	 * @param value      the value associated with this attribute
+	 * @param Value      the value associated with this attribute
 	 */
 	public EntityAttribute(final BaseEntity baseEntity, final Attribute attribute, Double weight, final Object value) {
 		autocreateCreated();

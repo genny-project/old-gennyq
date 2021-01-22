@@ -68,6 +68,7 @@ public class AttributeText extends Attribute implements Serializable {
 	/**
 	  * Constructor.
 	  * 
+	  * @param none
 	  */
 	@SuppressWarnings("unused")
 	public AttributeText()
@@ -81,6 +82,7 @@ public class AttributeText extends Attribute implements Serializable {
 	  * 
 	  * @param aCode The unique code for this Question
 	  * @param aName The human readable summary name
+	  * @param attribute The associated attribute
 	  */
 	public AttributeText(String aCode, String aName)
 	{

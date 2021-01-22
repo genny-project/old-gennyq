@@ -26,6 +26,8 @@ import javax.persistence.Embeddable;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.jboss.logging.Logger;
+
 import life.genny.models.converter.ValidationListConverter;
 import life.genny.models.validation.Validation;
 import life.genny.models.validation.ValidationList;
@@ -41,9 +43,10 @@ import life.genny.models.validation.ValidationList;
  * <li>The default mask used for data entry
  * </ul>
  * <p>
- *
+ * 
  * <p>
- *
+ * 
+ * 
  * @author Adam Crow
  * @author Byron Aguirre
  * @version %I%, %G%
@@ -52,54 +55,55 @@ import life.genny.models.validation.ValidationList;
 
 @Embeddable
 public class DataType implements Serializable {
+	private static final Logger log = Logger.getLogger(DataType.class);
+
 	public static final String DTT_LINK = "LNK_ATTRIBUTE"; // This datatype classname indicates the datatype belongs to
 															// the BaseEntity set with parent
 	@NotNull
 	@Size(max = 120)
 	private String dttCode; // e.g. java.util.String
 
-    @NotNull
-    @Size(max = 120)
-    private String className; // e.g. java.util.String
+	@NotNull
+	@Size(max = 120)
+	private String className; // e.g. java.util.String
 
-    @NotNull
-    @Size(max = 120)
-    private String typeName; // e.g. TEXT
+	@NotNull
+	@Size(max = 120)
+	private String typeName; // e.g. TEXT
 
-    private String inputmask;
+	private String inputmask;
 
-	public String component;
+	/**
+	 * A fieldlist that stores the validations for this object.
+	 * <p>
+	 * Note that this is stored into a single object
+	 */
 
-    /**
-     * A fieldlist that stores the validations for this object.
-     * <p>
-     * Note that this is stored into a single object
-     */
+	@Column(name = "validation_list", length = 512)
+	@Convert(converter = ValidationListConverter.class)
+	private List<Validation> validationList = new CopyOnWriteArrayList<Validation>();
 
-    @Column(name = "validation_list", length = 512)
-    @Convert(converter = ValidationListConverter.class)
-	private List<Validation> validationList = new CopyOnWriteArrayList<>();
+	/**
+	 * Constructor.
+	 * 
+	 * @param none
+	 */
+	@SuppressWarnings("unused")
+	protected DataType() {
+		super();
+		// dummy for hibernate
+	}
 
+	public DataType(final Class clazz) {
+		this(clazz, new ValidationList());
+	}
 
-    /**
-     * Constructor.
-     */
-    @SuppressWarnings("unused")
-    protected DataType() {
-        super();
-        // dummy for hibernate
-    }
+	public DataType(final String className) {
+		this(className, new ValidationList());
+	}
 
-    public DataType(final Class clazz) {
-        this(clazz, new ValidationList());
-    }
-
-    public DataType(final String className) {
-        this(className, new ValidationList());
-    }
-
-    public DataType(final String className, final ValidationList aValidationList, final String name,
-                    final String inputmask) {
+	public DataType(final String className, final ValidationList aValidationList, final String name,
+			final String inputmask) {
         setDttCodeFromClassName(className);
 		setClassName(className);
 		setValidationList(aValidationList.getValidationList());
@@ -240,12 +244,46 @@ public class DataType implements Serializable {
         + typeName + ", validationList=" + validationList + "]";
   }
 
-	public static DataType getInstance(final String className) {
+	static public DataType getInstance(final String className) {
 		final List<Validation> validationList = new CopyOnWriteArrayList<Validation>();
 		ValidationList vlist = new ValidationList(validationList);
-		return new DataType(className, vlist);
+		DataType dataTypeInstance = new DataType(className, vlist);
+		return dataTypeInstance;
 	}
 
+	// Is DataType summable?
+
+	static public boolean summable(DataType dtype) {
+		switch (dtype.getClassName()) {
+		case "java.lang.Integer":
+		case "Integer":
+		case "java.lang.Long":
+		case "Long":
+		case "java.lang.Double":
+		case "Double":
+		case "org.javamoney.moneta.Money":
+			return true;
+		default:
+			return false;
+		}
+	}
+
+	static public Object Zero(DataType dtype) {
+		switch (dtype.getClassName()) {
+		case "java.lang.Integer":
+		case "Integer":
+			return new Integer(0);
+		case "java.lang.Long":
+		case "Long":
+			return new Long(0);
+		case "java.lang.Double":
+		case "Double":
+			return new Double(0.0);
+		case "org.javamoney.moneta.Money":
+		default:
+			return null;
+		}
+	}
 	public static Object add(DataType dtype, Object v1, Object v2) {
 		switch (dtype.getClassName()) {
 		case "java.lang.Integer":

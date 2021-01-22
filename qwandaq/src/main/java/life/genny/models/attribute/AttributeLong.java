@@ -68,6 +68,7 @@ public class AttributeLong extends Attribute implements Serializable {
 	/**
 	  * Constructor.
 	  * 
+	  * @param none
 	  */
 	@SuppressWarnings("unused")
 	public AttributeLong()

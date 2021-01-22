@@ -16,3 +16,9 @@ qwandaq/src/main/resources/QwandaQ-git.properties
 quarkus-genny/runtime/src/main/resources/Quarkus Genny - Runtime-git.properties
 apiq/src/main/resources/apiq-git.properties
 shleemy/src/main/resources/shleemy-git.properties
+/**/*-git.properties
+/**/.settings/
+/**/.classpath
+/**/.project
+/**/.factorypath
+/**/.factory

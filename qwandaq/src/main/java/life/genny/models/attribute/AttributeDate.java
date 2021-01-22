@@ -70,6 +70,7 @@ public class AttributeDate extends Attribute implements Serializable {
 	/**
 	  * Constructor.
 	  * 
+	  * @param none
 	  */
 	@SuppressWarnings("unused")
 	public AttributeDate()

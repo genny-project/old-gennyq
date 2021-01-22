@@ -68,6 +68,7 @@ public class AttributeBoolean extends Attribute implements Serializable {
 	/**
 	  * Constructor.
 	  * 
+	  * @param none
 	  */
 	@SuppressWarnings("unused")
 	public AttributeBoolean()
