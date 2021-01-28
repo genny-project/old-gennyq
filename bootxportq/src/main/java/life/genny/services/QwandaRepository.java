@@ -16,14 +16,17 @@ import life.genny.qwandautils.JsonUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.persistence.*;
+import javax.transaction.Transactional;
 import javax.validation.constraints.NotNull;
 import java.lang.invoke.MethodHandles;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 
+@ApplicationScoped
 public class QwandaRepository {
     @Inject
     EntityManager em;
@@ -320,6 +323,7 @@ public class QwandaRepository {
 
     }
 
+    @Transactional
     public void cleanAsk(String realm) {
         String qlString = String.format("delete from ask where realm = '%s'", realm);
         EntityManager em1 = getEntityManager();
@@ -329,6 +333,7 @@ public class QwandaRepository {
         log.info(String.format("Clean up ask, realm:%s, %d ask deleted", realm, number));
     }
 
+    @Transactional
     public void cleanFrameFromBaseentityAttribute(String realm) {
         String qlString = "delete from baseentity_attribute " +
                 "where baseEntityCode like \'RUL_FRM%_GRP\' " +

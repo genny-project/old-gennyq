@@ -2,12 +2,17 @@ package life.genny.services;
 
 import java.util.Optional;
 
+import io.quarkus.runtime.annotations.RegisterForReflection;
 import life.genny.bootxport.bootx.*;
 import life.genny.bootxport.xlsimport.BatchLoading;
 import life.genny.qwandautils.GennySettings;
 import org.apache.logging.log4j.Logger;
 
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
 
+@Path("/import")
+@RegisterForReflection
 public class ImportSheets {
     private final Logger log = org.apache.logging.log4j.LogManager.getLogger(ImportSheets.class);
 
@@ -67,6 +72,7 @@ public class ImportSheets {
         }
     }
 
+    @GET
     public static void main(String... args) {
         ImportSheets importSheetService = new ImportSheets();
         importSheetService.doBatchLoading();
