@@ -69,14 +69,12 @@ services:
       - ADMIN_USERNAME=GENNY
       - ADMIN_PASSWORD=GENNY
       - VIRTUAL_HOST=bridge.genny.life
-      - VIRTUAL_PORT=8088
+      - VIRTUAL_PORT=8080
       - VIRTUAL_PROTO=http
       - CERT_NAME=genny.life
       - KEYCLOAKURL=https://keycloak.gada.io/auth/realms
       - CACHE_SERVER_NAME=qwanda-service
       - DDTHOST=TRUE
-      - API_PORT=8088
-      - CACHE_API_PORT=8089
       - MODE_GZIP=TRUE
       - ZIP_MIN_THRESHOLD_BYTES=8000000
       - MEDIA_PROXY_URL=https://alyson.genny.life/web/public
