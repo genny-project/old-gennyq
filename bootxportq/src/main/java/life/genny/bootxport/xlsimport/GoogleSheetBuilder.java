@@ -33,6 +33,11 @@ public class GoogleSheetBuilder {
     public static final String MANDATORY = "mandatory";
     public static final String READONLY = "readonly";
 
+    class Options {
+        public String optionCode = null;
+        public String optionLabel = null;
+    }
+
     private GoogleSheetBuilder() {
     }
 
