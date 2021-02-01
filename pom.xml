@@ -47,6 +47,17 @@
 		</dependencies>
 	</dependencyManagement>
 
+    <distributionManagement>
+        <repository>
+            <id>life.genny</id>
+            <url>https://nexus.outcome-hub.com/repository/life.genny/</url>
+        </repository>
+        <snapshotRepository>
+            <id>nexus-snapshots</id>
+            <url>http://nexus.outcome-hub.com/repository/snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
+
 	<modules>
 		<module>qwandaq</module>
 		<module>quarkus-genny</module>
