@@ -13,7 +13,7 @@ import life.genny.models.entity.BaseEntity;
 import life.genny.models.exception.BadDataException;
 import life.genny.qwanda.message.QBaseMSGMessageTemplate;
 import life.genny.models.validation.Validation;
-import life.genny.nest.utils.KeycloakUtils;
+import life.genny.qwandautils.KeycloakUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 

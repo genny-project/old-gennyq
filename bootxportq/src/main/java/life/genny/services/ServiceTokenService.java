@@ -3,7 +3,7 @@ package life.genny.services;
 import java.lang.invoke.MethodHandles;
 import javax.inject.Inject;
 
-import life.genny.nest.utils.KeycloakUtils;
+import life.genny.qwandautils.KeycloakUtils;
 import life.genny.utils.SecurityUtils;
 import life.genny.security.SecureResources;
 import org.apache.logging.log4j.Logger;
