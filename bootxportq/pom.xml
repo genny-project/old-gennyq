@@ -11,7 +11,7 @@
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>bootxport</artifactId>
+    <artifactId>bootxportq</artifactId>
     <name>BootxportQ</name>
     <version>8.0.0</version>
     <packaging>jar</packaging>
@@ -45,7 +45,10 @@
             <artifactId>commons-beanutils</artifactId>
             <version>1.9.4</version>
         </dependency>
-
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-narayana-jta</artifactId>
+        </dependency>
         <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-hibernate-orm</artifactId>

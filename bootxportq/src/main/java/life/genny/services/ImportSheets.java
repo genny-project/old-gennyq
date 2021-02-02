@@ -10,6 +10,7 @@ import life.genny.bootxport.xlsimport.GoogleSheetBuilder;
 import life.genny.bootxport.xlsimport.Summary;
 import life.genny.models.attribute.Attribute;
 import life.genny.models.attribute.AttributeLink;
+import life.genny.models.attribute.EntityAttribute;
 import life.genny.models.datatype.DataType;
 import life.genny.models.entity.BaseEntity;
 import life.genny.models.entity.EntityEntity;
@@ -26,7 +27,8 @@ import life.genny.qwandautils.GennySettings;
 import life.genny.qwandautils.JsonUtils;
 import life.genny.utils.SecurityUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.Logger;
+import org.jboss.logging.Logger;
+import org.jboss.logging.Logger;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -42,13 +44,14 @@ import javax.ws.rs.Path;
 @Path("/import")
 @ApplicationScoped
 @RegisterForReflection
-@Transactional(Transactional.TxType.REQUIRES_NEW)
 public class ImportSheets {
     @Inject
     EntityManager em;
     private static final int BATCHSIZE = 500;
     String currentRealm = GennySettings.mainrealm; // permit temprorary override
-    private final Logger log = org.apache.logging.log4j.LogManager.getLogger(ImportSheets.class);
+
+    private static final Logger log = Logger.getLogger(ImportSheets.class);
+
 
     public ImportSheets() {
     }
@@ -248,7 +251,7 @@ public class ImportSheets {
             query.setParameter("realmStr", realm);
             result = query.getResultList();
         } catch (Exception e) {
-            log.error(String.format("Query table %s Error:%s".format(realm, e.getMessage())));
+            log.error("Query table %s Error:%s".format(realm, e.getMessage()));
         }
         return result;
     }
@@ -268,6 +271,7 @@ public class ImportSheets {
                 msg.setSubject(obj.getSubject());
                 msg.setToast_template(obj.getToast_template());
                 em.merge(msg);
+                panacheEntity.persist();
             } else {
                 if (panacheEntity instanceof BaseEntity) {
                     BaseEntity obj = (BaseEntity) panacheEntity;
@@ -285,6 +289,7 @@ public class ImportSheets {
                     val.realm = currentRealm;
                     em.merge(val);
                 } else if (panacheEntity instanceof Validation) {
+
                     Validation obj = (Validation) panacheEntity;
                     Validation val = (Validation) (mapping.get(obj.code));
                     if (val == null) {
@@ -320,7 +325,6 @@ public class ImportSheets {
     @Transactional
     public void bulkInsert(List<PanacheEntity> objectList) {
         if (objectList.isEmpty()) return;
-        em.joinTransaction();
 
         int index = 1;
 
@@ -329,29 +333,23 @@ public class ImportSheets {
             if (index % BATCHSIZE == 0) {
                 //flush a batch of inserts and release memory:
                 log.debug("Batch is full, flush to database.");
-                em.flush();
             }
             index += 1;
         }
-        em.flush();
     }
 
     @Transactional
     public void bulkInsertQuestionQuestion(List<QuestionQuestion> objectList) {
         if (objectList.isEmpty()) return;
-        em.joinTransaction();
 
         int index = 1;
         for (QuestionQuestion qq : objectList) {
-            em.persist(qq);
             if (index % BATCHSIZE == 0) {
                 //flush a batch of inserts and release memory:
                 log.debug("BaseEntity Batch is full, flush to database.");
-                em.flush();
             }
             index += 1;
         }
-        em.flush();
     }
 
     @Transactional
@@ -363,31 +361,25 @@ public class ImportSheets {
             existing.setWeight(qq.getWeight());
             existing.setReadonly(qq.getReadonly());
             existing.setDependency(qq.getDependency());
-            em.merge(existing);
+//            em.merge(existing);
+            existing.persist();
         }
 
     }
 
     @Transactional
     public void cleanAsk(String realm) {
-        String qlString = String.format("delete from ask where realm = '%s'", realm);
-        em.joinTransaction();
-        Query query = em.createNativeQuery(qlString);
-        int number = query.executeUpdate();
-        em.flush();
+        Map<String, Object> params = new HashMap<>();
+        params.put("realm", realm);
+        long number = Ask.delete("realm = :realm", params);
         log.info(String.format("Clean up ask, realm:%s, %d ask deleted", realm, number));
     }
 
     @Transactional
     public void cleanFrameFromBaseentityAttribute(String realm) {
-        String qlString = "delete from qbaseentity_attribute " +
-                "where baseEntityCode like \'RUL_FRM%_GRP\' " +
-                "and attributeCode = \'PRI_ASKS\' " +
-                "and realm = \'" + realm + "\'";
-        em.joinTransaction();
-        Query query = em.createNativeQuery(qlString);
-        int number = query.executeUpdate();
-        em.flush();
+        Map<String, Object> params = new HashMap<>();
+        params.put("realm", realm);
+        long number = EntityAttribute.delete("baseEntityCode like 'RUL_FRM%_GRP' and attributeCode = 'PRI_ASKS' and realm = :realm", params);
         log.info(String.format("Clean up BaseentityAttribute, realm:%s, %d BaseentityAttribute deleted", realm, number));
     }
 
