@@ -31,7 +31,7 @@ public class ServiceTokenService {
     private HashMap<String, String> refreshServiceTokens = new HashMap<>();
 
     @Inject
-    private SecureResources secureResources;
+    SecureResources secureResources;
 
     public void init(RealmUnit multitenancy) {
         log.info("Initialising Service Tokens ");
