@@ -71,7 +71,7 @@ public class AttributeList implements Serializable {
 
 	@JsonIgnore
 	@XmlTransient
-	@ManyToMany( cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@ManyToMany( cascade = CascadeType.ALL,fetch = FetchType.EAGER)
 	@JoinColumn(name = "base_id", referencedColumnName = "id")
 	private List<Attribute> attributeList = new CopyOnWriteArrayList<Attribute>();
 

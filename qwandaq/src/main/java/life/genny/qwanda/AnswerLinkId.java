@@ -21,7 +21,7 @@ public class AnswerLinkId implements java.io.Serializable {
     private BaseEntity target;
 
     @JsonIgnore
-    @ManyToOne(optional = true, fetch = FetchType.LAZY)
+    @ManyToOne(optional = true, fetch = FetchType.EAGER)
     private Attribute attribute;
 
     // @JsonIgnore

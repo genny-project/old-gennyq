@@ -7,11 +7,11 @@ import java.util.Map;
 import org.apache.commons.beanutils.BeanUtilsBean;
 import org.apache.commons.beanutils.DynaBean;
 import org.apache.commons.beanutils.DynaProperty;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.jboss.logging.Logger;
 
 public class BeanNotNullFields extends BeanUtilsBean {
-    private final Log log = LogFactory.getLog(BeanNotNullFields.class);
+    private static final Logger log = Logger.getLogger(BeanNotNullFields.class);
+
 
     private void processDynaBean(final Object orig, final Object dest) throws InvocationTargetException, IllegalAccessException {
         log.info("INSTANCE OF DYNABEAN.");
@@ -47,7 +47,7 @@ public class BeanNotNullFields extends BeanUtilsBean {
 
 
     private void processJavaBean(final Object orig, final Object dest) throws InvocationTargetException, IllegalAccessException {
-        log.info("Java property on standard JavaBean");
+        log.debug("Java property on standard JavaBean");
         final PropertyDescriptor[] origDescriptors = getPropertyUtils().getPropertyDescriptors(orig);
         for (PropertyDescriptor origDescriptor : origDescriptors) {
             final String name = origDescriptor.getName();

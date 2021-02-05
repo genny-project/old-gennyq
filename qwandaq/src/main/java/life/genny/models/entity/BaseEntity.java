@@ -137,7 +137,7 @@ public class BaseEntity extends PanacheEntity {
 //	@Cascade({ CascadeType.MERGE, CascadeType.DELETE })
 //	@Expose
 //	/* Stores the links of BaseEntity to another BaseEntity */
-    @OneToMany(cascade = CascadeType.ALL,  fetch = FetchType.LAZY, orphanRemoval=true)
+    @OneToMany(cascade = CascadeType.ALL,  fetch = FetchType.EAGER, orphanRemoval=true)
 	public Set<EntityEntity> links = new HashSet<>();
 
 

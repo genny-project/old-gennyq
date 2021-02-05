@@ -68,12 +68,12 @@ public class EntityAttribute extends PanacheEntity {
 //
 //	@JsonbTypeAdapter(AttributeAdapter.class)
 	@NotNull
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "ATTRIBUTE_ID", nullable = false)
 	public Attribute attribute;
 
 	@JsonbTransient
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "BASEENTITY_ID", nullable = false)
 	public BaseEntity baseentity;
 

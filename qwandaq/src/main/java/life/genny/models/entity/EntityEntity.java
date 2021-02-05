@@ -76,16 +76,16 @@ public class EntityEntity  extends PanacheEntity  implements java.io.Serializabl
 ////
 ////	@JsonbTypeAdapter(AttributeAdapter.class)
 	@NotNull
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	public Attribute attribute;
 
 	@JsonbTransient
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "SOURCE_ID", nullable = true)
 	public BaseEntity source;
 
 	@JsonbTransient
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "TARGET_ID", nullable = true)
 	public BaseEntity target;
 

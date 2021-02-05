@@ -22,7 +22,7 @@ public class QuestionQuestionId implements java.io.Serializable {
     private static final long serialVersionUID = 1L;
 
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JsonBackReference(value = "questionQuestion")
     @JsonIgnore
     private Question source;
