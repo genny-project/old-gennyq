@@ -22,3 +22,4 @@ shleemy/src/main/resources/shleemy-git.properties
 /**/.project
 /**/.factorypath
 /**/.factory
+scripts/nginx/
