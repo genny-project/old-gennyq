@@ -31,9 +31,11 @@ import org.jboss.logging.Logger;
 import org.jboss.logging.Logger;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.persistence.*;
 import javax.transaction.Transactional;
+import javax.transaction.UserTransaction;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
@@ -42,11 +44,12 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 
 @Path("/import")
-@ApplicationScoped
-@RegisterForReflection
+@RequestScoped
 public class ImportSheets {
     @Inject
     EntityManager em;
+    @Inject
+    UserTransaction userTransaction;
     private static final int BATCHSIZE = 500;
     String currentRealm = GennySettings.mainrealm; // permit temprorary override
 
@@ -91,7 +94,6 @@ public class ImportSheets {
     }
 
 
-    @Transactional
     public Long updateWithAttributes(BaseEntity entity) {
         EntityTransaction transaction = em.getTransaction();
         if (!transaction.isActive()) transaction.begin();
@@ -107,7 +109,6 @@ public class ImportSheets {
         return entity.id;
     }
 
-    @Transactional
     public Integer updateEntityEntity(EntityEntity ee) {
         EntityTransaction transaction = em.getTransaction();
         transaction.begin();
@@ -166,7 +167,6 @@ public class ImportSheets {
         return "DUMMY_TOKEN";
     }
 
-    @Transactional
     public EntityEntity insertEntityEntity(EntityEntity ee) {
         EntityTransaction transaction = em.getTransaction();
         transaction.begin();
@@ -178,7 +178,6 @@ public class ImportSheets {
         return ee;
     }
 
-    @Transactional
     public Long updateRealm(Question que) {
         EntityTransaction transaction = em.getTransaction();
         if (!transaction.isActive()) transaction.begin();
@@ -223,7 +222,6 @@ public class ImportSheets {
     }
 
 
-    @Transactional
     public Long insert(Question question) {
         EntityTransaction transaction = em.getTransaction();
         if (!transaction.isActive()) transaction.begin();
@@ -243,7 +241,6 @@ public class ImportSheets {
     }
 
 
-    @Transactional
     public <T> List<T> queryTableByRealm(String tableName, String realm) {
         List<T> result = Collections.emptyList();
         try {
@@ -256,7 +253,6 @@ public class ImportSheets {
         return result;
     }
 
-    @Transactional
     public void bulkUpdate(List<PanacheEntity> objectList, Map<String, PanacheEntity> mapping) {
         if (objectList.isEmpty()) return;
         BeanNotNullFields copyFields = new BeanNotNullFields();
@@ -322,7 +318,6 @@ public class ImportSheets {
         }
     }
 
-    @Transactional
     public void bulkInsert(List<PanacheEntity> objectList) {
         if (objectList.isEmpty()) return;
 
@@ -338,7 +333,6 @@ public class ImportSheets {
         }
     }
 
-    @Transactional
     public void bulkInsertQuestionQuestion(List<QuestionQuestion> objectList) {
         if (objectList.isEmpty()) return;
 
@@ -352,7 +346,6 @@ public class ImportSheets {
         }
     }
 
-    @Transactional
     public void bulkUpdateQuestionQuestion(List<QuestionQuestion> objectList, Map<String, QuestionQuestion> mapping) {
         for (QuestionQuestion qq : objectList) {
             String uniqCode = qq.getSourceCode() + "-" + qq.getTarketCode();
@@ -375,7 +368,6 @@ public class ImportSheets {
         log.info(String.format("Clean up ask, realm:%s, %d ask deleted", realm, number));
     }
 
-    @Transactional
     public void cleanFrameFromBaseentityAttribute(String realm) {
         Map<String, Object> params = new HashMap<>();
         params.put("realm", realm);
@@ -1140,6 +1132,7 @@ public class ImportSheets {
     }
 
     @GET
+    @Transactional
     public void doBatchLoading() {
         Realm rx = getRealm();
         StateManagement.initStateManagement(rx);
