@@ -26,6 +26,7 @@ import javax.persistence.Embeddable;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.google.gson.annotations.Expose;
 import org.jboss.logging.Logger;
 
 import life.genny.models.converter.ValidationListConverter;
@@ -109,6 +110,16 @@ public class DataType implements Serializable {
 		setValidationList(aValidationList.getValidationList());
 		setTypeName(name);
 		setInputmask(inputmask);
+	}
+
+	public DataType(final String className, final ValidationList aValidationList, final String name,
+					final String inputmask, final  String component) {
+		setDttCodeFromClassName(className);
+		setClassName(className);
+		setValidationList(aValidationList.getValidationList());
+		setTypeName(name);
+		setInputmask(inputmask);
+		setComponent(component);
 	}
 
 	public DataType(final String className, final ValidationList aValidationList, final String name) {
@@ -219,6 +230,17 @@ public class DataType implements Serializable {
 		setClassName(simpleClassName);
 	}
 
+
+	private String component;
+
+	public String getComponent() {
+		return component;
+	}
+
+	public void setComponent(String component) {
+		this.component = component;
+	}
+
 	@Override
   public String toString() {
     return "DataType [className=" + className + ", dttCode=" + dttCode + ", inputmask=" + inputmask + ", typeName="
@@ -265,8 +287,7 @@ public class DataType implements Serializable {
 			return null;
 		}
 	}
-
-	static public Object add(DataType dtype, Object v1, Object v2) {
+	public static Object add(DataType dtype, Object v1, Object v2) {
 		switch (dtype.getClassName()) {
 		case "java.lang.Integer":
 		case "Integer":

@@ -24,10 +24,8 @@
 		<keycloak.version>12.0.1</keycloak.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<quarkus-plugin.version>1.10.5.Final</quarkus-plugin.version>
 		<quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
 		<quarkus.platform.group-id>io.quarkus</quarkus.platform.group-id>
-		<quarkus.platform.version>1.10.5.Final</quarkus.platform.version>
 		<surefire.version>3.0.0-M5</surefire.version>
 		<testcontainers.version>1.15.1</testcontainers.version>
 		<jandex.version>1.0.7</jandex.version>
@@ -53,10 +51,10 @@
 			<artifactId>quarkus-bootstrap-core</artifactId>
 		</dependency>
 
-		<dependency>
+		<!--dependency>
 			<groupId>io.quarkus</groupId>
 			<artifactId>quarkus-agroal</artifactId>
-		</dependency>
+		</dependency-->
 		<dependency>
 			<groupId>io.quarkus</groupId>
 			<artifactId>quarkus-resteasy-jsonb</artifactId>

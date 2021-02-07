@@ -72,6 +72,11 @@ public class Value implements Serializable,Comparable<Value> {
 		setValue(value);
 	}
 
+    public Value(Object value, DataType dataType) {
+        this.dataType = dataType;
+        setValue(dataType);
+    }
+
 
 	@SuppressWarnings("unchecked")
 	@JsonbTransient

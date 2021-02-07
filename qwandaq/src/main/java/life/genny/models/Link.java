@@ -226,5 +226,11 @@ public boolean equals(Object obj) {
   return true;
 }
 
+    public String getAttributeCode() {
+        return attributeCode;
+    }
 
+    public void setAttributeCode(String attributeCode) {
+        this.attributeCode = attributeCode;
+    }
 }

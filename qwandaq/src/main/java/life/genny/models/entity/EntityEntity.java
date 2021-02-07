@@ -5,20 +5,13 @@ import java.time.ZoneId;
 
 import javax.json.bind.annotation.JsonbTransient;
 import javax.json.bind.annotation.JsonbTypeAdapter;
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.Column;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
+import com.google.gson.annotations.Expose;
+import life.genny.qwanda.entity.EntityEntityId;
 import org.jboss.logging.Logger;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
@@ -39,6 +32,22 @@ public class EntityEntity  extends PanacheEntity  implements java.io.Serializabl
 	private static final long serialVersionUID = 1L;
 
 	private static final Logger log = Logger.getLogger(EntityEntity.class);
+
+    @EmbeddedId
+    private EntityEntityId pk = new EntityEntityId();
+
+    public EntityEntityId getPk() {
+        return pk;
+    }
+
+    public void setPk(final EntityEntityId pk) {
+        this.pk = pk;
+    }
+
+    public Link getLink() {
+        return link;
+    }
+
 
 //	@AttributeOverrides({
 //        @AttributeOverride(name = "sourceCode", column = @Column(name = "SOURCE_CODE", nullable = false)),
@@ -67,32 +76,36 @@ public class EntityEntity  extends PanacheEntity  implements java.io.Serializabl
 ////
 ////	@JsonbTypeAdapter(AttributeAdapter.class)
 	@NotNull
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	public Attribute attribute;
 
 	@JsonbTransient
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "SOURCE_ID", nullable = true)
 	public BaseEntity source;
 
 	@JsonbTransient
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "TARGET_ID", nullable = true)
 	public BaseEntity target;
 
-	// For compatibility initially
-	
-	public String attributeCode;
-	public String sourceCode;
-	public String targetCode;
+    /**
+     * Store the String value of the attribute for the baseEntity
+     */
+    @Column(name = "valueString", insertable = false, updatable = false)
+    public String valueString;
+    // For compatibility initially
 
-	@Embedded
-	@NotNull
-	public Value value = new Value();
+    public String attributeCode;
+    public String sourceCode;
+    public String targetCode;
 
-	@Embedded
-	public Link link = new Link();
-	
+    @Embedded
+    @NotNull
+    public Value value = new Value();
+
+    @Embedded
+    public Link link = new Link();
 //
 //
 //

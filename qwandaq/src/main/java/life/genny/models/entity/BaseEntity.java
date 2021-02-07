@@ -16,7 +16,6 @@
 
 package life.genny.models.entity;
 
-import java.sql.Date;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.HashSet;
@@ -43,13 +42,11 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlTransient;
 
+import life.genny.qwanda.Answer;
+import life.genny.qwanda.AnswerLink;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.infinispan.protostream.descriptors.Type;
 import org.jboss.logging.Logger;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import io.quarkus.runtime.annotations.RegisterForReflection;
@@ -140,7 +137,7 @@ public class BaseEntity extends PanacheEntity {
 //	@Cascade({ CascadeType.MERGE, CascadeType.DELETE })
 //	@Expose
 //	/* Stores the links of BaseEntity to another BaseEntity */
-    @OneToMany(cascade = CascadeType.ALL,  fetch = FetchType.LAZY, orphanRemoval=true)
+    @OneToMany(cascade = CascadeType.ALL,  fetch = FetchType.EAGER, orphanRemoval=true)
 	public Set<EntityEntity> links = new HashSet<>();
 
 
@@ -932,4 +929,73 @@ public class BaseEntity extends PanacheEntity {
       + ", created=" + created + ", links=" + links + ", name=" + name + ", questions=" + questions + ", realm="
       + realm + ", updated=" + updated + "]";
   }
+
+    /**
+     * addAnswer This links this baseEntity to a target BaseEntity and associated
+     * Answer. It auto creates the AnswerLink object and sets itself to be the
+     * source and assumes itself to be the target. For efficiency we assume the link
+     * does not already exist and weight = 0
+     *
+     * @param answer
+     * @throws BadDataException
+     */
+    public AnswerLink addAnswer(final Answer answer) throws BadDataException {
+        return addAnswer(this, answer, 0.0);
+    }
+
+    public AnswerLink addAnswer(final BaseEntity source, final Answer answer, final Double weight)
+            throws BadDataException {
+        if (source == null)
+            throw new BadDataException("missing Target Entity");
+        if (answer == null)
+            throw new BadDataException("missing Answer");
+        if (weight == null)
+            throw new BadDataException("missing weight");
+
+        final AnswerLink answerLink = new AnswerLink(source, this, answer, weight);
+        if (answer.getAskId() != null) {
+            answerLink.setAskId(answer.getAskId());
+        }
+
+        // Update the EntityAttribute
+        Optional<EntityAttribute> ea = findEntityAttribute(answer.getAttributeCode());
+        if (ea.isPresent()) {
+            // modify
+            ea.get().setValue(answerLink.getValue());
+            ea.get().inferred = answer.getInferred();
+            ea.get().setWeight(answer.getWeight());
+        } else {
+            EntityAttribute newEA = new EntityAttribute(this, answerLink.getAttribute(), weight, answerLink.getValue());
+            newEA.inferred = answerLink.getInferred();
+            this.baseEntityAttributes.add(newEA);
+        }
+
+        return answerLink;
+    }
+
+    /**
+     * addTarget This links this baseEntity to a target BaseEntity and associated
+     * weight,value to the baseEntity. It auto creates the EntityEntity object and
+     * sets itself to be the source. For efficiency we assume the link does not
+     * already exist
+     *
+     * @param target
+     * @param linkAttribute
+     * @param weight
+     * @param value         (of type String, LocalDateTime, Long, Integer, Boolean
+     * @throws BadDataException
+     */
+    public EntityEntity addTarget(final BaseEntity target, final Attribute linkAttribute, final Double weight,
+                                  final Object value) throws BadDataException {
+        if (target == null)
+            throw new BadDataException("missing Target Entity");
+        if (linkAttribute == null)
+            throw new BadDataException("missing Link Attribute");
+        if (weight == null)
+            throw new BadDataException("missing weight");
+
+        final EntityEntity entityEntity = new EntityEntity(this, target, linkAttribute, value, weight);
+        links.add(entityEntity);
+        return entityEntity;
+    }
 }

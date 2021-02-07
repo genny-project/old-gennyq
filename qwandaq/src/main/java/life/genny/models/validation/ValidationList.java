@@ -63,7 +63,7 @@ public class ValidationList implements Serializable {
 
   @JsonIgnore
   @XmlTransient
-  @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
   @JoinColumn(name = "dtype_id", referencedColumnName = "id")
   public List<Validation> validationList = new CopyOnWriteArrayList<Validation>();
 
