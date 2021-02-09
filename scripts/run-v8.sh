@@ -49,11 +49,12 @@ fi
 GENNY_ENV_DIR="$HOME/.genny"
 cd ..
 GENNY_DIR=$PWD
-cd genny-main
+cd scripts 
 #GENNY_DIR="~/projects/genny"
 CREDENTIALS_DIR="$HOME/.genny/credentials"
 CREDENTIALS="credentials"
 CREDENTIALS_PROJECT="$CREDENTIALS_DIR/$CREDENTIALS"
+cat $CREDENTIALS_PROJECT/$CREDENTIALS-$customercode
 ENV_FILE=genny.env
 $repo_url
 $project
@@ -66,3 +67,5 @@ fi
 
 echo "PROJECT_REALM=${2}" > ./.env
 
+
+ENV_FILE=$ENV_FILE docker-compose up -d

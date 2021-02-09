@@ -105,9 +105,12 @@ services:
 
   bootxportq:
     image: gennyproject/bootxportq:latest
+    container_name: bootxportq
+    env_file:
+      - ${ENV_FILE}
     environment:
       - FULL_MYSQL_URL=mysqlq:3306/gennydb?zeroDateTimeBehavior=convertToNull
-      - GOOGLE_SVC_ACC_PATH=~/.genny/token-secret-service-account.json
+      - GOOGLE_SVC_ACC_PATH=${HOME}/.genny/token-secret-service-account.json
       - GOOGLE_HOSTING_SHEET_ID=${GOOGLE_HOSTING_SHEET_ID}
     networks:
       - mainproxy
@@ -200,8 +203,22 @@ services:
       timeout: 20s
       retries: 10
 
+
+  infinispan:
+    image: quay.io/infinispan/server-native:11.0
+    container_name: infinispan
+    environment:
+        - USER=genny
+        - PASS=password
+    ports:
+      - 11222:11222
+    networks:
+      - mainproxy
+    
+
+
   keycloakq:
-    image: jboss/keycloak:12.0.1
+    image: jboss/keycloak:12.0.2
     container_name: keycloakq
     environment:
         - KEYCLOAK_USER=admin
