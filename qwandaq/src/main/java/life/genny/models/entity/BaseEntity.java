@@ -998,4 +998,11 @@ public class BaseEntity extends PanacheEntity {
         links.add(entityEntity);
         return entityEntity;
     }
+    
+    static public BaseEntity findByCode(final String code)
+    {
+    	return find("code",code).firstResult();
+    }
+    
+    
 }
