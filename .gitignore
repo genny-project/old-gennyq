@@ -23,7 +23,7 @@ shleemy/src/main/resources/shleemy-git.properties
 /**/.factorypath
 /**/.factory
 scripts/nginx/
-
+/**/.vscode
 /**/genny.env
 /**/genny.env.json
 /**/env-conf
