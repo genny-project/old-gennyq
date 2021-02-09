@@ -25,14 +25,40 @@ public class GroupChatService extends AbstractVerticle {
 
         // Join group
         vertx.eventBus().<JsonObject>consumer("join", message -> {
-                BaseEntityReq baseEntityreq = message.body().mapTo(BaseEntityReq.class);
+                MessageReq baseEntityreq = message.body().mapTo(MessageReq.class);
                 System.out.println("ok!");
                 BaseEntityResp resp = new BaseEntityResp();
                 resp.setCode("PRI_GENNY");
                 resp.setName("test");
                 members.put(baseEntityreq.code, resp);
                 message.reply(JsonObject.mapFrom(resp));
+
+
+
         });
+
+
+        /*
+        base entity code ===>>>>
+
+        server down/slow -> dev op team send alert to all of them -> send sms & email
+
+        message template (MSG_SERVER_ISSUE) WHERE? ===>>>> db fetch
+
+        chris creates a json message structure, adding recipents, templates how we sent
+
+        he wants to send by sms and email, etc
+
+        he provides base entity message
+        he fetches base entity for that server(anme url ip address, ) i get context
+
+        write message to  message servers e.g kafka vertx
+
+        sendgrid
+
+        junit test
+
+         */
 
 //        // Leave group
 //        vertx.eventBus().<String>consumer("leave", message -> {

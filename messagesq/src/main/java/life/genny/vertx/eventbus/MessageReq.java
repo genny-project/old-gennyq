@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-public class BaseEntityReq implements Serializable {
+public class MessageReq implements Serializable {
         public String code;
         public String name;
         public boolean active;
@@ -14,7 +14,7 @@ public class BaseEntityReq implements Serializable {
         public Set<Object> links = new HashSet<>();
         public Set<Object> questions = new HashSet<>(0);
 
-        public BaseEntityReq( ) {
+        public MessageReq( ) {
          }
 
         public String getCode() {

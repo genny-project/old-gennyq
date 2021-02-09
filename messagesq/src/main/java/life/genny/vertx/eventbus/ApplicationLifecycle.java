@@ -8,7 +8,7 @@ import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 
 @ApplicationScoped
-public class ApplicationLifecyle {
+public class ApplicationLifecycle {
 
     @Inject
     Vertx vertx;

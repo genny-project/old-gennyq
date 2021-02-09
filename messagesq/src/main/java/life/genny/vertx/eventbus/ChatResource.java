@@ -25,8 +25,8 @@ public class ChatResource {
   @Path("join")
   @Produces(MediaType.APPLICATION_JSON)
   @Consumes(MediaType.APPLICATION_JSON)
-  public BaseEntityResp join(BaseEntityReq be ) {//@Valid User user
-    BaseEntityReq baseEntity = new BaseEntityReq( );
+  public BaseEntityResp join(MessageReq messageReq ) {//@Valid User user
+    MessageReq baseEntity = new MessageReq( );
     baseEntity.code = "PRI_GENNY";
     baseEntity.name = "test";
 //    baseEntity.realm ="internmatch";
