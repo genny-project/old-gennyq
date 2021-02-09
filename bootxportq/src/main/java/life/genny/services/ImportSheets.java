@@ -94,18 +94,18 @@ public class ImportSheets {
     }
 
 
+    // TODO , must fix stack overflow issue here
     public Long updateWithAttributes(BaseEntity entity) {
-        EntityTransaction transaction = em.getTransaction();
-        if (!transaction.isActive()) transaction.begin();
-        entity.realm = currentRealm;
         try {
+            userTransaction.begin();
+            entity.realm = currentRealm;
             entity = em.merge(entity);
-        } catch (final Exception e) {
-            em.persist(entity);
+            userTransaction.commit();
+        } catch (Exception ex) {
+            log.error("Exception:" + ex.getMessage() + " occurred during updateWithAttributes");
         }
         String json = JsonUtils.toJson(entity);
 //        writeToDDT(entity.getCode(), json);
-        transaction.commit();
         return entity.id;
     }
 
@@ -247,6 +247,7 @@ public class ImportSheets {
             Query query = em.createQuery(String.format("SELECT temp FROM %s temp where temp.realm=:realmStr", tableName));
             query.setParameter("realmStr", realm);
             result = query.getResultList();
+            log.info("Get " + result.size() + " records from table:" + tableName);
         } catch (Exception e) {
             log.error("Query table %s Error:%s".format(realm, e.getMessage()));
         }
@@ -276,14 +277,11 @@ public class ImportSheets {
                         // Should never raise this exception
                         throw new NoResultException(String.format("Can't find %s from database.", obj.getCode()));
                     }
-                    try {
-                        copyFields.copyProperties(val, obj);
-                    } catch (IllegalAccessException | InvocationTargetException ex) {
-                        log.error(String.format("Failed to copy Properties for %s", val.getCode()));
-                    }
-
-                    val.realm = currentRealm;
-                    em.merge(val);
+                    val.active = obj.active;
+                    val.updated = obj.created;
+                    val.name = obj.name;
+                    val.realm = obj.realm;
+                    val.persist();
                 } else if (panacheEntity instanceof Validation) {
 
                     Validation obj = (Validation) panacheEntity;
@@ -320,16 +318,22 @@ public class ImportSheets {
 
     public void bulkInsert(List<PanacheEntity> objectList) {
         if (objectList.isEmpty()) return;
-
         int index = 1;
-
-        for (PanacheEntity panacheEntity : objectList) {
-            panacheEntity.persist();
-            if (index % BATCHSIZE == 0) {
-                //flush a batch of inserts and release memory:
-                log.debug("Batch is full, flush to database.");
+        try {
+            userTransaction.begin();
+            for (PanacheEntity panacheEntity : objectList) {
+                if (index % BATCHSIZE == 0) {
+                    //flush a batch of inserts and release memory:
+                    log.debug("Batch is full, flush to database.");
+                    panacheEntity.persistAndFlush();
+                } else {
+                    panacheEntity.persist();
+                }
+                index += 1;
             }
-            index += 1;
+            userTransaction.commit();
+        } catch (Exception ex) {
+            log.error("Something wrong during bulk insert:" + ex.getMessage());
         }
     }
 
@@ -337,12 +341,21 @@ public class ImportSheets {
         if (objectList.isEmpty()) return;
 
         int index = 1;
-        for (QuestionQuestion qq : objectList) {
-            if (index % BATCHSIZE == 0) {
-                //flush a batch of inserts and release memory:
-                log.debug("BaseEntity Batch is full, flush to database.");
+        try {
+            userTransaction.begin();
+            for (QuestionQuestion qq : objectList) {
+                if (index % BATCHSIZE == 0) {
+                    //flush a batch of inserts and release memory:
+                    log.debug("BaseEntity Batch is full, flush to database.");
+                    qq.persistAndFlush();
+                } else {
+                    qq.persist();
+                }
+                index += 1;
             }
-            index += 1;
+            userTransaction.commit();
+        } catch (Exception ex) {
+            log.error("Something wrong during question_question bulk insert:" + ex.getMessage());
         }
     }
 
@@ -354,7 +367,6 @@ public class ImportSheets {
             existing.setWeight(qq.getWeight());
             existing.setReadonly(qq.getReadonly());
             existing.setDependency(qq.getDependency());
-//            em.merge(existing);
             existing.persist();
         }
 
@@ -368,6 +380,7 @@ public class ImportSheets {
         log.info(String.format("Clean up ask, realm:%s, %d ask deleted", realm, number));
     }
 
+    @Transactional
     public void cleanFrameFromBaseentityAttribute(String realm) {
         Map<String, Object> params = new HashMap<>();
         params.put("realm", realm);
@@ -560,6 +573,7 @@ public class ImportSheets {
                 summary.getNewItem()));
     }
 
+    @Transactional
     public void asksOptimization(Map<String, Map<String, String>> project, String realmName) {
         // Get all asks
         String tableName = "Ask";
@@ -600,6 +614,7 @@ public class ImportSheets {
     }
 
 
+    @Transactional
     public void attributeLinksOptimization(Map<String, Map<String, String>> project, Map<String, DataType> dataTypeMap,
                                            String realmName) {
         String tableName = "Attribute";
@@ -646,6 +661,7 @@ public class ImportSheets {
         printSummary("AttributeLink", summary);
     }
 
+    @Transactional
     public void attributesOptimization(Map<String, Map<String, String>> project,
                                        Map<String, DataType> dataTypeMap, String realmName) {
         String tableName = "Attribute";
@@ -692,6 +708,7 @@ public class ImportSheets {
         printSummary(tableName, summary);
     }
 
+    @Transactional
     public void baseEntityAttributesOptimization(Map<String, Map<String, String>> project, String realmName,
                                                  HashMap<String, String> userCodeUUIDMapping) {
         // Get all BaseEntity
@@ -740,6 +757,7 @@ public class ImportSheets {
         printSummary("BaseEntityAttributes", summary);
     }
 
+    @Transactional
     public void baseEntitysOptimization(Map<String, Map<String, String>> project, String realmName,
                                         HashMap<String, String> userCodeUUIDMapping) {
         String tableName = "BaseEntity";
@@ -789,6 +807,7 @@ public class ImportSheets {
         printSummary(tableName, summary);
     }
 
+    @Transactional
     public void entityEntitysOptimization(Map<String, Map<String, String>> project, String realmName,
                                           boolean isSynchronise, HashMap<String, String> userCodeUUIDMapping) {
         // Get all BaseEntity
@@ -890,6 +909,7 @@ public class ImportSheets {
         printSummary("EntityEntity", summary);
     }
 
+    @Transactional
     public void messageTemplatesOptimization(Map<String, Map<String, String>> project, String realmName) {
         String tableName = "QBaseMSGMessageTemplate";
         List<QBaseMSGMessageTemplate> qBaseMSGMessageTemplateFromDB = queryTableByRealm(tableName, realmName);
@@ -933,6 +953,7 @@ public class ImportSheets {
         printSummary(tableName, summary);
     }
 
+    @Transactional
     public void questionQuestionsOptimization(Map<String, Map<String, String>> project, String realmName) {
         String tableName = "Question";
         List<Question> questionFromDB = queryTableByRealm(tableName, realmName);
@@ -998,6 +1019,7 @@ public class ImportSheets {
     }
 
     // TODO, make it quicker
+    @Transactional
     public void questionsOptimization(Map<String, Map<String, String>> project, String realmName, boolean isSynchronise) {
         // Get all questions from database
         String tableName = "Question";
@@ -1086,6 +1108,7 @@ public class ImportSheets {
         printSummary("Question", summary);
     }
 
+    @Transactional
     public void validationsOptimization(Map<String, Map<String, String>> project, String realmName) {
         String tableName = "Validation";
         // Get existing validation by realm from database
@@ -1132,7 +1155,6 @@ public class ImportSheets {
     }
 
     @GET
-    @Transactional
     public void doBatchLoading() {
         Realm rx = getRealm();
         StateManagement.initStateManagement(rx);
