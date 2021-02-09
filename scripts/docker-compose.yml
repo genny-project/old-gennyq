@@ -103,6 +103,33 @@ services:
       timeout: 10s
       retries: 30
 
+  bootxportq:
+    image: gennyproject/bootxportq:latest
+    environment:
+      - FULL_MYSQL_URL=mysqlq:3306/gennydb?zeroDateTimeBehavior=convertToNull
+      - GOOGLE_SVC_ACC_PATH=~/.genny/token-secret-service-account.json
+      - GOOGLE_HOSTING_SHEET_ID=${GOOGLE_HOSTING_SHEET_ID}
+    networks:
+      - mainproxy
+    depends_on:
+      - mysqlq
+    deploy:
+      replicas: 1 
+      labels: [APP=JAR]
+      update_config:
+        parallelism: 2
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+        delay: 10s
+        max_attempts: 3
+        window: 120s
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080"]
+      interval: 10s
+      timeout: 10s
+      retries: 30
+
   alysonq:
     image: gennyproject/alyson:latest
     container_name: alysonq
