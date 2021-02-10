@@ -53,8 +53,7 @@ cd scripts
 #GENNY_DIR="~/projects/genny"
 CREDENTIALS_DIR="$HOME/.genny/credentials"
 CREDENTIALS="credentials"
-CREDENTIALS_PROJECT="$CREDENTIALS_DIR/$CREDENTIALS"
-cat $CREDENTIALS_PROJECT/$CREDENTIALS-$customercode > ./genny.env
+cat $CREDENTIALS_DIR/credentials-$customercode/conf.env > ./genny.env
 ENV_FILE=genny.env
 $repo_url
 $project

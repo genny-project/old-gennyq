@@ -1,3 +1,3 @@
 #!/bin/bash
-docker-compose   -f ./docker-compose.yml -f ../apiq/scripts/docker-compose.yml -f ../bridgeq/scripts/docker-compose.yml -f ./alyson.yml  stop 
-docker-compose   -f ./docker-compose.yml -f ../apiq/scripts/docker-compose.yml -f ../bridgeq/scripts/docker-compose.yml -f ./alyson.yml   rm -f 
+ENV_FILE=genny.env docker-compose stop $@
+ENV_FILE=genny.env docker-compose rm -f $@
