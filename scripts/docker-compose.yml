@@ -43,7 +43,7 @@ services:
     depends_on:
       - mysqlq
     deploy:
-      replicas: 2 
+      replicas: 1 
       labels: [APP=JAR]
       update_config:
         parallelism: 2
