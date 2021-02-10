@@ -17,8 +17,13 @@ import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.sheets.v4.Sheets;
 import com.google.api.services.sheets.v4.SheetsScopes;
 import org.apache.logging.log4j.Logger;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 public class GoogleImportService {
+	
+	@ConfigProperty(name = "google.credentials.path", defaultValue = "/root/.genny/token-secret-service-account.json")
+	String googleCredentialsPath;
+
 
     protected static final Logger log = org.apache.logging.log4j.LogManager.getLogger(MethodHandles.lookup().lookupClass().getCanonicalName());
     private final JsonFactory jacksonFactory = JacksonFactory.getDefaultInstance();
@@ -64,7 +69,7 @@ public class GoogleImportService {
     }
 
     public Credential authorize() throws IOException {
-        Optional<String> path = Optional.ofNullable(System.getenv("GOOGLE_SVC_ACC_PATH"));
+        Optional<String> path = Optional.ofNullable(googleCredentialsPath);
         if (!path.isPresent()) {
             throw new FileNotFoundException("GOOGLE_SVC_ACC_PATH not set");
         }
