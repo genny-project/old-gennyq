@@ -1,4 +1,4 @@
-version: "3.9"
+version: "3.8"
 services:
 
   messagesq:
@@ -62,7 +62,7 @@ services:
 
 
   bridgeq:
-    image: gennyproject/bridgeq:latest
+    image: gennyproject/dummy:latest
     depends_on:
       apiq:
         condition: service_healthy
