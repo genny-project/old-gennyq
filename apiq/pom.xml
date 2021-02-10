@@ -35,7 +35,7 @@
 		<quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
 		<quarkus.platform.group-id>io.quarkus</quarkus.platform.group-id>
 		<surefire.version>3.0.0-M5</surefire.version>
-		<testcontainers.version>1.14.1</testcontainers.version>
+		<testcontainers.version>1.15.1</testcontainers.version>
 		<version.moneta>1.4.2</version.moneta>
 	</properties>
 	<dependencyManagement>
