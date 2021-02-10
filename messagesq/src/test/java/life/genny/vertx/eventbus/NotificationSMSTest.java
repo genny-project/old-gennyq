@@ -4,6 +4,8 @@ import io.quarkus.test.junit.QuarkusTest;
 import life.genny.strategy.StrategyContext;
 import life.genny.strategy.model.GennyMessage;
 import life.genny.strategy.model.QBaseMSGMessageType;
+
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;
@@ -24,22 +26,30 @@ import static org.junit.Assert.assertTrue;
 @QuarkusTest
 public class NotificationSMSTest {
 
+	@ConfigProperty(name = "sms.test", defaultValue = "false")
+	String smsTest;
+
+	
     @Inject
     private StrategyContext strategyContext;
 
     @Test
     public void sendShouldSetTheRightText() throws Exception {
 
+    	if ("TRUE".equalsIgnoreCase(smsTest)) {
+    		
+    		System.out.println("Testing SMS");
+    		
+    		//https://fakenumber.org/australia/mobile
+    		GennyMessage gennyMessage = new GennyMessage();
+    		gennyMessage.setBody("this is test message from X");
+    		gennyMessage.setRecipient("+61491570156");
+    		gennyMessage.setQBaseMSGMessageType(QBaseMSGMessageType.SMS);
 
-        //https://fakenumber.org/australia/mobile
-        GennyMessage gennyMessage = new GennyMessage();
-        gennyMessage.setBody("this is test message from X");
-        gennyMessage.setRecipient("+61491570156");
-        gennyMessage.setQBaseMSGMessageType(QBaseMSGMessageType.SMS);
+    		strategyContext.execute(gennyMessage);
 
-        strategyContext.execute(gennyMessage);
-
-        System.out.println("done23");
+    		System.out.println("done23");
+    	}
 
     }
 }

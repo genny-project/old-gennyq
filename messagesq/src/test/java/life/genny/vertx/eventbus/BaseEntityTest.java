@@ -32,6 +32,6 @@ public class BaseEntityTest {
   public void findByCode_baseentityContext_returnSuccess(){
      // BaseEntity baseEntity = BaseEntity.findByCode("APP_20981A5D-28FB5-5D46381C33DA");
      // BaseEntity.listAll().size();
-      System.out.println(BaseEntity.count());
+    //  System.out.println(BaseEntity.count());
   }
 }

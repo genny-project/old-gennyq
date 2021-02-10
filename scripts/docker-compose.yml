@@ -1,28 +1,28 @@
 version: "3.9"
 services:
 
-  #messagesq:
-    #image: gennyproject/messagesq:latest
-    #container_name: messagesq 
-    #environment:
-      #- FULL_MYSQL_URL=mysqlq:3306/gennydb?zeroDateTimeBehavior=convertToNull
-    #ports:
-      #- 8380:8080
-    #networks:
-      #- mainproxy
-    #depends_on:
-      #- mysqlq
-    #deploy:
-      #replicas: 1
-      #labels: [APP=JAR]
-      #update_config:
-        #parallelism: 2
-        #delay: 10s
-      #restart_policy:
-        #condition: on-failure
-        #delay: 10s
-        #max_attempts: 3
-        #window: 120s
+  messagesq:
+    image: gennyproject/messagesq:latest
+    container_name: messagesq 
+    environment:
+      - FULL_MYSQL_URL=mysqlq:3306/gennydb?zeroDateTimeBehavior=convertToNull
+    ports:
+      - 8380:8080
+    networks:
+      - mainproxy
+    depends_on:
+      - mysqlq
+    deploy:
+      replicas: 1
+      labels: [APP=JAR]
+      update_config:
+        parallelism: 2
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+        delay: 10s
+        max_attempts: 3
+        window: 120s
 
   imageproxyq:
     image: willnorris/imageproxy:v0.10.0
