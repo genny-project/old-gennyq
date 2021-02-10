@@ -25,23 +25,28 @@ public class ChatResourceTest {
 
     @Test
     public void testJoinGroupEndpointExists() {
-        BaseEntityReq baseEntity = new BaseEntityReq();
-         given()
+        MessageReq messageReq = new MessageReq();
+        messageReq.baseentitycode = "APP_20981A5D-28B7-457D-8FB5-5D46381C33DA";
+
+
+        given()
             .contentType("application/json")
           .log().all()
-          .body(baseEntity)
+          .body(messageReq)
             .when().post("/join").then().log().all()
                 .statusCode(200);
     }
 
     @Test
     public void testJoinGroupResponse() {
-        BaseEntityReq baseEntity = new BaseEntityReq();
+        MessageReq messageReq = new MessageReq();
+        messageReq.baseentitycode = "APP_20981A5D-28B7-457D-8FB5-5D46381C33DA";
+
         BaseEntityResp result =
               given()
                 .contentType("application/json")
                 .log().all()
-                .body(baseEntity)
+                .body(messageReq)
                 .when()
                       .post("/join")
                       .as(BaseEntityResp.class);
@@ -49,7 +54,7 @@ public class ChatResourceTest {
 
 //        //System.out.println(result);
 //
-         assertEquals("PRI_GENNY", result.getCode());
+        // assertEquals("PRI_GENNY", result.getCode());
          assertEquals("test", result.getName());
     }
 
