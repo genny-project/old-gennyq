@@ -5,19 +5,31 @@ import io.vertx.core.Future;
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
 import io.vertx.reactivex.core.AbstractVerticle;
+import life.genny.models.entity.BaseEntity;
+import life.genny.strategy.SmsStrategy;
+import life.genny.strategy.StrategyContext;
+import life.genny.strategy.model.GennyMessage;
+import life.genny.strategy.model.QBaseMSGMessageType;
 //import life.genny.models.entity.BaseEntity;
 
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 import java.util.HashMap;
 import java.util.Map;
+
 
 public class GroupChatService extends AbstractVerticle {
 
     private Map<String, BaseEntityResp> members;
 
+    private StrategyContext strategyContext;
+
     @Override
     public void init(Vertx vertx, Context context) {
         super.init(vertx, context);
         this.members = new HashMap<>();
+        strategyContext =  CDI.current().select(StrategyContext.class).get();
     }
 
     @Override
@@ -27,11 +39,27 @@ public class GroupChatService extends AbstractVerticle {
         vertx.eventBus().<JsonObject>consumer("join", message -> {
                 MessageReq baseEntityreq = message.body().mapTo(MessageReq.class);
                 System.out.println("ok!");
+
                 BaseEntityResp resp = new BaseEntityResp();
-                resp.setCode("PRI_GENNY");
+                resp.setCode(baseEntityreq.getBaseentitycode());
                 resp.setName("test");
-                members.put(baseEntityreq.code, resp);
-                message.reply(JsonObject.mapFrom(resp));
+                members.put(baseEntityreq.baseentitycode, resp);
+
+                GennyMessage gennyMessage = new GennyMessage();
+                gennyMessage.setBody("this is test message from X");
+                gennyMessage.setRecipient("+61491570156");
+                gennyMessage.setQBaseMSGMessageType(QBaseMSGMessageType.SMS);
+
+
+
+            try {
+                strategyContext.execute(gennyMessage);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+
+            message.reply(JsonObject.mapFrom(resp));
 
 
 

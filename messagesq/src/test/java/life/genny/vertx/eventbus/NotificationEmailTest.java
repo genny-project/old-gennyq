@@ -42,7 +42,7 @@ public class NotificationEmailTest {
 
 
   private GreenMail mailServer;
-  private EmailHelper emailHelper;
+  //private EmailHelper emailHelper;
 
     @Inject
     Mailer mailer;
