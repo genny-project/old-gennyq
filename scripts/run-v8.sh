@@ -54,7 +54,7 @@ cd scripts
 CREDENTIALS_DIR="$HOME/.genny/credentials"
 CREDENTIALS="credentials"
 CREDENTIALS_PROJECT="$CREDENTIALS_DIR/$CREDENTIALS"
-cat $CREDENTIALS_PROJECT/$CREDENTIALS-$customercode
+cat $CREDENTIALS_PROJECT/$CREDENTIALS-$customercode > ./genny.env
 ENV_FILE=genny.env
 $repo_url
 $project
@@ -64,8 +64,6 @@ $project_realm
 if [ ! -d "$CREDENTIALS_DIR" ]; then
     mkdir -p $CREDENTIALS_DIR
 fi
-
-echo "PROJECT_REALM=${2}" > ./.env
 
 
 ENV_FILE=$ENV_FILE docker-compose up -d
