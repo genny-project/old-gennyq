@@ -5,6 +5,9 @@ package life.genny.vertx.eventbus;
 import io.vertx.core.json.JsonObject;
 import io.vertx.mutiny.core.eventbus.EventBus;
 import io.vertx.mutiny.core.eventbus.Message;
+import life.genny.strategy.StrategyContext;
+import life.genny.strategy.model.GennyMessage;
+import life.genny.strategy.model.QBaseMSGMessageType;
 //import life.genny.models.entity.BaseEntity;
 
 import javax.inject.Inject;
@@ -21,25 +24,31 @@ public class ChatResource {
   @Inject
   EventBus eventBus;
 
+
+  @Inject
+  private StrategyContext strategyContext;
+
   @POST
   @Path("join")
   @Produces(MediaType.APPLICATION_JSON)
   @Consumes(MediaType.APPLICATION_JSON)
-  public BaseEntityResp join(BaseEntityReq be ) {//@Valid User user
-    BaseEntityReq baseEntity = new BaseEntityReq( );
-    baseEntity.code = "PRI_GENNY";
-    baseEntity.name = "test";
+  public BaseEntityResp join(MessageReq messageReq ) throws Exception {//@Valid User user
 //    baseEntity.realm ="internmatch";
 //    return eventBus.<JsonObject>send("join", JsonObject.mapFrom(baseEntity))
 //      .thenApply(Message::body)
 //      .thenApply(jsonObject -> jsonObject.mapTo(BaseEntity.class));
 
-    return eventBus.<JsonObject>request("join",  JsonObject.mapFrom(baseEntity))
+    BaseEntityResp baseEntityResp =  eventBus.<JsonObject>request("join",  JsonObject.mapFrom(messageReq))
             .onItem()
             .transform(Message::body)
             .map(jsonObject -> jsonObject.mapTo(BaseEntityResp.class))
             .await()
             .atMost(Duration.ofSeconds(5));
+
+
+
+      return baseEntityResp;
+
   }
 
 //  @PUT
