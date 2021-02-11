@@ -24,6 +24,13 @@ services:
         max_attempts: 3
         window: 120s
 
+
+  genny-proxyq:
+    image: gennyproject/genny-proxy:latest
+    container_name: genny-proxyq
+    networks:
+      - mainproxy
+
   imageproxyq:
     image: willnorris/imageproxy:v0.10.0
     container_name: imageproxyq
@@ -82,7 +89,7 @@ services:
     networks:
       - mainproxy
     deploy:
-      replicas: 2 
+      replicas: 1 
       labels: [APP=JAR]
       update_config:
         parallelism: 2

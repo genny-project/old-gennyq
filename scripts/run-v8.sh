@@ -10,6 +10,11 @@ done
 customercode=${1}
 mode=${2}
 
+if [ -z "$customercode" ]
+then
+      customercode=dev1 
+fi
+
 echo "DevCode = ${customercode}"
 
 #./run-setup.sh -p ${customercode} -r ${customercode} -n 10.123.123.123 ${mode}
