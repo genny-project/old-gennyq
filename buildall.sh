@@ -24,3 +24,7 @@ do
     ./build-docker.sh
     cd ..
 done
+
+echo "Finished"
+say "Finished building all"
+
