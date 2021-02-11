@@ -42,7 +42,7 @@ services:
 
   apiq:
     image: gennyproject/apiq:latest
-
+    container_name: apiqq
     environment:
       - FULL_MYSQL_URL=mysqlq:3306/gennydb?zeroDateTimeBehavior=convertToNull
     networks:
@@ -70,6 +70,7 @@ services:
 
   bridgeq:
     image: gennyproject/dummy:latest
+    container_name: bridgeq
     depends_on:
       apiq:
         condition: service_healthy
