@@ -12,7 +12,7 @@ services:
       - cluster.initial_master_nodes=elasticsearch
       - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-      - thread_pool.bulk.queue_size=2000
+#      - thread_pool.bulk.queue_size=2000
     ulimits:
       memlock:
         soft: -1
