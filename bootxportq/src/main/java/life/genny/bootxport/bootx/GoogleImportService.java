@@ -17,6 +17,7 @@ import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.sheets.v4.Sheets;
 import com.google.api.services.sheets.v4.SheetsScopes;
 import org.apache.logging.log4j.Logger;
+import org.eclipse.microprofile.config.ConfigProvider;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 public class GoogleImportService {
@@ -35,6 +36,14 @@ public class GoogleImportService {
     private Sheets service;
 
     public Sheets getService() {
+    	if (service == null) {
+    		try {
+				service = getSheetsService();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    	}
         return service;
     }
 
@@ -69,12 +78,14 @@ public class GoogleImportService {
     }
 
     public Credential authorize() throws IOException {
-        Optional<String> path = Optional.ofNullable(googleCredentialsPath);
-        if (!path.isPresent()) {
+    	String path =  ConfigProvider.getConfig().getValue("google.credentials.path", String.class);
+     //   Optional<String> path = Optional.ofNullable(googleCredentialsPath);
+      //  if (!path.isPresent()) {
+    	if (path == null) {
             throw new FileNotFoundException("GOOGLE_SVC_ACC_PATH not set");
         }
 
-        GoogleCredential credential = GoogleCredential.fromStream(new FileInputStream(path.get()),
+        GoogleCredential credential = GoogleCredential.fromStream(new FileInputStream(path),
                 httpTransport, jacksonFactory).createScoped(scopes);
 
         if (credential != null) {
