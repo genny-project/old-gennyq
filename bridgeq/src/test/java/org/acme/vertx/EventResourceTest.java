@@ -10,7 +10,7 @@ import io.quarkus.test.junit.QuarkusTest;
 @QuarkusTest
 class EventResourceTest {
 
-    @Test
+    //@Test
     void testEventBusGreeter() {
         given()
                 .when().get("/async/Quarkus")
