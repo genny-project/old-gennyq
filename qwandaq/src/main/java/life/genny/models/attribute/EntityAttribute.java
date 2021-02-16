@@ -343,7 +343,7 @@ public class EntityAttribute extends PanacheEntity {
     result = prime * result + ((attributeCode == null) ? 0 : attributeCode.hashCode());
     result = prime * result + ((attributeName == null) ? 0 : attributeName.hashCode());
     result = prime * result + ((baseEntityCode == null) ? 0 : baseEntityCode.hashCode());
-    result = prime * result + ((baseentity == null) ? 0 : baseentity.hashCode());
+//    result = prime * result + ((baseentity == null) ? 0 : baseentity.hashCode());
     result = prime * result + ((created == null) ? 0 : created.hashCode());
     result = prime * result + ((index == null) ? 0 : index.hashCode());
     result = prime * result + ((inferred == null) ? 0 : inferred.hashCode());
