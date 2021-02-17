@@ -203,7 +203,7 @@ public class AnswerLink implements java.io.Serializable {
 
     @JsonIgnore
     public void setAnswer(final Answer answer) {
-        this.setCreated(answer.getCreated());
+        this.setCreated(answer.created);
         this.setExpired(answer.getExpired());
         this.setRefused(answer.getRefused());
         this.setInferred(answer.getInferred());

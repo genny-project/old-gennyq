@@ -16,47 +16,34 @@
 
 package life.genny.qwanda;
 
-import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.Objects;
 
-import javax.persistence.Basic;
+import javax.json.bind.annotation.JsonbTransient;
+import javax.json.bind.annotation.JsonbTypeAdapter;
 import javax.persistence.Column;
-import javax.persistence.DiscriminatorColumn;
-import javax.persistence.DiscriminatorType;
-import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.Index;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Immutable;
 import org.hibernate.annotations.Type;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.google.gson.annotations.Expose;
-
+import io.quarkus.hibernate.orm.panache.PanacheEntity;
+import io.quarkus.runtime.annotations.RegisterForReflection;
+import life.genny.adapters.LocalDateTimeAdapter;
 import life.genny.models.attribute.Attribute;
-import life.genny.qwanda.datatype.LocalDateTimeAdapter;
 import life.genny.models.entity.BaseEntity;
 import life.genny.models.exception.BadDataException;
 
@@ -81,8 +68,6 @@ import life.genny.models.exception.BadDataException;
  */
 
 
-@XmlRootElement
-@XmlAccessorType(value = XmlAccessType.FIELD)
 
 @Table(name = "answer",
         indexes = {
@@ -91,47 +76,29 @@ import life.genny.models.exception.BadDataException;
                 @Index(columnList = "attributecode", name = "code_idx"),
                 @Index(columnList = "realm", name = "code_idx")
         }//,
-//uniqueConstraints = @UniqueConstraint(columnNames = {"sourcecode","targetcode","attributecode", "realm"})
-)
-@Entity
-@Immutable
-@DiscriminatorColumn(name = "dtype", discriminatorType = DiscriminatorType.STRING)
-//@Cacheable
-//@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 
-public class Answer implements Serializable {
+)
+@RegisterForReflection
+public class Answer extends PanacheEntity {
     /**
      *
      */
     private static final long serialVersionUID = 1L;
 
-    /**
-     * Stores the hibernate generated Id value for this object
-     */
-    @Id
-//	@GeneratedValue(strategy = GenerationType.IDENTITY)
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
-    @GenericGenerator(name = "native", strategy = "native")
+	private static final String REGEX_REALM = "[a-zA-Z0-9]+";
+	private static final String DEFAULT_REALM = "genny";
 
-    @Basic(optional = false)
-    @Column(name = "id", updatable = false, nullable = false)
-    private Long id;
+	@NotEmpty
+	@JsonbTransient
+	@Pattern(regexp = REGEX_REALM, message = "Must be valid Realm Format!")
+	public String realm=DEFAULT_REALM;
 
-    /**
-     * Stores the Created UMT DateTime that this object was created
-     */
-    // @XmlJavaTypeAdapter(LocalDateTimeAdapter.class)
-    @Column(name = "created")
-    @Expose
-    private LocalDateTime created;
+	
+	@JsonbTypeAdapter(LocalDateTimeAdapter.class)
+	public LocalDateTime created = LocalDateTime.now(ZoneId.of("UTC"));
 
-    /**
-     * Stores the Last Modified UMT DateTime that this object was last updated
-     */
-    // @XmlJavaTypeAdapter(LocalDateTimeAdapter.class)
-    @Column(name = "updated")
-    private LocalDateTime updated;
 
+	
     /**
      * A field that stores the human readable value of the answer.
      * <p>
@@ -139,8 +106,7 @@ public class Answer implements Serializable {
     @NotNull
     @Type(type = "text")
     @Column(name = "value", updatable = true, nullable = false)
-    @Expose
-    private String value;
+    public String value;
 
     /**
      * A field that stores the human readable attributecode associated with this
@@ -150,29 +116,18 @@ public class Answer implements Serializable {
     @NotNull
     @Size(max = 250)
     @Column(name = "attributecode", updatable = true, nullable = false)
-    @Expose
-    private String attributeCode;
+    public String attributeCode;
 
-    @JsonIgnore
-    @NotNull
-    @XmlTransient
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "attribute_id", nullable = false)
-    private Attribute attribute;
-
-    // @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    // @JsonIgnore
-    // @XmlTransient
-    // @Transient
-    // // @OneToOne(fetch = FetchType.LAZY)
-    // // @JoinColumn(name = "ask_id", nullable = true)
-    // private Ask ask;
+//	@JsonbTypeAdapter(AttributeAdapter.class)
+	@NotNull
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "ATTRIBUTE_ID", nullable = false)
+	public Attribute attribute;
 
     /**
      * Store the askId (if present)
      */
-    @Expose
-    private Long askId;
+    public Long askId;
 
     /**
      * A field that stores the human readable targetcode associated with this
@@ -182,8 +137,8 @@ public class Answer implements Serializable {
     @NotNull
     @Size(max = 64)
     @Column(name = "targetcode", updatable = true, nullable = true)
-    @Expose
-    private String targetCode;
+ 
+    public String targetCode;
 
     /**
      * A field that stores the human readable sourcecode associated with this
@@ -193,43 +148,38 @@ public class Answer implements Serializable {
     @NotNull
     @Size(max = 64)
     @Column(name = "sourcecode", updatable = true, nullable = true)
-    @Expose
-    private String sourceCode;
+    public String sourceCode;
 
     /**
      * Store the Expired boolean value of the attribute for the baseEntity
      */
-    @Expose
-    private Boolean expired = false;
+    public Boolean expired = false;
 
     /**
      * Store the Refused boolean value of the attribute for the baseEntity
      */
-    @Expose
-    private Boolean refused = false;
+    public Boolean refused = false;
 
     /**
      * Store the relative importance of the attribute for the baseEntity
      */
-    @Expose
-    private Double weight = 0.0;
+
+    public Double weight = 0.0;
 
     /**
      * Store whether this answer was inferred
      */
-    @Expose
-    private Boolean inferred = false;
 
-    @Expose
-    private Boolean changeEvent = false;
+    public Boolean inferred = false;
+
+
+    public Boolean changeEvent = false;
 
     @Transient
-    @Expose
     // Provide a clue to any new attribute type that may be needed if the attribute does not exist yet, e.g. java.util.Double
-    private String dataType = null;
+    public String dataType = null;
 
-    private String realm;
-
+ 
     /**
      * Constructor.
      */
@@ -252,7 +202,6 @@ public class Answer implements Serializable {
         this.attributeCode = attribute.code;
         this.attribute = attribute;
         this.setValue(value);
-        autocreateCreated();
         checkInputs();
     }
 
@@ -269,7 +218,6 @@ public class Answer implements Serializable {
         this.targetCode = targetCode;
         this.attributeCode = attributeCode;
         this.setValue(value);
-        autocreateCreated();
         checkInputs();
     }
 
@@ -385,7 +333,6 @@ public class Answer implements Serializable {
         this.targetCode = targetCode;
         this.attributeCode = attributeCode;
         this.setValue(value);
-        autocreateCreated();
         checkInputs();
         this.changeEvent = changeEvent;
         this.inferred = inferred;
@@ -416,7 +363,6 @@ public class Answer implements Serializable {
         this.targetCode = target.code;
         this.attributeCode = attributeCode;
         this.setValue(value);
-        autocreateCreated();
         checkInputs();
     }
 
@@ -434,7 +380,6 @@ public class Answer implements Serializable {
         this.sourceCode = aAsk.getSourceCode();
         this.targetCode = aAsk.getTargetCode();
         this.setValue(value);
-        autocreateCreated();
         checkInputs();
         // this.ask.add(this);
     }
@@ -456,64 +401,20 @@ public class Answer implements Serializable {
 
         this.setRefused(refused);
         this.setExpired(expired);
-        autocreateCreated();
         checkInputs();
         // this.ask.add(this);
     }
 
-    /**
-     * @return the created
-     */
-    @XmlJavaTypeAdapter(LocalDateTimeAdapter.class)
-    public LocalDateTime getCreated() {
-        return created;
-    }
 
-    /**
-     * @param created the created to set
-     */
-    public void setCreated(final LocalDateTime created) {
-        this.created = created;
-    }
-
-    /**
-     * @return the updated
-     */
-    public LocalDateTime getUpdated() {
-        return updated;
-    }
-
-    /**
-     * @param updated the updated to set
-     */
-    public void setUpdated(final LocalDateTime updated) {
-        this.updated = updated;
-    }
-
-    @PreUpdate
-    public void autocreateUpdate() {
-        setUpdated(LocalDateTime.now(ZoneId.of("Z")));
-    }
-
-    @PrePersist
-    public void autocreateCreated() {
-        if (getCreated() == null)
-            setCreated(LocalDateTime.now(ZoneId.of("Z")));
-    }
 
     @Transient
-    @JsonIgnore
+    @JsonbTransient
     public Date getCreatedDate() {
         final Date out = Date.from(created.atZone(ZoneId.systemDefault()).toInstant());
         return out;
     }
 
-    @Transient
-    @JsonIgnore
-    public Date getUpdatedDate() {
-        final Date out = Date.from(updated.atZone(ZoneId.systemDefault()).toInstant());
-        return out;
-    }
+
 
     /**
      * @return the id
@@ -739,25 +640,39 @@ public class Answer implements Serializable {
         return getSourceCode() + ":" + getTargetCode() + ":" + getAttributeCode();
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see java.lang.Object#toString()
-     */
-    @Override
-    public String toString() {
-        return "Answer [" + realm + "," + (created != null ? "created=" + created + ", " : "")
-                + (sourceCode != null ? "sourceCode=" + sourceCode + ", " : "")
-                + (targetCode != null ? "targetCode=" + targetCode + ", " : "")
-                + (attributeCode != null ? "attributeCode=" + attributeCode + ", " : "")
-                + (value != null ? "value=" + value + ", " : "") + (askId != null ? "askId=" + askId + ", " : "")
-                + (expired != null ? "expired=" + expired + ", " : "")
-                + (refused != null ? "refused=" + refused + ", " : "")
-                + (weight != null ? "weight=" + weight + ", " : "") + (inferred != null ? "inferred=" + inferred : "")
-                + "]";
-    }
 
-    private void checkInputs() {
+
+    @Override
+	public String toString() {
+		return "Answer [" + (realm != null ? "realm=" + realm + ", " : "")
+				+ (value != null ? "value=" + value + ", " : "")
+				+ (attributeCode != null ? "attributeCode=" + attributeCode + ", " : "")
+				+ (targetCode != null ? "targetCode=" + targetCode + ", " : "")
+				+ (sourceCode != null ? "sourceCode=" + sourceCode + ", " : "")
+				+ (inferred != null ? "inferred=" + inferred + ", " : "")
+				+ (changeEvent != null ? "changeEvent=" + changeEvent : "") + "]";
+	}
+
+    
+    
+	@Override
+	public int hashCode() {
+		return Objects.hash(askId, attributeCode, realm, sourceCode, targetCode);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!(obj instanceof Answer))
+			return false;
+		Answer other = (Answer) obj;
+		return Objects.equals(askId, other.askId) && Objects.equals(attributeCode, other.attributeCode)
+				&& Objects.equals(realm, other.realm) && Objects.equals(sourceCode, other.sourceCode)
+				&& Objects.equals(targetCode, other.targetCode);
+	}
+
+	private void checkInputs() {
         if (this.sourceCode == null) throw new NullPointerException("SourceCode cannot be null");
         if (this.targetCode == null) throw new NullPointerException("targetCode cannot be null");
         if (this.attributeCode == null) throw new NullPointerException("attributeCode cannot be null");

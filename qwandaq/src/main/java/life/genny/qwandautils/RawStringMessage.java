@@ -1,4 +1,4 @@
-package life.genny.nest.utils;
+package life.genny.qwandautils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
