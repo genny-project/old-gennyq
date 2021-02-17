@@ -138,6 +138,10 @@ public class BootxportResource {
 	}
 
 	public void doBatchLoading() {
+		if ("XXX".equals(googleHostingSheetId)) {
+			log.error("NO GOOGLE_HOSTING_SHEET_ID set! ---> Aborting");
+			return;
+		}
 		Realm rx = getRealm();
 		StateManagement.initStateManagement(rx);
 		if (!GennySettings.skipGoogleDocInStartup) {
@@ -348,7 +352,7 @@ public class BootxportResource {
 			return;
 		BeanNotNullFields copyFields = new BeanNotNullFields();
 		try {
-			userTransaction.begin();
+		//	userTransaction.begin();
 			Integer index=0;
 			for (PanacheEntity panacheEntity : objectList) {
 
@@ -415,12 +419,12 @@ public class BootxportResource {
 				if (index % BATCHSIZE == 0) {
 					// flush a batch of inserts and release memory:
 					log.debug("Batch is full, flush to database.");
-					userTransaction.commit();
-					userTransaction.begin();
+				//	userTransaction.commit();
+				//	userTransaction.begin();
 				}
 				index++;
 			}
-			userTransaction.commit();
+	//		userTransaction.commit();
 		} catch (Exception ex) {
 			log.error("Something wrong during bulk insert:" + ex.getMessage());
 		}
@@ -807,7 +811,7 @@ public class BootxportResource {
 			String code = attributes.get("code").replaceAll("^\"|\"$", "");
 
 			Attribute attr = GoogleSheetBuilder.buildAttrribute(attributes, dataTypeMap, realmName, code);
-
+			
 			// validation check
 			if (isValid(attr)) {
 				if (codeAttributeMapping.containsKey(code.toUpperCase())) {
