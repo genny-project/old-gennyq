@@ -10,7 +10,7 @@ import io.quarkus.test.junit.QuarkusTest;
 @QuarkusTest
 class ResourceUsingWebClientTest {
 
-    @Test
+    //@Test
     void testBananaData() {
         given()
                 .when().get("/fruit-data/banana")

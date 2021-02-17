@@ -27,7 +27,7 @@ import io.quarkus.test.junit.QuarkusTest;
 @QuarkusTest
 public class FruitsEndpointTest {
 
-    @Test
+    //@Test
     public void testListAllFruits() {
         //List all, should have all 3 fruits the database has initially:
         given()
