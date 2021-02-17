@@ -11,7 +11,8 @@ import javax.ws.rs.core.MediaType;
 import org.jboss.resteasy.annotations.jaxrs.PathParam;
 
 import io.smallrye.mutiny.Multi;
-import io.vertx.axle.core.Vertx;
+//import io.vertx.axle.core.Vertx;
+import io.vertx.mutiny.core.Vertx;
 
 @Path("/hello")
 public class StreamingResource {
@@ -23,7 +24,7 @@ public class StreamingResource {
     @Produces(MediaType.SERVER_SENT_EVENTS)
     @Path("{name}/streaming")
     public Multi<String> greeting(@PathParam String name) {
-        return Multi.createFrom().publisher(vertx.periodicStream(2000).toPublisher())
+        return Multi.createFrom().publisher(vertx.periodicStream(2000).toMulti())
                 .map(l -> String.format("Hello %s! (%s)%n", name, new Date()));
     }
 }
