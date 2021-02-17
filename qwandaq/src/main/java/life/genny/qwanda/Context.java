@@ -21,30 +21,21 @@
 package life.genny.qwanda;
 
 
-import javax.persistence.DiscriminatorColumn;
-import javax.persistence.DiscriminatorType;
+import java.util.Objects;
+
+import javax.json.bind.annotation.JsonbTransient;
+import javax.persistence.Cacheable;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Index;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
-import org.apache.commons.lang3.builder.CompareToBuilder;
-
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.google.gson.annotations.Expose;
-
+import io.quarkus.hibernate.orm.panache.PanacheEntity;
+import io.quarkus.runtime.annotations.RegisterForReflection;
+import life.genny.models.VisualControlType;
 import life.genny.models.entity.BaseEntity;
-import life.genny.qwanda.VisualControlType;
-import life.genny.qwanda.ContextType;
 
 /**
  * Context is the class for all entity contexts managed in the Qwanda library. A
@@ -69,44 +60,37 @@ import life.genny.qwanda.ContextType;
  * @since 1.0
  */
 
-@XmlRootElement
-@XmlAccessorType(value = XmlAccessType.FIELD)
-@Table(name = "context",
-        indexes = {
-                @Index(columnList = "id", name = "code_idx"),
-                @Index(columnList = "realm", name = "code_idx")
-        },
-        uniqueConstraints = @UniqueConstraint(columnNames = {"id", "realm"}))
 @Entity
-@DiscriminatorColumn(name = "dtype", discriminatorType = DiscriminatorType.STRING)
-@Inheritance(strategy = InheritanceType.JOINED)
-
-public class Context extends CoreEntity {
+@Cacheable
+@Table(name = "context",indexes = { @Index(name = "IDX_MYIDX1", columnList = "BASEENTITY_ID") })
+@RegisterForReflection
+public class Context extends PanacheEntity {
     /**
      *
      */
     private static final long serialVersionUID = 1L;
 
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    @XmlTransient
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "baseentity_id", nullable = false)
-    private BaseEntity entity;
+	@JsonbTransient
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "BASEENTITY_ID", nullable = false)
+	public BaseEntity baseentity;
 
-    @Expose
-    private Double weight = 1.0;
+	// For compatibility initially
+	public String baseEntityCode;
 
-    @Expose
-    private String contextCode;
 
-    @Expose
-    private String dataType;
+    public Double weight = 1.0;
 
-    @Expose
-    private String dttCode;
+    public String contextCode;  // ALIAS
 
-    @Expose
-    private VisualControlType visualControlType;
+
+    public String dataType;
+
+
+    public String dttCode;
+
+
+    public VisualControlType visualControlType;
 
 
     /**
@@ -143,51 +127,22 @@ public class Context extends CoreEntity {
     }
 
     public Context(ContextType key, BaseEntity aEntity, VisualControlType visualControlType, Double weight) {
-        super(key.contextType());
-        this.entity = aEntity;
-        this.contextCode = aEntity.code;
+        this.baseentity = aEntity;
+        this.baseEntityCode = aEntity.code;
+        this.contextCode = key.toString();
         this.visualControlType = visualControlType;
         this.weight = weight;
     }
 
-    public Context(ContextType key, String entityCode) {
-        this(key, entityCode, VisualControlType.VCL_DEFAULT);
-    }
+ 
 
-    public Context(ContextType key, String entityCode, VisualControlType visualControlType) {
-        this(key, entityCode, visualControlType, 1.0);
-    }
-
-    public Context(ContextType key, String entityCode, VisualControlType visualControlType, Double weight) {
-        super(key.contextType());
-        this.entity = null;
-        this.contextCode = entityCode;
-        this.visualControlType = visualControlType;
-        this.weight = weight;
-    }
-
-    public Context(ContextType key, String entityCode, VisualControlType visualControlType, Double weight, String dttCode) {
-        super(key.contextType());
-        this.entity = null;
-        this.contextCode = entityCode;
-        this.visualControlType = visualControlType;
-        this.weight = weight;
-        this.dttCode = dttCode;
-    }
-
-
-    /**
-     * @return the entity
-     */
-    public BaseEntity getEntity() {
-        return entity;
-    }
 
     /**
      * @param aEntity entity to set
      */
     public void setEntity(BaseEntity aEntity) {
-        this.entity = aEntity;
+        this.baseentity = aEntity;
+        this.baseEntityCode = aEntity.code;
         this.contextCode = aEntity.code;
     }
 
@@ -241,17 +196,20 @@ public class Context extends CoreEntity {
         this.dttCode = dttCode;
     }
 
-    @Override
-    public int compareTo(Object o) {
-        Context myClass = (Context) o;
-        return new CompareToBuilder()
-                .append(entity, myClass.getEntity())
-                .toComparison();
-    }
+	@Override
+	public int hashCode() {
+		return Objects.hash(baseEntityCode, contextCode);
+	}
 
-    @Override
-    public String toString() {
-        return "Context [entity=" + entity + ", weight=" + weight + ", contextCode=" + contextCode + ", dataType="
-                + dataType + ", visualControlType=" + visualControlType + "]";
-    }
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!(obj instanceof Context))
+			return false;
+		Context other = (Context) obj;
+		return Objects.equals(baseEntityCode, other.baseEntityCode) && Objects.equals(contextCode, other.contextCode);
+	}
+
+  
 }

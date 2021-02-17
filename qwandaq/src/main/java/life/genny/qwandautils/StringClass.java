@@ -1,4 +1,4 @@
-package life.genny.nest.utils;
+package life.genny.qwandautils;
 
 public interface StringClass {
 	public String getAsString();

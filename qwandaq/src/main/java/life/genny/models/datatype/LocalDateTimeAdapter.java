@@ -1,4 +1,4 @@
-package life.genny.qwanda.datatype;
+package life.genny.models.datatype;
 
 import java.time.LocalDateTime;
 
@@ -9,7 +9,7 @@ public class LocalDateTimeAdapter extends XmlAdapter<String, LocalDateTime> {
     public LocalDateTime unmarshal(String s) throws Exception {
         return LocalDateTime.parse(s);
     }
-
+ 
     @Override
     public String marshal(LocalDateTime dateTime) throws Exception {
         return dateTime.toString();
