@@ -76,7 +76,7 @@ import life.genny.qwanda.QuestionQuestion;
 import life.genny.qwanda.message.QBaseMSGMessageTemplate;
 import life.genny.qwanda.message.QEventLinkChangeMessage;
 import life.genny.qwandautils.GennySettings;
-import life.genny.qwandautils.JsonUtils;
+//import life.genny.qwandautils.JsonUtils;
 import life.genny.qwandautils.KeycloakUtils;
 import life.genny.utils.SecurityUtils;
 
@@ -180,9 +180,9 @@ public class BootxportResource {
 
 		log.info("PROJECT " + realmCode);
 		persistProject(realmUnit);
-		String keycloakJson = constructKeycloakJson(realmUnit);
-		upsertKeycloakJson(keycloakJson);
-		upsertProjectUrls(realmUnit.getUrlList());
+//		String keycloakJson = constructKeycloakJson(realmUnit);
+//		upsertKeycloakJson(keycloakJson);
+//		upsertProjectUrls(realmUnit.getUrlList());
 	}
 
 	// TODO , must fix stack overflow issue here
@@ -195,7 +195,7 @@ public class BootxportResource {
 		} catch (Exception ex) {
 			log.error("Exception:" + ex.getMessage() + " occurred during updateWithAttributes");
 		}
-		String json = JsonUtils.toJson(entity);
+//		String json = JsonUtils.toJson(entity);
 //        writeToDDT(entity.getCode(), json);
 		return entity.id;
 	}
