@@ -790,7 +790,6 @@ public class BaseEntity extends PanacheEntity {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((active == null) ? 0 : active.hashCode());
-//    result = prime * result + ((baseEntityAttributes == null) ? 0 : baseEntityAttributes.hashCode());
     result = prime * result + ((code == null) ? 0 : code.hashCode());
     result = prime * result + ((created == null) ? 0 : created.hashCode());
     result = prime * result + ((links == null) ? 0 : links.hashCode());
@@ -811,7 +810,7 @@ public class BaseEntity extends PanacheEntity {
     for(int count = 0; count < array1.size(); count++){
       EntityAttribute ea1 = array1.get(count);
       EntityAttribute ea2 = array2.get(count);
-      if(!ea1.baseEntityCode.equals(ea2.baseEntityCode)){
+      if(!ea1.equals(ea2)){
         areEqual = false;
         break;
       }

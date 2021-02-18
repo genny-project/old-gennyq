@@ -13,7 +13,7 @@ public class EntityAttributeTestUtil {
     Attribute attribute = AttributeTestUtil.attributeObject;
     BaseEntity baseentity = BaseEntityTestUtil.baseEntityObject;
     entityAttributeObject = new EntityAttribute();
-    entityAttributeObject.baseEntityCode = baseentity.code;
+    entityAttributeObject.baseentity = baseentity;
     entityAttributeObject.attribute = attribute;
     entityAttributeObject.setWeight(1.0);
     entityAttributeObject.setValue("just a name");

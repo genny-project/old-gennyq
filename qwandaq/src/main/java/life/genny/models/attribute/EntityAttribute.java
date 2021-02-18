@@ -9,6 +9,7 @@ import java.util.Date;
 import javax.json.bind.annotation.JsonbTransient;
 import javax.json.bind.annotation.JsonbTypeAdapter;
 import javax.persistence.Cacheable;
+import javax.persistence.CascadeType;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -37,11 +38,11 @@ import life.genny.utils.LocalDateTimeAdapter;
 
 @Table(name = "qbaseentity_attribute",
 indexes = {
-		@Index(name = "ba_idx", columnList = "baseEntityCode"),
-		@Index(name = "bb_idx", columnList = "attributeCode"),
-//		@Index(name = "bc_idx", columnList = "valueString"),
+//		@Index(name = "ba_idx", columnList = "baseentitycode"),
+//		@Index(name = "bb_idx", columnList = "attributeCode"),
+		@Index(name = "bc_idx", columnList = "valueString"),
 				@Index(name = "bd_idx", columnList = "valueBoolean"),
-				@Index(name = "bae_idx", columnList = "realm, ATTRIBUTE_ID,BASEENTITY_ID", unique = true)
+//				@Index(name = "bae_idx", columnList = "realm, ATTRIBUTE_ID,BASEENTITY_ID", unique = true)
     }
 )
 
@@ -69,16 +70,16 @@ public class EntityAttribute extends PanacheEntity {
 //	@JsonbTypeAdapter(AttributeAdapter.class)
 	@NotNull
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "ATTRIBUTE_ID", nullable = false)
+	@JoinColumn(name = "attribute",nullable = false)
 	public Attribute attribute;
 
 	@JsonbTransient
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "BASEENTITY_ID", nullable = false)
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinColumn(name = "baseentity",nullable = false)
 	public BaseEntity baseentity;
 
-	// For compatibility initially
-	public String baseEntityCode;
+//	// For compatibility initially
+//	public String baseEntityCode;
 	public String attributeCode;
 	public String attributeName;
 
@@ -237,7 +238,7 @@ public class EntityAttribute extends PanacheEntity {
 	@Override
   public String toString() {
     return "EntityAttribute [attribute=" + attribute + ", attributeCode=" + attributeCode + ", attributeName="
-        + attributeName + ", baseEntityCode=" + baseEntityCode + ", created="
+        + attributeName  + ", created="
         + created + ", index=" + index + ", inferred=" + inferred + ", privacyFlag=" + privacyFlag
         + ", readonly=" + readonly + ", realm=" + realm + ", updated=" + updated + ", value=" + value + "]";
   }
@@ -340,18 +341,10 @@ public class EntityAttribute extends PanacheEntity {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((attribute == null) ? 0 : attribute.hashCode());
-    result = prime * result + ((attributeCode == null) ? 0 : attributeCode.hashCode());
-    result = prime * result + ((attributeName == null) ? 0 : attributeName.hashCode());
-    result = prime * result + ((baseEntityCode == null) ? 0 : baseEntityCode.hashCode());
-//    result = prime * result + ((baseentity == null) ? 0 : baseentity.hashCode());
-    result = prime * result + ((created == null) ? 0 : created.hashCode());
-    result = prime * result + ((index == null) ? 0 : index.hashCode());
     result = prime * result + ((inferred == null) ? 0 : inferred.hashCode());
     result = prime * result + ((privacyFlag == null) ? 0 : privacyFlag.hashCode());
     result = prime * result + ((readonly == null) ? 0 : readonly.hashCode());
     result = prime * result + ((realm == null) ? 0 : realm.hashCode());
-    result = prime * result + ((updated == null) ? 0 : updated.hashCode());
-    result = prime * result + ((value == null) ? 0 : value.hashCode());
     return result;
   }
 
@@ -369,36 +362,17 @@ public class EntityAttribute extends PanacheEntity {
         return false;
     } else if (!attribute.equals(other.attribute))
       return false;
-    if (attributeCode == null) {
-      if (other.attributeCode != null)
-        return false;
-    } else if (!attributeCode.equals(other.attributeCode))
-      return false;
     if (attributeName == null) {
       if (other.attributeName != null)
         return false;
     } else if (!attributeName.equals(other.attributeName))
-      return false;
-    if (baseEntityCode == null) {
-      if (other.baseEntityCode != null)
-        return false;
-    } else if (!baseEntityCode.equals(other.baseEntityCode))
       return false;
     if (baseentity == null) {
       if (other.baseentity != null)
         return false;
     } else if (!baseentity.equals(other.baseentity))
       return false;
-    if (created == null) {
-      if (other.created != null)
-        return false;
-    } else if (!created.equals(other.created))
-      return false;
-    if (index == null) {
-      if (other.index != null)
-        return false;
-    } else if (!index.equals(other.index))
-      return false;
+ 
     if (inferred == null) {
       if (other.inferred != null)
         return false;
@@ -418,16 +392,6 @@ public class EntityAttribute extends PanacheEntity {
       if (other.realm != null)
         return false;
     } else if (!realm.equals(other.realm))
-      return false;
-    if (updated == null) {
-      if (other.updated != null)
-        return false;
-    } else if (!updated.equals(other.updated))
-      return false;
-    if (value == null) {
-      if (other.value != null)
-        return false;
-    } else if (!value.equals(other.value))
       return false;
     return true;
   }

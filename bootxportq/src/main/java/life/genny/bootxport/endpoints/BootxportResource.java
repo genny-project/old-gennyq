@@ -131,8 +131,16 @@ public class BootxportResource {
 				throw new WebApplicationException("User not recognised. Entity not being created", Status.FORBIDDEN);
 			}
 		}
-
-		doBatchLoading();
+		try {
+			userTransaction.setTransactionTimeout(10000);
+			userTransaction.begin();
+			doBatchLoading();
+			userTransaction.commit();
+		} catch (SecurityException | IllegalStateException | SystemException | NotSupportedException | RollbackException
+				| HeuristicMixedException | HeuristicRollbackException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		return Response.status(Status.OK).build();
 	}
@@ -187,14 +195,14 @@ public class BootxportResource {
 
 	// TODO , must fix stack overflow issue here
 	public Long updateWithAttributes(BaseEntity entity) {
-		try {
-			userTransaction.begin();
+//		try {
+//			userTransaction.begin();
 			entity.realm = currentRealm;
 			entity.persist();
-			userTransaction.commit();
-		} catch (Exception ex) {
-			log.error("Exception:" + ex.getMessage() + " occurred during updateWithAttributes");
-		}
+//			userTransaction.commit();
+//		} catch (Exception ex) {
+//			log.error("Exception:" + ex.getMessage() + " occurred during updateWithAttributes");
+//		}
 //		String json = JsonUtils.toJson(entity);
 //        writeToDDT(entity.getCode(), json);
 		return entity.id;
@@ -254,12 +262,13 @@ public class BootxportResource {
 	}
 
 	public EntityEntity insertEntityEntity(EntityEntity ee) {
-		EntityTransaction transaction = em.getTransaction();
-		transaction.begin();
-		em.persist(ee);
+	//	EntityTransaction transaction = em.getTransaction();
+	//	transaction.begin();
+	//	em.persist(ee);
+		ee.persist();
 		QEventLinkChangeMessage msg = new QEventLinkChangeMessage(ee.getLink(), null, getCurrentToken());
 		sendQEventLinkChangeMessage(msg);
-		transaction.commit();
+	//	transaction.commit();
 		log.info(String.format("Sent Event Link Change Msg:%s.", msg));
 		return ee;
 	}
@@ -460,8 +469,8 @@ public class BootxportResource {
 			return;
 
 		int index = 1;
-		try {
-			userTransaction.begin();
+//		try {
+//			userTransaction.begin();
 			for (QuestionQuestion qq : objectList) {
 				if (index % BATCHSIZE == 0) {
 					// flush a batch of inserts and release memory:
@@ -472,10 +481,10 @@ public class BootxportResource {
 				}
 				index += 1;
 			}
-			userTransaction.commit();
-		} catch (Exception ex) {
-			log.error("Something wrong during question_question bulk insert:" + ex.getMessage());
-		}
+//			userTransaction.commit();
+//		} catch (Exception ex) {
+//			log.error("Something wrong during question_question bulk insert:" + ex.getMessage());
+//		}
 	}
 
 	public void bulkUpdateQuestionQuestion(List<QuestionQuestion> objectList, Map<String, QuestionQuestion> mapping) {
@@ -563,11 +572,20 @@ public class BootxportResource {
 				log.info(String.format("[\"%s\"], %s, %s.", this.currentRealm, constraint.getPropertyPath(),
 						constraint.getMessage()));
 			}
-			upsert(attr);
+			
+//			try {
+//				userTransaction.begin();
+				upsert(attr);
+//				userTransaction.commit();
+//			} catch (SecurityException | IllegalStateException | NotSupportedException | SystemException | RollbackException
+//					| HeuristicMixedException | HeuristicRollbackException e1) {
+//				// TODO Auto-generated catch block
+//				e1.printStackTrace();
+//			}		
 		}
 		try {
 			be.addAttribute(attr, 0.0, keycloakJson);
-		} catch (BadDataException e) {
+		} catch (NullPointerException | BadDataException e) {
 			log.error(String.format("BadDataException:%s", e.getMessage()));
 		}
 
@@ -592,7 +610,16 @@ public class BootxportResource {
 			log.info(String.format("[\" %s\"] %s, %s.", this.currentRealm, constraint.getPropertyPath(),
 					constraint.getMessage()));
 		}
-		upsert(attr);
+		try {
+			userTransaction.begin();
+			upsert(attr);
+			userTransaction.commit();
+		} catch (SecurityException | IllegalStateException | NotSupportedException | SystemException | RollbackException
+				| HeuristicMixedException | HeuristicRollbackException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
 		try {
 			be.addAttribute(attr, 0.0, urlList);
 		} catch (BadDataException e) {
@@ -643,17 +670,17 @@ public class BootxportResource {
 		validationsOptimization(rx.getValidations(), rx.getCode());
 
 		Map<String, DataType> dataTypes = null;
-		try {
-			userTransaction.setTransactionTimeout(10000);
-			userTransaction.begin();
+//		try {
+//			userTransaction.setTransactionTimeout(10000);
+//			userTransaction.begin();
 			dataTypes = dataType(rx.getDataTypes());
 			attributesOptimization(rx.getAttributes(), dataTypes, rx.getCode());
-			userTransaction.commit();
-		} catch (SecurityException | IllegalStateException | SystemException | NotSupportedException | RollbackException
-				| HeuristicMixedException | HeuristicRollbackException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//			userTransaction.commit();
+//		} catch (SecurityException | IllegalStateException | SystemException | NotSupportedException | RollbackException
+//				| HeuristicMixedException | HeuristicRollbackException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 		
 		baseEntitysOptimization(rx.getBaseEntitys(), rx.getCode(), userCodeUUIDMapping);
 
