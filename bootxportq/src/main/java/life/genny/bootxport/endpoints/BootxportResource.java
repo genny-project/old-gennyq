@@ -436,20 +436,20 @@ public class BootxportResource {
 			return;
 		int index = 1;
 		try {
-			userTransaction.begin();
+		//	userTransaction.begin();
 			for (PanacheEntity panacheEntity : objectList) {
 				if (index % BATCHSIZE == 0) {
 					// flush a batch of inserts and release memory:
 					log.debug("Batch is full, flush to database.");
 					panacheEntity.persist();
-					userTransaction.commit();
-					userTransaction.begin();
+			//		userTransaction.commit();
+			//		userTransaction.begin();
 				} else {
 					panacheEntity.persist();
 				}
 				index += 1;
 			}
-			userTransaction.commit();
+		//	userTransaction.commit();
 		} catch (Exception ex) {
 			log.error("Something wrong during bulk insert:" + ex.getMessage());
 		}
