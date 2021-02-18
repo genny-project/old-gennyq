@@ -811,7 +811,7 @@ public class BaseEntity extends PanacheEntity {
     for(int count = 0; count < array1.size(); count++){
       EntityAttribute ea1 = array1.get(count);
       EntityAttribute ea2 = array2.get(count);
-      if(!ea1.baseEntityCode.equals(ea2.baseEntityCode)){
+      if(!ea1.equals(ea2)){
         areEqual = false;
         break;
       }
