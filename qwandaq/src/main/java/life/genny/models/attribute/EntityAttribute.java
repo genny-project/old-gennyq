@@ -79,7 +79,7 @@ public class EntityAttribute extends PanacheEntity {
 	public BaseEntity baseentity;
 
 //	// For compatibility initially
-//	public String baseEntityCode;
+	public String baseEntityCode;
 	public String attributeCode;
 	public String attributeName;
 
