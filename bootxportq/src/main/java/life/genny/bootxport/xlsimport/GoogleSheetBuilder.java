@@ -226,10 +226,10 @@ public class GoogleSheetBuilder {
         Question sbe = questionHashMap.get(parentCode.toUpperCase());
         Question tbe = questionHashMap.get(targetCode.toUpperCase());
         if (sbe == null) {
-            log.error("QuestionQuesiton parent code:" + parentCode + " doesn't exist in Question table.");
+//            log.error("QuestionQuesiton parent code:" + parentCode + " doesn't exist in Question table.");
             return null;
         } else if (tbe == null) {
-            log.error("QuestionQuesiton target Code:" + targetCode + " doesn't exist in Question table.");
+//            log.error("QuestionQuesiton target Code:" + targetCode + " doesn't exist in Question table.");
             return null;
         }
 
@@ -334,7 +334,7 @@ public class GoogleSheetBuilder {
 
         Attribute attr = attributeHashMap.get(attrCode.toUpperCase());
         if (attr == null) {
-            log.error(String.format("Question: %s can not find Attribute:%s in database!", code, attrCode.toUpperCase()));
+//            log.error(String.format("Question: %s can not find Attribute:%s in database!", code, attrCode.toUpperCase()));
             return null;
         }
 
@@ -361,7 +361,7 @@ public class GoogleSheetBuilder {
         if (baseEntityAttr.containsKey(searchKey)) {
             attributeCode = baseEntityAttr.get(searchKey).replaceAll("^\"|\"$", "");
         } else {
-            log.error("Invalid record, AttributeCode not found [" + baseEntityAttr + "]");
+//            log.error("Invalid record, AttributeCode not found [" + baseEntityAttr + "]");
         }
         return attributeCode;
     }
@@ -377,7 +377,7 @@ public class GoogleSheetBuilder {
                 baseEntityCode = KeycloakUtils.getKeycloakUUIDByUserCode(baseEntityCode, userCodeUUIDMapping);
             }
         } else {
-            log.error("Invalid record, BaseEntityCode not found [" + baseEntityAttr + "]");
+//            log.error("Invalid record, BaseEntityCode not found [" + baseEntityAttr + "]");
         }
         return baseEntityCode;
     }
@@ -420,14 +420,14 @@ public class GoogleSheetBuilder {
         // Check if attribute code exist in Attribute table, foreign key restriction
         Attribute attribute = attrHashMap.get(attributeCode.toUpperCase());
         if (attribute == null) {
-            log.error(String.format("Invalid EntityAttribute record, AttributeCode:%s is not in the Attribute Table!!!", attributeCode));
+//            log.error(String.format("Invalid EntityAttribute record, AttributeCode:%s is not in the Attribute Table!!!", attributeCode));
             return null;
         }
 
         // Check if baseEntity code exist in BaseEntity table, foreign key restriction
         BaseEntity baseEntity = beHashMap.get(baseEntityCode.toUpperCase());
         if (baseEntity == null) {
-            log.error(String.format("Invalid EntityAttribute record, BaseEntityCode:%s is not in the BaseEntity Table!!!", baseEntityCode));
+//            log.error(String.format("Invalid EntityAttribute record, BaseEntityCode:%s is not in the BaseEntity Table!!!", baseEntityCode));
             return null;
         }
 

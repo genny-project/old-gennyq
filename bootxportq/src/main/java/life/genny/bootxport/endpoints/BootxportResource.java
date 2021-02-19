@@ -235,8 +235,8 @@ public class BootxportResource {
 		return existing;
 	}
 
-	public Question upsert(Question q) {
-		Question existing = findQuestionByCode(q.getCode());
+	public Question upsert(Question q, HashMap<String, Question> codeQuestionMapping) {
+		Question existing = codeQuestionMapping.get(q.getCode());
 		if (existing == null) {
 			q.persist();
 			return q;
@@ -519,7 +519,11 @@ public class BootxportResource {
 		long number = 0;
 		
 		try {
-			String sql = "delete from qbaseentity_attribute left join qbaseentity ON qbaseentity_attribute.BASEENTITY_ID=qbaseentity.id left join qattribute ON qbaseentity_attribute.ATTRIBUTE_ID=qattribute.id where qbaseentity.code like 'RUL_FRM%_GRP' and qattribute.code = 'PRI_ASKS' and qbaseentity_attribute.realm = '"+realm+"'";
+			String sql = "delete be_attr from qbaseentity_attribute as be_attr " +
+			 "left join qbaseentity as be ON be_attr.BASEENTITY_ID=be.id " +
+			  "left join qattribute as attr ON be_attr.ATTRIBUTE_ID=attr.id " +
+			   "where be.code like 'RUL_FRM%_GRP' and attr.code = 'PRI_ASKS' " +
+			    "and be_attr.realm = '"+realm+"'";
 			log.info("Execute " + sql);
 			Query q = JpaOperations.getEntityManager().createNativeQuery(sql);
 			List<String> rows = null;
@@ -684,6 +688,7 @@ public class BootxportResource {
 		cleanFrameFromBaseentityAttribute(rx.getCode());
 
 		validationsOptimization(rx.getValidations(), rx.getCode());
+	/*
 
 		Map<String, DataType> dataTypes = null;
 //		try {
@@ -714,6 +719,8 @@ public class BootxportResource {
 
 		messageTemplatesOptimization(rx.getNotifications(), rx.getCode());
 		messageTemplatesOptimization(rx.getMessages(), rx.getCode());
+
+	 */
 	}
 
 	// optimization
@@ -746,7 +753,7 @@ public class BootxportResource {
 				summary.getNewItem()));
 	}
 
-	//@Transactional
+	@Transactional
 	public void asksOptimization(Map<String, Map<String, String>> project, String realmName) {
 		// Get all asks
 		String tableName = "Ask";
@@ -786,7 +793,7 @@ public class BootxportResource {
 		printSummary("Ask", summary);
 	}
 
-	//@Transactional
+	@Transactional
 	public void attributeLinksOptimization(Map<String, Map<String, String>> project, Map<String, DataType> dataTypeMap,
 			String realmName) {
 		String tableName = "Attribute";
@@ -833,6 +840,7 @@ public class BootxportResource {
 		printSummary("AttributeLink", summary);
 	}
 
+	@Transactional
 	public void attributesOptimization(Map<String, Map<String, String>> project, Map<String, DataType> dataTypeMap,
 			String realmName) {
 		String tableName = "Attribute";
@@ -889,6 +897,7 @@ public class BootxportResource {
 		printSummary(tableName, summary);
 	}
 
+	@Transactional
 	public void baseEntityAttributesOptimization(Map<String, Map<String, String>> project, String realmName,
 			HashMap<String, String> userCodeUUIDMapping) {
 		// Get all BaseEntity
@@ -937,7 +946,7 @@ public class BootxportResource {
 		printSummary("BaseEntityAttributes", summary);
 	}
 
-	//@Transactional
+	@Transactional
 	public void baseEntitysOptimization(Map<String, Map<String, String>> project, String realmName,
 			HashMap<String, String> userCodeUUIDMapping) {
 		String tableName = "BaseEntity";
@@ -988,7 +997,7 @@ public class BootxportResource {
 		printSummary(tableName, summary);
 	}
 
-	//@Transactional
+	@Transactional
 	public void entityEntitysOptimization(Map<String, Map<String, String>> project, String realmName,
 			boolean isSynchronise, HashMap<String, String> userCodeUUIDMapping) {
 		// Get all BaseEntity
@@ -1091,7 +1100,7 @@ public class BootxportResource {
 		printSummary("EntityEntity", summary);
 	}
 
-	//@Transactional
+	@Transactional
 	public void messageTemplatesOptimization(Map<String, Map<String, String>> project, String realmName) {
 		String tableName = "QBaseMSGMessageTemplate";
 		List<QBaseMSGMessageTemplate> qBaseMSGMessageTemplateFromDB = queryTableByRealm(tableName, realmName);
@@ -1135,7 +1144,7 @@ public class BootxportResource {
 		printSummary(tableName, summary);
 	}
 
-	//@Transactional
+	@Transactional
 	public void questionQuestionsOptimization(Map<String, Map<String, String>> project, String realmName) {
 		String tableName = "Question";
 		List<Question> questionFromDB = queryTableByRealm(tableName, realmName);
@@ -1207,7 +1216,7 @@ public class BootxportResource {
 		// Get all questions from database
 		String tableName = "Question";
 		String mainRealm = GennySettings.mainrealm;
-		List<Question> questionsFromDBMainRealm = new ArrayList<>();
+		List<Question> questionsFromDBMainRealm;
 		HashMap<String, Question> codeQuestionMappingMainRealm = new HashMap<>();
 
 		if (!realmName.equals(mainRealm)) {
@@ -1283,14 +1292,14 @@ public class BootxportResource {
 				existing.setOneshot(oneshot);
 				existing.setReadonly(readonly);
 				existing.setMandatory(mandatory);
-				upsert(existing);
+				upsert(existing, codeQuestionMapping);
 				summary.addUpdated();
 			}
 		}
 		printSummary("Question", summary);
 	}
 
-	//@Transactional
+	@Transactional
 	public void validationsOptimization(Map<String, Map<String, String>> project, String realmName) {
 		String tableName = "Validation";
 		// Get existing validation by realm from database
