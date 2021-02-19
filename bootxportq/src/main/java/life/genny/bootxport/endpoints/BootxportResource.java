@@ -186,9 +186,9 @@ public class BootxportResource {
 
 		log.info("PROJECT " + realmCode);
 		persistProject(realmUnit);
-		String keycloakJson = constructKeycloakJson(realmUnit);
-		upsertKeycloakJson(keycloakJson);
-		upsertProjectUrls(realmUnit.getUrlList());
+//		String keycloakJson = constructKeycloakJson(realmUnit);
+//		upsertKeycloakJson(keycloakJson);
+//		upsertProjectUrls(realmUnit.getUrlList());
 	}
 
 	// TODO , must fix stack overflow issue here

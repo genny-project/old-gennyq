@@ -79,7 +79,7 @@ public class EntityAttribute extends PanacheEntity {
 	public BaseEntity baseentity;
 
 //	// For compatibility initially
-//	public String baseEntityCode;
+	public String baseEntityCode;
 	public String attributeCode;
 	public String attributeName;
 
@@ -341,7 +341,6 @@ public class EntityAttribute extends PanacheEntity {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((attribute == null) ? 0 : attribute.hashCode());
-     result = prime * result + ((baseentity == null) ? 0 : baseentity.hashCode());
     result = prime * result + ((inferred == null) ? 0 : inferred.hashCode());
     result = prime * result + ((privacyFlag == null) ? 0 : privacyFlag.hashCode());
     result = prime * result + ((readonly == null) ? 0 : readonly.hashCode());
