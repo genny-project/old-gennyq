@@ -220,4 +220,22 @@ public class QBaseMSGMessageTemplate extends PanacheEntity {
     public int compareTo(Object o) {
         return 0;
     }
+
+
+	public void assimilate(QBaseMSGMessageTemplate obj) {
+		name = obj.name;
+		description = obj.description;
+		this.email_templateId = obj.email_templateId;
+		this.created = obj.created;
+		this.updated = obj.updated;
+		this.code = obj.code;
+		this.realm = obj.realm;
+		this.sms_template = obj.sms_template;
+		this.subject = obj.subject;
+		this.toast_template = obj.toast_template;
+	
+
+		persist();
+		
+	}
 }

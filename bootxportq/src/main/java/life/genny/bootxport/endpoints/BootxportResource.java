@@ -366,13 +366,7 @@ public class BootxportResource {
 				if (panacheEntity instanceof QBaseMSGMessageTemplate) {
 					QBaseMSGMessageTemplate obj = ((QBaseMSGMessageTemplate) panacheEntity);
 					QBaseMSGMessageTemplate msg = (QBaseMSGMessageTemplate) mapping.get(obj.code);
-					msg.name = obj.name;
-					msg.setDescription(obj.getDescription());
-					msg.setEmail_templateId(obj.getEmail_templateId());
-					msg.setSms_template(obj.getSms_template());
-					msg.setSubject(obj.getSubject());
-					msg.setToast_template(obj.getToast_template());
-					msg.persist();
+					msg.assimilate(obj);
 					panacheEntity.persist();
 				} else {
 					if (panacheEntity instanceof BaseEntity) {
@@ -865,8 +859,14 @@ public class BootxportResource {
 			
 			// validation check
 			if (isValid(attr)) {
-				if (codeAttributeMapping.containsKey(code.toUpperCase())) {
-					if (isChanged(attr, codeAttributeMapping.get(code.toUpperCase()))) {
+				if ("PRI_TESTING_TEXT".equals(attr.code)) {
+					log.info("PRI_TEXTING_TYEXT");
+				}
+				Attribute existing = Attribute.find("code",attr.code.toUpperCase().trim()).firstResult();
+				if (existing != null) {
+			//	if (codeAttributeMapping.containsKey(code.toUpperCase())) {
+				//	if (isChanged(attr, codeAttributeMapping.get(code.toUpperCase()))) {
+						if (isChanged(attr, existing)) {
 						attributeUpdateList.add(attr);
 						summary.addUpdated();
 					} else {
