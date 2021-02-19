@@ -38,8 +38,8 @@ import life.genny.utils.LocalDateTimeAdapter;
 
 @Table(name = "qbaseentity_attribute",
 indexes = {
-//		@Index(name = "ba_idx", columnList = "baseentitycode"),
-//		@Index(name = "bb_idx", columnList = "attributeCode"),
+		@Index(name = "ba_idx", columnList = "BASEENTITY_ID"),
+		@Index(name = "bb_idx", columnList = "ATTRIBUTE_ID"),
 		@Index(name = "bc_idx", columnList = "valueString"),
 				@Index(name = "bd_idx", columnList = "valueBoolean"),
 //				@Index(name = "bae_idx", columnList = "realm, ATTRIBUTE_ID,BASEENTITY_ID", unique = true)
@@ -70,12 +70,12 @@ public class EntityAttribute extends PanacheEntity {
 //	@JsonbTypeAdapter(AttributeAdapter.class)
 	@NotNull
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "attribute",nullable = false)
+	@JoinColumn(name = "ATTRIBUTE_ID",nullable = false)
 	public Attribute attribute;
 
 	@JsonbTransient
 	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinColumn(name = "baseentity",nullable = false)
+	@JoinColumn(name = "BASEENTITY_ID",nullable = false)
 	public BaseEntity baseentity;
 
 //	// For compatibility initially
