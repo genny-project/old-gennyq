@@ -129,7 +129,7 @@ public class BaseEntity extends PanacheEntity {
 	@JsonbTypeAdapter(LocalDateTimeAdapter.class)
 	public LocalDateTime updated;
 
-    @OneToMany(cascade = CascadeType.ALL,  fetch = FetchType.EAGER, orphanRemoval=true)
+    @OneToMany(cascade = CascadeType.ALL,  fetch = FetchType.EAGER, orphanRemoval=true, mappedBy = "baseentity")
 	public Set<EntityAttribute> baseEntityAttributes = new HashSet<>();
 
 //	@OneToMany(fetch = FetchType.EAGER, mappedBy = "pk.source")

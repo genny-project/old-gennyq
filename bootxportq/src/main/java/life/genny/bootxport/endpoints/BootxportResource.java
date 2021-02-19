@@ -15,7 +15,6 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.NoResultException;
-import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 import javax.transaction.HeuristicMixedException;
 import javax.transaction.HeuristicRollbackException;
@@ -46,6 +45,7 @@ import org.eclipse.microprofile.jwt.JsonWebToken;
 import org.jboss.logging.Logger;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
+import io.quarkus.hibernate.orm.panache.runtime.JpaOperations;
 import io.quarkus.runtime.ShutdownEvent;
 import io.quarkus.runtime.StartupEvent;
 import io.quarkus.runtime.annotations.RegisterForReflection;
@@ -63,7 +63,6 @@ import life.genny.bootxport.xlsimport.Summary;
 import life.genny.models.GennyToken;
 import life.genny.models.attribute.Attribute;
 import life.genny.models.attribute.AttributeLink;
-import life.genny.models.attribute.EntityAttribute;
 import life.genny.models.datatype.DataType;
 import life.genny.models.entity.BaseEntity;
 import life.genny.models.entity.EntityEntity;
@@ -76,7 +75,6 @@ import life.genny.qwanda.QuestionQuestion;
 import life.genny.qwanda.message.QBaseMSGMessageTemplate;
 import life.genny.qwanda.message.QEventLinkChangeMessage;
 import life.genny.qwandautils.GennySettings;
-//import life.genny.qwandautils.JsonUtils;
 import life.genny.qwandautils.KeycloakUtils;
 import life.genny.utils.SecurityUtils;
 
@@ -447,14 +445,18 @@ public class BootxportResource {
 		try {
 		//	userTransaction.begin();
 			for (PanacheEntity panacheEntity : objectList) {
-				if (index % BATCHSIZE == 0) {
-					// flush a batch of inserts and release memory:
-					log.debug("Batch is full, flush to database.");
-					panacheEntity.persist();
-			//		userTransaction.commit();
-			//		userTransaction.begin();
-				} else {
-					panacheEntity.persist();
+				try {
+					if (index % BATCHSIZE == 0) {
+						// flush a batch of inserts and release memory:
+						log.debug("Batch is full, flush to database.");
+						panacheEntity.persist();
+//		userTransaction.commit();
+//		userTransaction.begin();
+					} else {
+						panacheEntity.persist();
+					}
+				} catch (Exception e) {
+					log.error("Something wrong during bulk insert:" + e.getMessage());
 				}
 				index += 1;
 			}
@@ -510,10 +512,24 @@ public class BootxportResource {
 
 	@Transactional
 	public void cleanFrameFromBaseentityAttribute(String realm) {
-		Map<String, Object> params = new HashMap<>();
-		params.put("realm", realm);
-		long number = EntityAttribute
-				.delete("baseEntityCode like 'RUL_FRM%_GRP' and attributeCode = 'PRI_ASKS' and realm = :realm", params);
+//		Map<String, Object> params = new HashMap<>();
+//		params.put("realm", realm);
+//		long number = EntityAttribute
+//				.delete("from EntityAttribute as ea where ea.baseentity.code like 'RUL_FRM%_GRP' and attribute.code = 'PRI_ASKS' and realm = :realm", params);
+		long number = 0;
+		
+		try {
+			String sql = "delete from qbaseentity_attribute left join qbaseentity ON qbaseentity_attribute.BASEENTITY_ID=qbaseentity.id left join qattribute ON qbaseentity_attribute.ATTRIBUTE_ID=qattribute.id where qbaseentity.code like 'RUL_FRM%_GRP' and qattribute.code = 'PRI_ASKS' and qbaseentity_attribute.realm = '"+realm+"'";
+			log.info("Execute " + sql);
+			Query q = JpaOperations.getEntityManager().createNativeQuery(sql);
+			List<String> rows = null;
+
+			number = q.executeUpdate();
+
+		} catch (Exception e) {
+			log.error("Error in executing sql for clean frames" + e.getLocalizedMessage());
+
+		}
 		log.info(
 				String.format("Clean up BaseentityAttribute, realm:%s, %d BaseentityAttribute deleted", realm, number));
 	}
