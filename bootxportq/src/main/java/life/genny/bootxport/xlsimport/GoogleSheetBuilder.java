@@ -155,6 +155,7 @@ public class GoogleSheetBuilder {
         dataType = attributes.get("datatype").trim().replaceAll(REGEX_1, "");
         String name = attributes.get("name").replaceAll(REGEX_1, "");
         DataType dataTypeRecord = dataTypeMap.get(dataType);
+      
 
         String privacyStr = attributes.get(PRIVACY);
         if (privacyStr != null) {

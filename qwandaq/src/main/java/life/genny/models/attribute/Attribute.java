@@ -22,6 +22,11 @@ package life.genny.models.attribute;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.json.bind.annotation.JsonbTransient;
 import javax.json.bind.annotation.JsonbTypeAdapter;
@@ -43,6 +48,8 @@ import org.jboss.logging.Logger;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import io.quarkus.runtime.annotations.RegisterForReflection;
 import life.genny.models.datatype.DataType;
+import life.genny.models.validation.Validation;
+import life.genny.qwanda.GennyInterface;
 import life.genny.utils.LocalDateTimeAdapter;
 
 /**
@@ -81,7 +88,7 @@ uniqueConstraints = @UniqueConstraint(columnNames = {"code", "realm"}))
 @Cacheable
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @RegisterForReflection
-public class Attribute extends PanacheEntity {
+public class Attribute extends PanacheEntity implements GennyInterface {
 
 	private static final Logger log = Logger.getLogger(Attribute.class);
 	
@@ -264,4 +271,36 @@ public class Attribute extends PanacheEntity {
   }
 
 
+	public static Optional<Attribute> findByCodeOptional(String code) {
+		return find("code", code).firstResultOptional();
+	}
+	
+	public static Attribute findByCode(String code) {
+		return find("code", code).firstResult();
+	}
+
+
+	@Override
+	public Long getId() {
+		return this.id;
+	}
+
+
+	@Override
+	public String getCode() {
+		return this.code;
+	}
+
+	@Override
+	public boolean isChanged(GennyInterface obj)
+	{
+
+		Attribute other = (Attribute) obj;
+		
+		return !Objects.equals(code, other.code) && Objects.equals(realm, other.realm)  && Objects.equals(defaultValue, other.defaultValue)  && Objects.equals(help, other.help)
+				 && Objects.equals(description, other.description)  && Objects.equals(defaultPrivacyFlag, other.defaultPrivacyFlag)  && Objects.equals(name, other.name)
+				 && Objects.equals(dataType, other.dataType);
+
+
+	}
 }

@@ -21,6 +21,7 @@ import java.time.ZoneId;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
@@ -45,6 +46,8 @@ import javax.validation.constraints.Size;
 
 import life.genny.qwanda.Answer;
 import life.genny.qwanda.AnswerLink;
+import life.genny.qwanda.GennyInterface;
+
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.jboss.logging.Logger;
 
@@ -85,7 +88,7 @@ uniqueConstraints = @UniqueConstraint(columnNames = {"code", "realm"}))
 @Cacheable
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @RegisterForReflection
-public class BaseEntity extends PanacheEntity {
+public class BaseEntity extends PanacheEntity implements GennyInterface {
 
 
 	private static final long serialVersionUID = 1L;
@@ -1003,5 +1006,27 @@ public class BaseEntity extends PanacheEntity {
     	return find("code",code).firstResult();
     }
     
-    
+	public static Optional<BaseEntity> findByCodeOptional(String code) {
+		return find("code", code).firstResultOptional();
+	}
+	
+	public Long getId()
+	{
+		return this.id;
+	}
+	
+	@Override
+	public boolean isChanged(GennyInterface obj)
+	{
+
+		BaseEntity other = (BaseEntity) obj;
+		
+		// compare the baseentity attributes
+		
+		
+		return !Objects.equals(code, other.code) && Objects.equals(realm, other.realm)  && Objects.equals(active, other.active)   && Objects.equals(name, other.name)
+				;
+
+
+	}
 }

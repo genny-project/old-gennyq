@@ -22,6 +22,8 @@ import com.google.gson.annotations.Expose;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import life.genny.models.attribute.Attribute;
 import life.genny.models.exception.BadDataException;
+import life.genny.models.validation.Validation;
+
 import org.apache.logging.log4j.Logger;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Type;
@@ -35,6 +37,8 @@ import javax.xml.bind.annotation.XmlTransient;
 import java.security.InvalidParameterException;
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Question is the abstract base class for all questions managed in the Qwanda
@@ -72,7 +76,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @Inheritance(strategy = InheritanceType.JOINED)
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 
-public class Question extends PanacheEntity {
+public class Question extends PanacheEntity implements GennyInterface {
     private static final Logger log = org.apache.logging.log4j.LogManager.getLogger(Question.class);
 
     /**
@@ -607,4 +611,18 @@ public class Question extends PanacheEntity {
         this.readonly = readonly;
     }
 
+	@Override
+	public Long getId() {
+		return id;
+	}
+
+	@Override
+	public boolean isChanged(GennyInterface obj)
+	{
+		Question other = (Question) obj;
+		
+		return !Objects.equals(code, other.code)&& Objects.equals(html, other.html) && Objects.equals(oneshot, other.oneshot) && Objects.equals(placeholder, other.placeholder) && Objects.equals(directions, other.directions)  && Objects.equals(readonly, other.readonly)   && Objects.equals(mandatory, other.mandatory)  && Objects.equals(realm, other.realm)  && Objects.equals(attributeCode, other.attributeCode)   && Objects.equals(name, other.name);
+
+
+	}
 }
