@@ -39,9 +39,9 @@ import life.genny.utils.LocalDateTimeAdapter;
 @Table(name = "qbaseentity_attribute",
 indexes = {
 		@Index(name = "ba_idx", columnList = "BASEENTITY_ID"),
-		@Index(name = "bb_idx", columnList = "ATTRIBUTE_ID"),
-		@Index(name = "bc_idx", columnList = "valueString"),
-				@Index(name = "bd_idx", columnList = "valueBoolean"),
+		@Index(name = "bb_idx", columnList = "ATTRIBUTE_ID")
+//		@Index(name = "bc_idx", columnList = "valueString"),
+//				@Index(name = "bd_idx", columnList = "valueBoolean"),
 //				@Index(name = "bae_idx", columnList = "realm, ATTRIBUTE_ID,BASEENTITY_ID", unique = true)
     }
 )

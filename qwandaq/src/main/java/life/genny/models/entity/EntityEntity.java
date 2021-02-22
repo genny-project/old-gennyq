@@ -364,14 +364,11 @@ public int compareTo(Object o) {
 public int hashCode() {
   final int prime = 31;
   int result = 1;
-//  result = prime * result + ((attribute == null) ? 0 : attribute.hashCode());
   result = prime * result + ((attributeCode == null) ? 0 : attributeCode.hashCode());
   result = prime * result + ((created == null) ? 0 : created.hashCode());
   result = prime * result + ((link == null) ? 0 : link.hashCode());
   result = prime * result + ((realm == null) ? 0 : realm.hashCode());
-//  result = prime * result + ((source == null) ? 0 : source.hashCode());
   result = prime * result + ((sourceCode == null) ? 0 : sourceCode.hashCode());
-//  result = prime * result + ((target == null) ? 0 : target.hashCode());
   result = prime * result + ((targetCode == null) ? 0 : targetCode.hashCode());
   result = prime * result + ((updated == null) ? 0 : updated.hashCode());
   result = prime * result + ((value == null) ? 0 : value.hashCode());
