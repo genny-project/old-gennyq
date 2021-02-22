@@ -24,8 +24,11 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.regex.PatternSyntaxException;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.json.bind.annotation.JsonbTransient;
 import javax.json.bind.annotation.JsonbTypeAdapter;
@@ -44,6 +47,7 @@ import org.jboss.logging.Logger;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import io.quarkus.runtime.annotations.RegisterForReflection;
 import life.genny.models.converter.StringListConverter;
+import life.genny.qwanda.GennyInterface;
 import life.genny.utils.LocalDateTimeAdapter;
 
 /**
@@ -68,7 +72,7 @@ import life.genny.utils.LocalDateTimeAdapter;
 @Cacheable
 @Table(name = "qvalidation")
 @RegisterForReflection
-public class Validation extends PanacheEntity {
+public class Validation extends PanacheEntity implements GennyInterface {
 
 	private static final Logger log = Logger.getLogger(Validation.class);
 	
@@ -316,4 +320,31 @@ public static Validation findByCode(String code) {
 	return item;
 }
 
+@Override
+public Long getId() {
+	return id;
+}
+
+@Override
+public String getCode() {
+	return code;
+}
+
+@Override
+public boolean isChanged(GennyInterface obj)
+{
+	boolean ret = false;
+	Validation other = (Validation) obj;
+	
+	
+
+   Set union = Stream.concat(selectionBaseEntityGroupList.stream(),other.selectionBaseEntityGroupList.stream()).collect(Collectors.toSet()); 
+	if ((union.size()!=selectionBaseEntityGroupList.size())||(union.size()!=other.selectionBaseEntityGroupList.size())) {
+		return true;
+	}
+	return !Objects.equals(code, other.code) && Objects.equals(realm, other.realm)  && Objects.equals(options, other.options)  && Objects.equals(multiAllowed, other.multiAllowed)
+			 && Objects.equals(recursiveGroup, other.recursiveGroup)  && Objects.equals(regex, other.regex)  && Objects.equals(name, other.name);
+
+
+}
 }

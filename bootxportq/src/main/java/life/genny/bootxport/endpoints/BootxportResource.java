@@ -70,6 +70,7 @@ import life.genny.models.exception.BadDataException;
 import life.genny.models.validation.Validation;
 import life.genny.models.validation.ValidationList;
 import life.genny.qwanda.Ask;
+import life.genny.qwanda.GennyInterface;
 import life.genny.qwanda.Question;
 import life.genny.qwanda.QuestionQuestion;
 import life.genny.qwanda.message.QBaseMSGMessageTemplate;
@@ -129,16 +130,16 @@ public class BootxportResource {
 				throw new WebApplicationException("User not recognised. Entity not being created", Status.FORBIDDEN);
 			}
 		}
-		try {
-			userTransaction.setTransactionTimeout(10000);
-			userTransaction.begin();
+//		try {
+//			userTransaction.setTransactionTimeout(10000);
+//			userTransaction.begin();
 			doBatchLoading();
-			userTransaction.commit();
-		} catch (SecurityException | IllegalStateException | SystemException | NotSupportedException | RollbackException
-				| HeuristicMixedException | HeuristicRollbackException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//			userTransaction.commit();
+//		} catch (SecurityException | IllegalStateException | SystemException | NotSupportedException | RollbackException
+//				| HeuristicMixedException | HeuristicRollbackException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 
 		return Response.status(Status.OK).build();
 	}
@@ -195,8 +196,8 @@ public class BootxportResource {
 	public Long updateWithAttributes(BaseEntity entity) {
 //		try {
 //			userTransaction.begin();
-			entity.realm = currentRealm;
-			entity.persist();
+		entity.realm = currentRealm;
+		entity.persist();
 //			userTransaction.commit();
 //		} catch (Exception ex) {
 //			log.error("Exception:" + ex.getMessage() + " occurred during updateWithAttributes");
@@ -222,7 +223,7 @@ public class BootxportResource {
 //			e.printStackTrace();
 //		}
 //		transaction.commit();
-		return 0;//result;
+		return 0;// result;
 	}
 
 	public Attribute upsert(Attribute attribute) {
@@ -260,13 +261,13 @@ public class BootxportResource {
 	}
 
 	public EntityEntity insertEntityEntity(EntityEntity ee) {
-	//	EntityTransaction transaction = em.getTransaction();
-	//	transaction.begin();
-	//	em.persist(ee);
+		// EntityTransaction transaction = em.getTransaction();
+		// transaction.begin();
+		// em.persist(ee);
 		ee.persist();
 		QEventLinkChangeMessage msg = new QEventLinkChangeMessage(ee.getLink(), null, getCurrentToken());
 		sendQEventLinkChangeMessage(msg);
-	//	transaction.commit();
+		// transaction.commit();
 		log.info(String.format("Sent Event Link Change Msg:%s.", msg));
 		return ee;
 	}
@@ -282,10 +283,10 @@ public class BootxportResource {
 	}
 
 	public Validation findValidationByCode(@NotNull final String code) {
-		Map<String, Object> params = new HashMap<>();
-		params.put("code", code);
-		params.put("realm", currentRealm);
-		Validation existing = Validation.find("code = :code and realm= :realm", params).firstResult();
+//		Map<String, Object> params = new HashMap<>();
+//		params.put("code", code);
+//		params.put("realm", currentRealm);
+		Validation existing = Validation.find("code = ?1 and realm= ?2", code,currentRealm).firstResult();
 		return existing;
 	}
 
@@ -293,8 +294,8 @@ public class BootxportResource {
 		Map<String, Object> params = new HashMap<>();
 		params.put("code", code);
 		params.put("realm", currentRealm);
-		Attribute ret =  null;
-		
+		Attribute ret = null;
+
 		try {
 			ret = Attribute.find("code = :code and realm= :realm", params).firstResult();
 		} catch (Exception e) {
@@ -325,8 +326,8 @@ public class BootxportResource {
 //		if (!transaction.isActive())
 //			transaction.begin();
 //		try {
-			question.setRealm(currentRealm);
-			question.persist();
+		question.setRealm(currentRealm);
+		question.persist();
 //			em.persist(question);
 //			log.info(String.format("Saved question:%s. ", question.getCode()));
 //			transaction.commit();
@@ -359,8 +360,8 @@ public class BootxportResource {
 			return;
 		BeanNotNullFields copyFields = new BeanNotNullFields();
 		try {
-		//	userTransaction.begin();
-			Integer index=0;
+			 userTransaction.begin();
+			Integer index = 0;
 			for (PanacheEntity panacheEntity : objectList) {
 
 				if (panacheEntity instanceof QBaseMSGMessageTemplate) {
@@ -384,14 +385,14 @@ public class BootxportResource {
 					} else if (panacheEntity instanceof Validation) {
 
 						Validation obj = (Validation) panacheEntity;
-						//Validation val = (Validation) (mapping.get(obj.code));
+						// Validation val = (Validation) (mapping.get(obj.code));
 						Validation val = Validation.findByCode(obj.code);
 						if (val == null) {
 							// Should never raise this exception
 							throw new NoResultException(String.format("Can't find %s from database.", obj.code));
 						}
-						//copyFields.copyProperties(val, obj);
-					
+						// copyFields.copyProperties(val, obj);
+
 						val.multiAllowed = obj.multiAllowed;
 						val.name = obj.name;
 						val.options = obj.options;
@@ -399,7 +400,7 @@ public class BootxportResource {
 						val.regex = obj.regex;
 						val.selectionBaseEntityGroupList = obj.selectionBaseEntityGroupList;
 						val.realm = currentRealm;
-						val.persist();
+						val.persistAndFlush();
 					} else if (panacheEntity instanceof Attribute) {
 						Attribute obj = (Attribute) panacheEntity;
 						Attribute val = (Attribute) (mapping.get(obj.code));
@@ -413,19 +414,19 @@ public class BootxportResource {
 							log.error(String.format("Failed to copy Properties for %s", val.code));
 						}
 						val.realm = currentRealm;
-						val.persist();
+						val.persistAndFlush();
 					}
 
 				}
 				if (index % BATCHSIZE == 0) {
 					// flush a batch of inserts and release memory:
 					log.debug("Batch is full, flush to database.");
-				//	userTransaction.commit();
-				//	userTransaction.begin();
+					 userTransaction.commit();
+					 userTransaction.begin();
 				}
 				index++;
 			}
-	//		userTransaction.commit();
+			 userTransaction.commit();
 		} catch (Exception ex) {
 			log.error("Something wrong during bulk insert:" + ex.getMessage());
 		}
@@ -437,24 +438,63 @@ public class BootxportResource {
 			return;
 		int index = 1;
 		try {
-		//	userTransaction.begin();
+			 userTransaction.begin();
 			for (PanacheEntity panacheEntity : objectList) {
 				try {
+					Class clazz = panacheEntity.getClass();
+					if (clazz.getCanonicalName().equals(Validation.class.getCanonicalName())) {
+						Validation v = (Validation) panacheEntity;
+						Validation v2 = Validation.findByCode(v.code);
+						if (v2 != null) {
+							log.error("Validation object already exists! " + v.code);
+						} else {
+							if ("VLD_NON_EMPTY".equals(v.code)) {
+								log.info("Saving");
+							}
+							v.persistAndFlush();
+						}
+					} else if (clazz.getCanonicalName().equals(Attribute.class.getCanonicalName())) {
+						Attribute v = (Attribute) panacheEntity;
+						Attribute v2 = Attribute.findByCode(v.code);
+						// fix up Validations
+				
+						if (v2 != null) {
+							log.error("Attribute object already exists! " + v.code);
+						} else {
+							if (v.id == null) {
+								List<Validation> vList = new ArrayList<>(v.dataType.getValidationList());
+								v.dataType.setValidationList(new ArrayList<Validation>());
+								for (Validation validation : vList) {
+									Validation existingValidation = Validation.findByCode(validation.code);
+									v.dataType.getValidationList().add(existingValidation);
+								}
+								if (isValid(v)) {
+									v.persistAndFlush();
+								}
+							} else {
+								log.error("Attribute has id");
+							}
+						}
+					} else {
+						log.info(clazz.getName());
+					}
+
 					if (index % BATCHSIZE == 0) {
 						// flush a batch of inserts and release memory:
 						log.debug("Batch is full, flush to database.");
-						panacheEntity.persist();
-//		userTransaction.commit();
-//		userTransaction.begin();
+						// panacheEntity.persist();
+		userTransaction.commit();
+		userTransaction.begin();
 					} else {
-						panacheEntity.persist();
+						// panacheEntity.persist();
 					}
 				} catch (Exception e) {
 					log.error("Something wrong during bulk insert:" + e.getMessage());
 				}
 				index += 1;
+				
 			}
-		//	userTransaction.commit();
+			 userTransaction.commit();
 		} catch (Exception ex) {
 			log.error("Something wrong during bulk insert:" + ex.getMessage());
 		}
@@ -467,16 +507,16 @@ public class BootxportResource {
 		int index = 1;
 //		try {
 //			userTransaction.begin();
-			for (QuestionQuestion qq : objectList) {
-				if (index % BATCHSIZE == 0) {
-					// flush a batch of inserts and release memory:
-					log.debug("BaseEntity Batch is full, flush to database.");
-					qq.persistAndFlush();
-				} else {
-					qq.persist();
-				}
-				index += 1;
+		for (QuestionQuestion qq : objectList) {
+			if (index % BATCHSIZE == 0) {
+				// flush a batch of inserts and release memory:
+				log.debug("BaseEntity Batch is full, flush to database.");
+				qq.persistAndFlush();
+			} else {
+				qq.persist();
 			}
+			index += 1;
+		}
 //			userTransaction.commit();
 //		} catch (Exception ex) {
 //			log.error("Something wrong during question_question bulk insert:" + ex.getMessage());
@@ -511,13 +551,13 @@ public class BootxportResource {
 //		long number = EntityAttribute
 //				.delete("from EntityAttribute as ea where ea.baseentity.code like 'RUL_FRM%_GRP' and attribute.code = 'PRI_ASKS' and realm = :realm", params);
 		long number = 0;
-		
+
 		try {
-			String sql = "delete be_attr from qbaseentity_attribute as be_attr " +
-			 "left join qbaseentity as be ON be_attr.BASEENTITY_ID=be.id " +
-			  "left join qattribute as attr ON be_attr.ATTRIBUTE_ID=attr.id " +
-			   "where be.code like 'RUL_FRM%_GRP' and attr.code = 'PRI_ASKS' " +
-			    "and be_attr.realm = '"+realm+"'";
+			String sql = "delete be_attr from qbaseentity_attribute as be_attr "
+					+ "left join qbaseentity as be ON be_attr.BASEENTITY_ID=be.id "
+					+ "left join qattribute as attr ON be_attr.ATTRIBUTE_ID=attr.id "
+					+ "where be.code like 'RUL_FRM%_GRP' and attr.code = 'PRI_ASKS' " + "and be_attr.realm = '" + realm
+					+ "'";
 			log.info("Execute " + sql);
 			Query q = JpaOperations.getEntityManager().createNativeQuery(sql);
 			List<String> rows = null;
@@ -586,10 +626,10 @@ public class BootxportResource {
 				log.info(String.format("[\"%s\"], %s, %s.", this.currentRealm, constraint.getPropertyPath(),
 						constraint.getMessage()));
 			}
-			
+
 //			try {
 //				userTransaction.begin();
-				upsert(attr);
+			upsert(attr);
 //				userTransaction.commit();
 //			} catch (SecurityException | IllegalStateException | NotSupportedException | SystemException | RollbackException
 //					| HeuristicMixedException | HeuristicRollbackException e1) {
@@ -633,7 +673,7 @@ public class BootxportResource {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		
+
 		try {
 			be.addAttribute(attr, 0.0, urlList);
 		} catch (BadDataException e) {
@@ -682,39 +722,28 @@ public class BootxportResource {
 		cleanFrameFromBaseentityAttribute(rx.getCode());
 
 		validationsOptimization(rx.getValidations(), rx.getCode());
-	/*
 
 		Map<String, DataType> dataTypes = null;
-//		try {
-//			userTransaction.setTransactionTimeout(10000);
-//			userTransaction.begin();
-			dataTypes = dataType(rx.getDataTypes());
-			attributesOptimization(rx.getAttributes(), dataTypes, rx.getCode());
-//			userTransaction.commit();
-//		} catch (SecurityException | IllegalStateException | SystemException | NotSupportedException | RollbackException
-//				| HeuristicMixedException | HeuristicRollbackException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-		
-		baseEntitysOptimization(rx.getBaseEntitys(), rx.getCode(), userCodeUUIDMapping);
+		dataTypes = dataType(rx.getDataTypes());
+		attributesOptimization(rx.getAttributes(), dataTypes, rx.getCode());
 
-		attributeLinksOptimization(rx.getAttributeLinks(), dataTypes, rx.getCode());
+//		baseEntitysOptimization(rx.getBaseEntitys(), rx.getCode(), userCodeUUIDMapping);
+//
+//		attributeLinksOptimization(rx.getAttributeLinks(), dataTypes, rx.getCode());
+//
+//		baseEntityAttributesOptimization(rx.getEntityAttributes(), rx.getCode(), userCodeUUIDMapping);
+//
+//		entityEntitysOptimization(rx.getEntityEntitys(), rx.getCode(), isSynchronise, userCodeUUIDMapping);
+//
+//		questionsOptimization(rx.getQuestions(), rx.getCode(), isSynchronise);
+//
+//		questionQuestionsOptimization(rx.getQuestionQuestions(), rx.getCode());
+//
+//		asksOptimization(rx.getAsks(), rx.getCode());
+//
+//		messageTemplatesOptimization(rx.getNotifications(), rx.getCode());
+//		messageTemplatesOptimization(rx.getMessages(), rx.getCode());
 
-		baseEntityAttributesOptimization(rx.getEntityAttributes(), rx.getCode(), userCodeUUIDMapping);
-
-		entityEntitysOptimization(rx.getEntityEntitys(), rx.getCode(), isSynchronise, userCodeUUIDMapping);
-
-		questionsOptimization(rx.getQuestions(), rx.getCode(), isSynchronise);
-
-		questionQuestionsOptimization(rx.getQuestionQuestions(), rx.getCode());
-
-		asksOptimization(rx.getAsks(), rx.getCode());
-
-		messageTemplatesOptimization(rx.getNotifications(), rx.getCode());
-		messageTemplatesOptimization(rx.getMessages(), rx.getCode());
-
-	 */
 	}
 
 	// optimization
@@ -727,8 +756,9 @@ public class BootxportResource {
 			Set<ConstraintViolation<PanacheEntity>> constraints = validator.validate(t);
 			for (ConstraintViolation<PanacheEntity> constraint : constraints) {
 				// TODO
-//                log.error(String.format("Validates constraints failure, Code:%s, PropertyPath:%s,Error:%s.",
-//                        t.code, constraint.getPropertyPath(), constraint.getMessage()));
+				GennyInterface gi = (GennyInterface)t;
+                log.error(String.format("Validates constraints failure, Code:%s, PropertyPath:%s,Error:%s.",
+                        gi.getCode(), constraint.getPropertyPath(), constraint.getMessage()));
 			}
 			return constraints.isEmpty();
 		}
@@ -737,6 +767,11 @@ public class BootxportResource {
 
 	// Check if sheet data changed
 	// TODO
+	private boolean isChanged(GennyInterface orgItem, GennyInterface newItem) {
+		return orgItem.isChanged(newItem);
+	//	return true;
+	}
+	
 	private <T> boolean isChanged(T orgItem, T newItem) {
 		return true;
 	}
@@ -747,7 +782,7 @@ public class BootxportResource {
 				summary.getNewItem()));
 	}
 
-	@Transactional
+	//@Transactional
 	public void asksOptimization(Map<String, Map<String, String>> project, String realmName) {
 		// Get all asks
 		String tableName = "Ask";
@@ -787,7 +822,7 @@ public class BootxportResource {
 		printSummary("Ask", summary);
 	}
 
-	@Transactional
+	//@Transactional
 	public void attributeLinksOptimization(Map<String, Map<String, String>> project, Map<String, DataType> dataTypeMap,
 			String realmName) {
 		String tableName = "Attribute";
@@ -813,7 +848,7 @@ public class BootxportResource {
 			// validation check
 			if (isValid(attrlink)) {
 				if (codeSet.contains(code.toUpperCase())) {
-					if (isChanged(attrlink, codeAttributeMapping.get(code.toUpperCase()))) {
+					if ((isChanged(attrlink, codeAttributeMapping.get(code.toUpperCase())))) {
 						attributeLinkUpdateList.add(attrlink);
 						summary.addUpdated();
 					} else {
@@ -834,7 +869,7 @@ public class BootxportResource {
 		printSummary("AttributeLink", summary);
 	}
 
-	@Transactional
+	//@Transactional
 	public void attributesOptimization(Map<String, Map<String, String>> project, Map<String, DataType> dataTypeMap,
 			String realmName) {
 		String tableName = "Attribute";
@@ -856,18 +891,26 @@ public class BootxportResource {
 			String code = attributes.get("code").replaceAll("^\"|\"$", "");
 
 			Attribute attr = GoogleSheetBuilder.buildAttrribute(attributes, dataTypeMap, realmName, code);
-			
+
 			// validation check
 			if (isValid(attr)) {
 				if ("PRI_TESTING_TEXT".equals(attr.code)) {
 					log.info("PRI_TEXTING_TYEXT");
 				}
-				Attribute existing = Attribute.find("code",attr.code.toUpperCase().trim()).firstResult();
+				String attributeCode = attr.code.toUpperCase().trim();
+				Attribute existing = Attribute.find("code",attributeCode ).firstResult();
 				if (existing != null) {
-			//	if (codeAttributeMapping.containsKey(code.toUpperCase())) {
-				//	if (isChanged(attr, codeAttributeMapping.get(code.toUpperCase()))) {
-						if (isChanged(attr, existing)) {
-						attributeUpdateList.add(attr);
+					// if (codeAttributeMapping.containsKey(code.toUpperCase())) {
+					// if (isChanged(attr, codeAttributeMapping.get(code.toUpperCase()))) {
+					if (isChanged(attr, existing)) {
+						existing.defaultPrivacyFlag = attr.defaultPrivacyFlag;
+						existing.defaultValue = attr.defaultValue;
+						existing.description = attr.description;
+						existing.help = attr.help;
+						existing.name = attr.name;
+						existing.placeholder = attr.placeholder;
+						
+						attributeUpdateList.add(existing);
 						summary.addUpdated();
 					} else {
 						summary.addSkipped();
@@ -885,8 +928,8 @@ public class BootxportResource {
 //		try {
 //			userTransaction.setTransactionTimeout(1000);
 //			userTransaction.begin();
-			bulkInsert(attributeInsertList);
-			bulkUpdate(attributeUpdateList, codeAttributeMapping);
+		bulkInsert(attributeInsertList);
+		bulkUpdate(attributeUpdateList, codeAttributeMapping);
 //			userTransaction.commit();
 //		} catch (SecurityException | IllegalStateException | SystemException | NotSupportedException | RollbackException
 //				| HeuristicMixedException | HeuristicRollbackException e) {
@@ -897,7 +940,7 @@ public class BootxportResource {
 		printSummary(tableName, summary);
 	}
 
-	@Transactional
+	//@Transactional
 	public void baseEntityAttributesOptimization(Map<String, Map<String, String>> project, String realmName,
 			HashMap<String, String> userCodeUUIDMapping) {
 		// Get all BaseEntity
@@ -946,7 +989,7 @@ public class BootxportResource {
 		printSummary("BaseEntityAttributes", summary);
 	}
 
-	@Transactional
+	//@Transactional
 	public void baseEntitysOptimization(Map<String, Map<String, String>> project, String realmName,
 			HashMap<String, String> userCodeUUIDMapping) {
 		String tableName = "BaseEntity";
@@ -997,7 +1040,7 @@ public class BootxportResource {
 		printSummary(tableName, summary);
 	}
 
-	@Transactional
+	//@Transactional
 	public void entityEntitysOptimization(Map<String, Map<String, String>> project, String realmName,
 			boolean isSynchronise, HashMap<String, String> userCodeUUIDMapping) {
 		// Get all BaseEntity
@@ -1100,7 +1143,7 @@ public class BootxportResource {
 		printSummary("EntityEntity", summary);
 	}
 
-	@Transactional
+	//@Transactional
 	public void messageTemplatesOptimization(Map<String, Map<String, String>> project, String realmName) {
 		String tableName = "QBaseMSGMessageTemplate";
 		List<QBaseMSGMessageTemplate> qBaseMSGMessageTemplateFromDB = queryTableByRealm(tableName, realmName);
@@ -1144,7 +1187,7 @@ public class BootxportResource {
 		printSummary(tableName, summary);
 	}
 
-	@Transactional
+	//@Transactional
 	public void questionQuestionsOptimization(Map<String, Map<String, String>> project, String realmName) {
 		String tableName = "Question";
 		List<Question> questionFromDB = queryTableByRealm(tableName, realmName);
@@ -1210,7 +1253,7 @@ public class BootxportResource {
 	}
 
 	// TODO, make it quicker
-	@Transactional
+	//@Transactional
 	public void questionsOptimization(Map<String, Map<String, String>> project, String realmName,
 			boolean isSynchronise) {
 		// Get all questions from database
@@ -1299,7 +1342,7 @@ public class BootxportResource {
 		printSummary("Question", summary);
 	}
 
-	@Transactional
+	//@Transactional
 	public void validationsOptimization(Map<String, Map<String, String>> project, String realmName) {
 		String tableName = "Validation";
 		// Get existing validation by realm from database
@@ -1345,13 +1388,13 @@ public class BootxportResource {
 		printSummary(tableName, summary);
 	}
 
-	//@Transactional
+	// @Transactional
 	void onStart(@Observes StartupEvent ev) {
 		log.info("Bootxport Endpoint starting");
 
 	}
 
-	//@Transactional
+	// @Transactional
 	void onShutdown(@Observes ShutdownEvent ev) {
 		log.info("Bootxport Endpoint Shutting down");
 	}

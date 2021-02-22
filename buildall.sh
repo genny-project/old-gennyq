@@ -7,7 +7,7 @@ do
     parentdir="$(dirname `pwd`)"
     rm -Rf $parentdir/$project/target/*
     mvn -N versions:update-child-modules -Dmaven.test.skip=true
-    mvn clean install -DskipTests=true
+    mvn clean install -DskipTests=true -U
     cd ..
     #mvn $clean install 
 done
@@ -20,7 +20,7 @@ do
     parentdir="$(dirname `pwd`)"
     rm -Rf $parentdir/$project/target/*
     mvn -N versions:update-child-modules -Dmaven.test.skip=true
-    mvn clean package -DskipTests=true
+    mvn clean package -DskipTests=true -U
     ./build-docker.sh
     cd ..
 done
