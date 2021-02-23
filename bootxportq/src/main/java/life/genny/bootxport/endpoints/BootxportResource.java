@@ -895,7 +895,7 @@ public class BootxportResource {
 			// validation check
 			if (isValid(attr)) {
 				if ("PRI_TESTING_TEXT".equals(attr.code)) {
-					log.info("PRI_TEXTING_TYEXT");
+					log.info("PRI_TEXTING_TEXT");
 				}
 				String attributeCode = attr.code.toUpperCase().trim();
 				Attribute existing = Attribute.find("code",attributeCode ).firstResult();
@@ -917,6 +917,14 @@ public class BootxportResource {
 					}
 				} else {
 					// insert new item
+					if (attr.dataType == null) {
+						// fix up by creating a dummy attribute
+//						Validation validation = findValidationByCode("VLD_ANYTHING");
+//						ValidationList validationList = new ValidationList();
+//						validationList.getValidationList().add(validation);
+//						DataType dtype = new DataType("DTT_TEXT", validationList, "DTT_TEXT", "*");
+//						attr.dataType = dtype;
+					}
 					attributeInsertList.add(attr);
 					summary.addNew();
 				}
@@ -929,7 +937,7 @@ public class BootxportResource {
 //			userTransaction.setTransactionTimeout(1000);
 //			userTransaction.begin();
 		bulkInsert(attributeInsertList);
-		bulkUpdate(attributeUpdateList, codeAttributeMapping);
+		//bulkUpdate(attributeUpdateList, codeAttributeMapping);
 //			userTransaction.commit();
 //		} catch (SecurityException | IllegalStateException | SystemException | NotSupportedException | RollbackException
 //				| HeuristicMixedException | HeuristicRollbackException e) {
