@@ -736,24 +736,21 @@ public class BootxportResource {
 		Map<String, DataType> dataTypes = null;
 		dataTypes = dataType(rx.getDataTypes());
 		attributesOptimization(rx.getAttributes(), dataTypes, rx.getCode());
+		attributeLinksOptimization(rx.getAttributeLinks(), dataTypes, rx.getCode());
+		baseEntitysOptimization(rx.getBaseEntitys(), rx.getCode(), userCodeUUIDMapping);
 
-//		baseEntitysOptimization(rx.getBaseEntitys(), rx.getCode(), userCodeUUIDMapping);
-//
-//		attributeLinksOptimization(rx.getAttributeLinks(), dataTypes, rx.getCode());
-//
-//		baseEntityAttributesOptimization(rx.getEntityAttributes(), rx.getCode(), userCodeUUIDMapping);
-//
-//		entityEntitysOptimization(rx.getEntityEntitys(), rx.getCode(), isSynchronise, userCodeUUIDMapping);
-//
-//		questionsOptimization(rx.getQuestions(), rx.getCode(), isSynchronise);
-//
-//		questionQuestionsOptimization(rx.getQuestionQuestions(), rx.getCode());
-//
-//		asksOptimization(rx.getAsks(), rx.getCode());
-//
-//		messageTemplatesOptimization(rx.getNotifications(), rx.getCode());
-//		messageTemplatesOptimization(rx.getMessages(), rx.getCode());
+		baseEntityAttributesOptimization(rx.getEntityAttributes(), rx.getCode(), userCodeUUIDMapping);
 
+		entityEntitysOptimization(rx.getEntityEntitys(), rx.getCode(), isSynchronise, userCodeUUIDMapping);
+
+		questionsOptimization(rx.getQuestions(), rx.getCode(), isSynchronise);
+
+		questionQuestionsOptimization(rx.getQuestionQuestions(), rx.getCode());
+
+		asksOptimization(rx.getAsks(), rx.getCode());
+
+		messageTemplatesOptimization(rx.getNotifications(), rx.getCode());
+		messageTemplatesOptimization(rx.getMessages(), rx.getCode());
 	}
 
 	// optimization
