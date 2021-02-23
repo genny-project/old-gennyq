@@ -133,7 +133,7 @@ public class BootxportResource {
 //		try {
 //			userTransaction.setTransactionTimeout(10000);
 //			userTransaction.begin();
-			doBatchLoading();
+		doBatchLoading();
 //			userTransaction.commit();
 //		} catch (SecurityException | IllegalStateException | SystemException | NotSupportedException | RollbackException
 //				| HeuristicMixedException | HeuristicRollbackException e) {
@@ -286,7 +286,7 @@ public class BootxportResource {
 //		Map<String, Object> params = new HashMap<>();
 //		params.put("code", code);
 //		params.put("realm", currentRealm);
-		Validation existing = Validation.find("code = ?1 and realm= ?2", code,currentRealm).firstResult();
+		Validation existing = Validation.find("code = ?1 and realm= ?2", code, currentRealm).firstResult();
 		return existing;
 	}
 
@@ -360,7 +360,7 @@ public class BootxportResource {
 			return;
 		BeanNotNullFields copyFields = new BeanNotNullFields();
 		try {
-			 userTransaction.begin();
+			userTransaction.begin();
 			Integer index = 0;
 			for (PanacheEntity panacheEntity : objectList) {
 
@@ -421,12 +421,12 @@ public class BootxportResource {
 				if (index % BATCHSIZE == 0) {
 					// flush a batch of inserts and release memory:
 					log.debug("Batch is full, flush to database.");
-					 userTransaction.commit();
-					 userTransaction.begin();
+					userTransaction.commit();
+					userTransaction.begin();
 				}
 				index++;
 			}
-			 userTransaction.commit();
+			userTransaction.commit();
 		} catch (Exception ex) {
 			log.error("Something wrong during bulk insert:" + ex.getMessage());
 		}
@@ -438,7 +438,7 @@ public class BootxportResource {
 			return;
 		int index = 1;
 		try {
-			 userTransaction.begin();
+			userTransaction.begin();
 			for (PanacheEntity panacheEntity : objectList) {
 				try {
 					Class clazz = panacheEntity.getClass();
@@ -455,9 +455,10 @@ public class BootxportResource {
 						}
 					} else if (clazz.getCanonicalName().equals(Attribute.class.getCanonicalName())) {
 						Attribute v = (Attribute) panacheEntity;
+						log.info("Loooking for "+v.code);
 						Attribute v2 = Attribute.findByCode(v.code);
 						// fix up Validations
-				
+
 						if (v2 != null) {
 							log.error("Attribute object already exists! " + v.code);
 						} else {
@@ -469,7 +470,9 @@ public class BootxportResource {
 									v.dataType.getValidationList().add(existingValidation);
 								}
 								if (isValid(v)) {
+									log.info("Saving attribute "+v.code);
 									v.persistAndFlush();
+									log.info("Saved datatype");
 								}
 							} else {
 								log.error("Attribute has id");
@@ -479,24 +482,31 @@ public class BootxportResource {
 						log.info(clazz.getName());
 					}
 
-					if (index % BATCHSIZE == 0) {
-						// flush a batch of inserts and release memory:
-						log.debug("Batch is full, flush to database.");
-						// panacheEntity.persist();
-		userTransaction.commit();
-		userTransaction.begin();
-					} else {
-						// panacheEntity.persist();
+					// if (index % BATCHSIZE == 0) {
+					// flush a batch of inserts and release memory:
+					log.debug("Batch is full, flush to database.");
+					// panacheEntity.persist();
+					GennyInterface gi = (GennyInterface) panacheEntity;
+					try {
+						log.info("Saving " + gi.getCode());
+						userTransaction.commit();
+					} catch (Exception e) {
+
+						log.error("Error saving " + gi.getCode());
 					}
+					userTransaction.begin();
+					// } else {
+					// panacheEntity.persist();
+					// }
 				} catch (Exception e) {
 					log.error("Something wrong during bulk insert:" + e.getMessage());
 				}
 				index += 1;
-				
+
 			}
-			 userTransaction.commit();
+			userTransaction.commit();
 		} catch (Exception ex) {
-			log.error("Something wrong during bulk insert:" + ex.getMessage());
+			log.error("Big Something wrong during bulk insert:" + ex.getMessage());
 		}
 	}
 
@@ -756,9 +766,9 @@ public class BootxportResource {
 			Set<ConstraintViolation<PanacheEntity>> constraints = validator.validate(t);
 			for (ConstraintViolation<PanacheEntity> constraint : constraints) {
 				// TODO
-				GennyInterface gi = (GennyInterface)t;
-                log.error(String.format("Validates constraints failure, Code:%s, PropertyPath:%s,Error:%s.",
-                        gi.getCode(), constraint.getPropertyPath(), constraint.getMessage()));
+				GennyInterface gi = (GennyInterface) t;
+				log.error(String.format("Validates constraints failure, Code:%s, PropertyPath:%s,Error:%s.",
+						gi.getCode(), constraint.getPropertyPath(), constraint.getMessage()));
 			}
 			return constraints.isEmpty();
 		}
@@ -769,9 +779,9 @@ public class BootxportResource {
 	// TODO
 	private boolean isChanged(GennyInterface orgItem, GennyInterface newItem) {
 		return orgItem.isChanged(newItem);
-	//	return true;
+		// return true;
 	}
-	
+
 	private <T> boolean isChanged(T orgItem, T newItem) {
 		return true;
 	}
@@ -782,7 +792,7 @@ public class BootxportResource {
 				summary.getNewItem()));
 	}
 
-	//@Transactional
+	// @Transactional
 	public void asksOptimization(Map<String, Map<String, String>> project, String realmName) {
 		// Get all asks
 		String tableName = "Ask";
@@ -822,7 +832,7 @@ public class BootxportResource {
 		printSummary("Ask", summary);
 	}
 
-	//@Transactional
+	// @Transactional
 	public void attributeLinksOptimization(Map<String, Map<String, String>> project, Map<String, DataType> dataTypeMap,
 			String realmName) {
 		String tableName = "Attribute";
@@ -869,9 +879,10 @@ public class BootxportResource {
 		printSummary("AttributeLink", summary);
 	}
 
-	//@Transactional
+	// @Transactional
 	public void attributesOptimization(Map<String, Map<String, String>> project, Map<String, DataType> dataTypeMap,
 			String realmName) {
+		log.info("Attributes Processing");
 		String tableName = "Attribute";
 		List<Attribute> attributesFromDB = queryTableByRealm(tableName, realmName);
 
@@ -898,7 +909,7 @@ public class BootxportResource {
 					log.info("PRI_TEXTING_TEXT");
 				}
 				String attributeCode = attr.code.toUpperCase().trim();
-				Attribute existing = Attribute.find("code",attributeCode ).firstResult();
+				Attribute existing = Attribute.find("code", attributeCode).firstResult();
 				if (existing != null) {
 					// if (codeAttributeMapping.containsKey(code.toUpperCase())) {
 					// if (isChanged(attr, codeAttributeMapping.get(code.toUpperCase()))) {
@@ -909,7 +920,7 @@ public class BootxportResource {
 						existing.help = attr.help;
 						existing.name = attr.name;
 						existing.placeholder = attr.placeholder;
-						
+
 						attributeUpdateList.add(existing);
 						summary.addUpdated();
 					} else {
@@ -936,8 +947,9 @@ public class BootxportResource {
 //		try {
 //			userTransaction.setTransactionTimeout(1000);
 //			userTransaction.begin();
+		log.info("Inserting Attributes");
 		bulkInsert(attributeInsertList);
-		//bulkUpdate(attributeUpdateList, codeAttributeMapping);
+		// bulkUpdate(attributeUpdateList, codeAttributeMapping);
 //			userTransaction.commit();
 //		} catch (SecurityException | IllegalStateException | SystemException | NotSupportedException | RollbackException
 //				| HeuristicMixedException | HeuristicRollbackException e) {
@@ -948,7 +960,7 @@ public class BootxportResource {
 		printSummary(tableName, summary);
 	}
 
-	//@Transactional
+	// @Transactional
 	public void baseEntityAttributesOptimization(Map<String, Map<String, String>> project, String realmName,
 			HashMap<String, String> userCodeUUIDMapping) {
 		// Get all BaseEntity
@@ -997,7 +1009,7 @@ public class BootxportResource {
 		printSummary("BaseEntityAttributes", summary);
 	}
 
-	//@Transactional
+	// @Transactional
 	public void baseEntitysOptimization(Map<String, Map<String, String>> project, String realmName,
 			HashMap<String, String> userCodeUUIDMapping) {
 		String tableName = "BaseEntity";
@@ -1048,7 +1060,7 @@ public class BootxportResource {
 		printSummary(tableName, summary);
 	}
 
-	//@Transactional
+	// @Transactional
 	public void entityEntitysOptimization(Map<String, Map<String, String>> project, String realmName,
 			boolean isSynchronise, HashMap<String, String> userCodeUUIDMapping) {
 		// Get all BaseEntity
@@ -1151,7 +1163,7 @@ public class BootxportResource {
 		printSummary("EntityEntity", summary);
 	}
 
-	//@Transactional
+	// @Transactional
 	public void messageTemplatesOptimization(Map<String, Map<String, String>> project, String realmName) {
 		String tableName = "QBaseMSGMessageTemplate";
 		List<QBaseMSGMessageTemplate> qBaseMSGMessageTemplateFromDB = queryTableByRealm(tableName, realmName);
@@ -1195,7 +1207,7 @@ public class BootxportResource {
 		printSummary(tableName, summary);
 	}
 
-	//@Transactional
+	// @Transactional
 	public void questionQuestionsOptimization(Map<String, Map<String, String>> project, String realmName) {
 		String tableName = "Question";
 		List<Question> questionFromDB = queryTableByRealm(tableName, realmName);
@@ -1261,7 +1273,7 @@ public class BootxportResource {
 	}
 
 	// TODO, make it quicker
-	//@Transactional
+	// @Transactional
 	public void questionsOptimization(Map<String, Map<String, String>> project, String realmName,
 			boolean isSynchronise) {
 		// Get all questions from database
@@ -1350,7 +1362,7 @@ public class BootxportResource {
 		printSummary("Question", summary);
 	}
 
-	//@Transactional
+	// @Transactional
 	public void validationsOptimization(Map<String, Map<String, String>> project, String realmName) {
 		String tableName = "Validation";
 		// Get existing validation by realm from database
