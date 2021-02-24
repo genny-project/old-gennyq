@@ -461,8 +461,11 @@ public class BootxportResource {
 							}
 							v.persistAndFlush();
 						}
-					} else if (clazz.getCanonicalName().equals(Attribute.class.getCanonicalName())) {
+					} else if (clazz.getCanonicalName().equals(Attribute.class.getCanonicalName())
+					|| clazz.getCanonicalName().equals(AttributeLink.class.getCanonicalName())) {
 						Attribute v = (Attribute) panacheEntity;
+						v.persistAndFlush();
+						/*
 						log.info("Loooking for "+v.code);
 						Attribute v2 = Attribute.findByCode(v.code);
 						// fix up Validations
@@ -490,8 +493,10 @@ public class BootxportResource {
 								log.error("Attribute has id");
 							}
 						}
+						 */
 					} else {
-						log.info(clazz.getName());
+//						log.info(clazz.getName());
+						 panacheEntity.persistAndFlush();
 					}
 
 					// if (index % BATCHSIZE == 0) {
@@ -500,7 +505,7 @@ public class BootxportResource {
 					// panacheEntity.persist();
 					GennyInterface gi = (GennyInterface) panacheEntity;
 					try {
-						log.info("Saving " + gi.getCode());
+//						log.info("Saving " + gi.getCode());
 						userTransaction.commit();
 					} catch (Exception e) {
 
