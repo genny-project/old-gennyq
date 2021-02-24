@@ -623,20 +623,28 @@ public class Question extends PanacheEntity implements GennyInterface {
 
 	}
 
+    String convertToSQLStr(String value) {
+        String resultStr = null;
+        if (value != null) {
+            resultStr = singleQuoteSeparator + value + singleQuoteSeparator;
+        }
+        return resultStr;
+    }
+
     @Override
     public void updateById(long id) {
         String updateStatement = "update from Question " + " " +
-                "set attributeCode = " + this.getAttributeCode() + ", " +
-                "directions = " + this.getDirections() + ", " +
-                "helper = " + this.getHelper() + ", " +
-                "html = " + this.getHtml() + ", " +
+                "set attributeCode = " + convertToSQLStr(this.getAttributeCode()) + ", " +
+                "directions = " + convertToSQLStr(this.getDirections()) + ", " +
+                "helper = " + convertToSQLStr(this.getHelper()) + ", " +
+                "html = " + convertToSQLStr(this.getHtml()) + ", " +
                 "mandatory = " + this.getMandatory() + ", " +
-                "name = " + this.getName() + ", " +
+                "name = " + convertToSQLStr(this.getName()) + ", " +
                 "oneshot = " + this.getOneshot() + ", " +
-                "placeholder = " + this.getPlaceholder() + ", " +
+                "placeholder = " + convertToSQLStr(this.getPlaceholder()) + ", " +
                 "readonly = " + this.getReadonly() + ", " +
                 "attribute_id = " + this.getAttribute().id + " " +
-                "where id = ?";
+                "where id = ?1";
         Question.update(updateStatement,id);
     }
 }

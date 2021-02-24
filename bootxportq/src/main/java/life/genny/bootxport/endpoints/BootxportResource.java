@@ -752,15 +752,15 @@ public class BootxportResource {
 		attributeLinksOptimization(rx.getAttributeLinks(), dataTypes, rx.getCode());
 		baseEntitysOptimization(rx.getBaseEntitys(), rx.getCode(), userCodeUUIDMapping);
 
-//		baseEntityAttributesOptimization(rx.getEntityAttributes(), rx.getCode(), userCodeUUIDMapping);
+		baseEntityAttributesOptimization(rx.getEntityAttributes(), rx.getCode(), userCodeUUIDMapping);
 
-//		entityEntitysOptimization(rx.getEntityEntitys(), rx.getCode(), isSynchronise, userCodeUUIDMapping);
+		entityEntitysOptimization(rx.getEntityEntitys(), rx.getCode(), isSynchronise, userCodeUUIDMapping);
 
-//		questionsOptimization(rx.getQuestions(), rx.getCode(), isSynchronise);
+		questionsOptimization(rx.getQuestions(), rx.getCode(), isSynchronise);
 
-//		questionQuestionsOptimization(rx.getQuestionQuestions(), rx.getCode());
+		questionQuestionsOptimization(rx.getQuestionQuestions(), rx.getCode());
 
-//		asksOptimization(rx.getAsks(), rx.getCode());
+		asksOptimization(rx.getAsks(), rx.getCode());
 
 		messageTemplatesOptimization(rx.getNotifications(), rx.getCode());
 		messageTemplatesOptimization(rx.getMessages(), rx.getCode());

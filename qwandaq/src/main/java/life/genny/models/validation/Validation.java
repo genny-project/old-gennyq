@@ -349,26 +349,29 @@ public boolean isChanged(GennyInterface obj)
 
 }
 
+	String convertToSQLStr(String value) {
+		String resultStr = null;
+		if (value != null) {
+			resultStr = singleQuoteSeparator + value + singleQuoteSeparator;
+		}
+		return resultStr;
+	}
+
 	@Override
 	public void updateById(long id) {
 		StringBuilder selectionBaseEntityGroupListStr = new StringBuilder();
-		String optingStr = null;
 		Optional.ofNullable(this.selectionBaseEntityGroupList).ifPresent(element->
 				selectionBaseEntityGroupListStr.append(String.join(",", element)).append(","));
 
 		if (selectionBaseEntityGroupListStr.length() == 0)
 			selectionBaseEntityGroupListStr.append(",");
 
-		if (this.options != null){
-			optingStr= singleQuoteSeparator +  this.options + singleQuoteSeparator;
-		}
-
 		String updateStatement = "update from Validation" + " " +
 				"set multiAllowed=" + this.multiAllowed + ", " +
-				"name=" + singleQuoteSeparator +  this.name + singleQuoteSeparator + ", " +
-				"options=" + optingStr + ", " +
+				"name=" + convertToSQLStr(this.name) + ", " +
+				"options=" + convertToSQLStr(this.options)+ ", " +
 				"recursiveGroup=" + this.recursiveGroup + ", " +
-				"regex=" + singleQuoteSeparator +  this.regex + singleQuoteSeparator + ", " +
+				"regex=" + convertToSQLStr(this.regex) + ", " +
 				"selection_grp=" + singleQuoteSeparator + selectionBaseEntityGroupListStr + singleQuoteSeparator + ", " +
 				"updated=" + singleQuoteSeparator + this.created + singleQuoteSeparator + " " +
 				"where id=?1";

@@ -39,6 +39,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+import life.genny.models.converter.ValidationListConverter;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.jboss.logging.Logger;
 
@@ -96,6 +97,12 @@ public class Attribute extends PanacheEntity implements GennyInterface {
 	private static final String REGEX_REALM = "[a-zA-Z0-9]+";
 	private static final String DEFAULT_REALM = "genny";
 
+	private static final ValidationListConverter  validationListConverter = new ValidationListConverter();
+
+	public ValidationListConverter getValidationListConverter() {
+	    return validationListConverter;
+	}
+
 	/**
 	 * 
 	 */
@@ -150,7 +157,7 @@ public class Attribute extends PanacheEntity implements GennyInterface {
 	protected Attribute()
 	{
 	}
-	
+
 
 	public Attribute(String code, String name, DataType dataType)
 	{
@@ -299,23 +306,32 @@ public class Attribute extends PanacheEntity implements GennyInterface {
 
 	}
 
+    String convertToSQLStr(String value) {
+        String resultStr = null;
+        if (value != null) {
+            resultStr = singleQuoteSeparator + value + singleQuoteSeparator;
+        }
+        return resultStr;
+    }
+
     @Override
     public void updateById(long id) {
+        String validationListStr = getValidationListConverter().convertToDatabaseColumn(this.dataType.getValidationList());
         String updateStatement = "update from Attribute" + " " +
-        "set className = " + this.dataType.getClassName() + ", " +
-        "component = " + this.dataType.getComponent() + ", " +
-        "dttCode = " + this.dataType.getDttCode() + ", " +
-        "inputmask = " + this.dataType.getInputmask() + ", " +
-        "typeName = " + this.dataType.getTypeName() + ", " +
-        "validation_list = " + this.dataType.getValidationList() + ", " +
+        "set className = " + convertToSQLStr(this.dataType.getClassName()) + ", " +
+        "component = " + convertToSQLStr(this.dataType.getComponent()) + ", " +
+        "dttCode = " + convertToSQLStr(this.dataType.getDttCode()) + ", " +
+        "inputmask = " + convertToSQLStr(this.dataType.getInputmask()) + ", " +
+        "typeName = " + convertToSQLStr(this.dataType.getTypeName()) + ", " +
+        "validation_list = " + convertToSQLStr(validationListStr) + ", " +
         "defaultPrivacyFlag = " + this.defaultPrivacyFlag + ", " +
-        "defaultValue = " + this.defaultValue + ", " +
-        "description = " + this.description + ", " +
-        "help = " + this.help + ", " +
-        "name = " + this.name + ", " +
-        "placeholder = " + this.placeholder + ", " +
-        "updated = " + this.created + " " +
-        "where id = ?";
+        "defaultValue = " + convertToSQLStr(this.defaultValue) + ", " +
+        "description = " + convertToSQLStr(this.description) + ", " +
+        "help = " + convertToSQLStr(this.help) + ", " +
+        "name = " + convertToSQLStr(this.name) + ", " +
+        "placeholder = " + convertToSQLStr(this.placeholder) + ", " +
+        "updated = " + singleQuoteSeparator + this.created + singleQuoteSeparator + " " +
+        "where id = ?1";
         Attribute.update(updateStatement,id);
     }
 }
