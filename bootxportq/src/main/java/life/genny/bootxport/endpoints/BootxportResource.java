@@ -466,13 +466,17 @@ public class BootxportResource {
 								List<Validation> vList = new ArrayList<>(v.dataType.getValidationList());
 								v.dataType.setValidationList(new ArrayList<Validation>());
 								for (Validation validation : vList) {
-									Validation existingValidation = Validation.findByCode(validation.code);
-									v.dataType.getValidationList().add(existingValidation);
+									if (validation != null) {
+										Validation existingValidation = Validation.findByCode(validation.code);
+										v.dataType.getValidationList().add(existingValidation);
+									}
 								}
 								if (isValid(v)) {
 									log.info("Saving attribute "+v.code);
 									v.persistAndFlush();
 									log.info("Saved datatype");
+								} else {
+									log.error("Invalid attribute "+v.code);
 								}
 							} else {
 								log.error("Attribute has id");
@@ -946,7 +950,7 @@ public class BootxportResource {
 //			userTransaction.begin();
 		log.info("Inserting Attributes");
 		bulkInsert(attributeInsertList);
-		// bulkUpdate(attributeUpdateList, codeAttributeMapping);
+	 bulkUpdate(attributeUpdateList, codeAttributeMapping);
 //			userTransaction.commit();
 //		} catch (SecurityException | IllegalStateException | SystemException | NotSupportedException | RollbackException
 //				| HeuristicMixedException | HeuristicRollbackException e) {
