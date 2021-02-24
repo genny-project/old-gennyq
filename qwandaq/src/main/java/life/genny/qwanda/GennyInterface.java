@@ -1,7 +1,9 @@
 package life.genny.qwanda;
 
 public interface GennyInterface {
-	public Long getId();
-	public String getCode();
-	public boolean isChanged(GennyInterface obj);
+	String singleQuoteSeparator = "\'";
+	Long getId();
+	String getCode();
+	boolean isChanged(GennyInterface obj);
+	void updateById(long id);
 }

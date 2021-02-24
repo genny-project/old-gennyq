@@ -24,6 +24,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.regex.PatternSyntaxException;
@@ -347,4 +348,30 @@ public boolean isChanged(GennyInterface obj)
 
 
 }
+
+	@Override
+	public void updateById(long id) {
+		StringBuilder selectionBaseEntityGroupListStr = new StringBuilder();
+		String optingStr = null;
+		Optional.ofNullable(this.selectionBaseEntityGroupList).ifPresent(element->
+				selectionBaseEntityGroupListStr.append(String.join(",", element)).append(","));
+
+		if (selectionBaseEntityGroupListStr.length() == 0)
+			selectionBaseEntityGroupListStr.append(",");
+
+		if (this.options != null){
+			optingStr= singleQuoteSeparator +  this.options + singleQuoteSeparator;
+		}
+
+		String updateStatement = "update from Validation" + " " +
+				"set multiAllowed=" + this.multiAllowed + ", " +
+				"name=" + singleQuoteSeparator +  this.name + singleQuoteSeparator + ", " +
+				"options=" + optingStr + ", " +
+				"recursiveGroup=" + this.recursiveGroup + ", " +
+				"regex=" + singleQuoteSeparator +  this.regex + singleQuoteSeparator + ", " +
+				"selection_grp=" + singleQuoteSeparator + selectionBaseEntityGroupListStr + singleQuoteSeparator + ", " +
+				"updated=" + singleQuoteSeparator + this.created + singleQuoteSeparator + " " +
+				"where id=?1";
+		Validation.update(updateStatement,id);
+	}
 }

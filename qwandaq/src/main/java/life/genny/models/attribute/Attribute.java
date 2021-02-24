@@ -24,9 +24,6 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import javax.json.bind.annotation.JsonbTransient;
 import javax.json.bind.annotation.JsonbTypeAdapter;
@@ -48,7 +45,6 @@ import org.jboss.logging.Logger;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import io.quarkus.runtime.annotations.RegisterForReflection;
 import life.genny.models.datatype.DataType;
-import life.genny.models.validation.Validation;
 import life.genny.qwanda.GennyInterface;
 import life.genny.utils.LocalDateTimeAdapter;
 
@@ -301,6 +297,25 @@ public class Attribute extends PanacheEntity implements GennyInterface {
 				 && Objects.equals(description, other.description)  && Objects.equals(defaultPrivacyFlag, other.defaultPrivacyFlag)  && Objects.equals(name, other.name)
 				 && Objects.equals(dataType, other.dataType);
 
-
 	}
+
+    @Override
+    public void updateById(long id) {
+        String updateStatement = "update from Attribute" + " " +
+        "set className = " + this.dataType.getClassName() + ", " +
+        "component = " + this.dataType.getComponent() + ", " +
+        "dttCode = " + this.dataType.getDttCode() + ", " +
+        "inputmask = " + this.dataType.getInputmask() + ", " +
+        "typeName = " + this.dataType.getTypeName() + ", " +
+        "validation_list = " + this.dataType.getValidationList() + ", " +
+        "defaultPrivacyFlag = " + this.defaultPrivacyFlag + ", " +
+        "defaultValue = " + this.defaultValue + ", " +
+        "description = " + this.description + ", " +
+        "help = " + this.help + ", " +
+        "name = " + this.name + ", " +
+        "placeholder = " + this.placeholder + ", " +
+        "updated = " + this.created + " " +
+        "where id = ?";
+        Attribute.update(updateStatement,id);
+    }
 }

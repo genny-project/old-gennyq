@@ -377,22 +377,27 @@ public class BootxportResource {
 							// Should never raise this exception
 							throw new NoResultException(String.format("Can't find %s from database.", obj.getCode()));
 						}
+						obj.updateById(val.id);
+						/*
 						val.active = obj.active;
 						val.updated = obj.created;
 						val.name = obj.name;
 						val.realm = obj.realm;
 						val.persist();
+						 */
 					} else if (panacheEntity instanceof Validation) {
 
 						Validation obj = (Validation) panacheEntity;
-						// Validation val = (Validation) (mapping.get(obj.code));
-						Validation val = Validation.findByCode(obj.code);
+						 Validation val = (Validation) (mapping.get(obj.code));
+//						Validation val = Validation.findByCode(obj.code);
 						if (val == null) {
 							// Should never raise this exception
 							throw new NoResultException(String.format("Can't find %s from database.", obj.code));
 						}
+						obj.updateById(val.id);
 						// copyFields.copyProperties(val, obj);
 
+/*
 						val.multiAllowed = obj.multiAllowed;
 						val.name = obj.name;
 						val.options = obj.options;
@@ -401,20 +406,22 @@ public class BootxportResource {
 						val.selectionBaseEntityGroupList = obj.selectionBaseEntityGroupList;
 						val.realm = currentRealm;
 						val.persistAndFlush();
+ */
 					} else if (panacheEntity instanceof Attribute) {
 						Attribute obj = (Attribute) panacheEntity;
 						Attribute val = (Attribute) (mapping.get(obj.code));
-						if (val == null) {
-							// Should never raise this exception
-							throw new NoResultException(String.format("Can't find %s from database.", obj.code));
-						}
-						try {
-							copyFields.copyProperties(val, obj);
-						} catch (IllegalAccessException | InvocationTargetException ex) {
-							log.error(String.format("Failed to copy Properties for %s", val.code));
-						}
-						val.realm = currentRealm;
-						val.persistAndFlush();
+						obj.updateById(val.id);
+//						if (val == null) {
+//							// Should never raise this exception
+//							throw new NoResultException(String.format("Can't find %s from database.", obj.code));
+//						}
+//						try {
+//							copyFields.copyProperties(val, obj);
+//						} catch (IllegalAccessException | InvocationTargetException ex) {
+//							log.error(String.format("Failed to copy Properties for %s", val.code));
+//						}
+//						val.realm = currentRealm;
+//						val.persistAndFlush();
 					}
 
 				}
@@ -439,6 +446,7 @@ public class BootxportResource {
 		int index = 1;
 		try {
 			userTransaction.begin();
+			userTransaction.setTransactionTimeout(600);
 			for (PanacheEntity panacheEntity : objectList) {
 				try {
 					Class clazz = panacheEntity.getClass();
@@ -499,6 +507,7 @@ public class BootxportResource {
 						log.error("Error saving " + gi.getCode());
 					}
 					userTransaction.begin();
+					userTransaction.setTransactionTimeout(600);
 					// } else {
 					// panacheEntity.persist();
 					// }
@@ -743,15 +752,15 @@ public class BootxportResource {
 		attributeLinksOptimization(rx.getAttributeLinks(), dataTypes, rx.getCode());
 		baseEntitysOptimization(rx.getBaseEntitys(), rx.getCode(), userCodeUUIDMapping);
 
-		baseEntityAttributesOptimization(rx.getEntityAttributes(), rx.getCode(), userCodeUUIDMapping);
+//		baseEntityAttributesOptimization(rx.getEntityAttributes(), rx.getCode(), userCodeUUIDMapping);
 
-		entityEntitysOptimization(rx.getEntityEntitys(), rx.getCode(), isSynchronise, userCodeUUIDMapping);
+//		entityEntitysOptimization(rx.getEntityEntitys(), rx.getCode(), isSynchronise, userCodeUUIDMapping);
 
-		questionsOptimization(rx.getQuestions(), rx.getCode(), isSynchronise);
+//		questionsOptimization(rx.getQuestions(), rx.getCode(), isSynchronise);
 
-		questionQuestionsOptimization(rx.getQuestionQuestions(), rx.getCode());
+//		questionQuestionsOptimization(rx.getQuestionQuestions(), rx.getCode());
 
-		asksOptimization(rx.getAsks(), rx.getCode());
+//		asksOptimization(rx.getAsks(), rx.getCode());
 
 		messageTemplatesOptimization(rx.getNotifications(), rx.getCode());
 		messageTemplatesOptimization(rx.getMessages(), rx.getCode());
@@ -1338,6 +1347,7 @@ public class BootxportResource {
 				insert(question);
 				summary.addNew();
 			} else {
+			/*
 				String name = questions.get("name");
 				String html = questions.get("html");
 				String directions = questions.get("directions");
@@ -1357,6 +1367,8 @@ public class BootxportResource {
 				existing.setReadonly(readonly);
 				existing.setMandatory(mandatory);
 				upsert(existing, codeQuestionMapping);
+			 */
+				question.updateById(existing.id);
 				summary.addUpdated();
 			}
 		}

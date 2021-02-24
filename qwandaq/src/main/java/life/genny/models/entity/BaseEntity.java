@@ -1029,4 +1029,14 @@ public class BaseEntity extends PanacheEntity implements GennyInterface {
 
 
 	}
+
+	@Override
+	public void updateById(long id) {
+		String updateStatement = "update from BaseEntity" + " " +
+				"set active = " + this.active + ", " +
+				"name = " + this.name + ", " +
+				"updated = " + this.created + " " +
+				"where id = ?";
+		BaseEntity.update(updateStatement,id);
+	}
 }

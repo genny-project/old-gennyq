@@ -22,7 +22,6 @@ import com.google.gson.annotations.Expose;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import life.genny.models.attribute.Attribute;
 import life.genny.models.exception.BadDataException;
-import life.genny.models.validation.Validation;
 
 import org.apache.logging.log4j.Logger;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -37,8 +36,6 @@ import javax.xml.bind.annotation.XmlTransient;
 import java.security.InvalidParameterException;
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Question is the abstract base class for all questions managed in the Qwanda
@@ -625,4 +622,21 @@ public class Question extends PanacheEntity implements GennyInterface {
 
 
 	}
+
+    @Override
+    public void updateById(long id) {
+        String updateStatement = "update from Question " + " " +
+                "set attributeCode = " + this.getAttributeCode() + ", " +
+                "directions = " + this.getDirections() + ", " +
+                "helper = " + this.getHelper() + ", " +
+                "html = " + this.getHtml() + ", " +
+                "mandatory = " + this.getMandatory() + ", " +
+                "name = " + this.getName() + ", " +
+                "oneshot = " + this.getOneshot() + ", " +
+                "placeholder = " + this.getPlaceholder() + ", " +
+                "readonly = " + this.getReadonly() + ", " +
+                "attribute_id = " + this.getAttribute().id + " " +
+                "where id = ?";
+        Question.update(updateStatement,id);
+    }
 }
