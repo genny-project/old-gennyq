@@ -31,7 +31,6 @@
 		<commons-codec.version>1.15</commons-codec.version>
 		<jose4j.version>0.7.2</jose4j.version>
 		<microprofile-jwt-auth-api.version>1.2-RC3</microprofile-jwt-auth-api.version>
-    <testcontainers.version>1.15.1</testcontainers.version>
 	</properties>
 
 	<dependencyManagement>
