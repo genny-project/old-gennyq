@@ -373,11 +373,21 @@ public class BootxportResource {
 					if (panacheEntity instanceof BaseEntity) {
 						BaseEntity obj = (BaseEntity) panacheEntity;
 						BaseEntity val = (BaseEntity) (mapping.get(obj.getCode()));
+						
+						if (obj.code.startsWith("CPY_CAPTAIN_COOK")) {
+							log.info("captin");
+						}
 						if (val == null) {
 							// Should never raise this exception
 							throw new NoResultException(String.format("Can't find %s from database.", obj.getCode()));
 						}
-						obj.updateById(val.id);
+						try {
+						//	obj.persist();
+							obj.updateById(val.id);
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 						/*
 						val.active = obj.active;
 						val.updated = obj.created;
@@ -531,10 +541,9 @@ public class BootxportResource {
 	public void bulkInsertQuestionQuestion(List<QuestionQuestion> objectList) {
 		if (objectList.isEmpty())
 			return;
-
 		int index = 1;
-//		try {
-//			userTransaction.begin();
+		try {
+			userTransaction.begin();
 		for (QuestionQuestion qq : objectList) {
 			if (index % BATCHSIZE == 0) {
 				// flush a batch of inserts and release memory:
@@ -545,10 +554,10 @@ public class BootxportResource {
 			}
 			index += 1;
 		}
-//			userTransaction.commit();
-//		} catch (Exception ex) {
-//			log.error("Something wrong during question_question bulk insert:" + ex.getMessage());
-//		}
+			userTransaction.commit();
+		} catch (Exception ex) {
+			log.error("Something wrong during question_question bulk insert:" + ex.getMessage());
+		}
 	}
 
 	public void bulkUpdateQuestionQuestion(List<QuestionQuestion> objectList, Map<String, QuestionQuestion> mapping) {
@@ -1033,7 +1042,7 @@ public class BootxportResource {
 		HashMap<String, PanacheEntity> codeBaseEntityMapping = new HashMap<>();
 
 		for (BaseEntity be : baseEntityFromDB) {
-			codeBaseEntityMapping.put(be.getCode(), be);
+			codeBaseEntityMapping.put(be.getCode().toUpperCase().trim(), be);
 		}
 
 		ArrayList<PanacheEntity> baseEntityInsertList = new ArrayList<>();
@@ -1043,7 +1052,10 @@ public class BootxportResource {
 		for (Map.Entry<String, Map<String, String>> entry : project.entrySet()) {
 			summary.addTotal();
 			Map<String, String> baseEntitys = entry.getValue();
-			String code = baseEntitys.get("code").replaceAll("^\"|\"$", "");
+			String code = baseEntitys.get("code").replaceAll("^\"|\"$", "").toUpperCase().trim().replaceAll(" ", "_");
+			if (code.startsWith("CPY_CAPTAIN")) {
+				log.info("Captain");
+			}
 			BaseEntity baseEntity = GoogleSheetBuilder.buildBaseEntity(baseEntitys, realmName);
 			// validation check
 			if (isValid(baseEntity)) {
@@ -1288,7 +1300,7 @@ public class BootxportResource {
 	}
 
 	// TODO, make it quicker
-	// @Transactional
+	 @Transactional
 	public void questionsOptimization(Map<String, Map<String, String>> project, String realmName,
 			boolean isSynchronise) {
 		// Get all questions from database
@@ -1339,43 +1351,52 @@ public class BootxportResource {
 			}
 
 			Question existing = codeQuestionMapping.get(code.toUpperCase());
-			if (existing == null) {
-				if (isSynchronise) {
-					Question val = codeQuestionMappingMainRealm.get(code.toUpperCase());
-					if (val != null) {
-						val.setRealm(realmName);
-						updateRealm(val);
-						summary.addUpdated();
-						continue;
-					}
-				}
-				insert(question);
-				summary.addNew();
-			} else {
-			/*
-				String name = questions.get("name");
-				String html = questions.get("html");
-				String directions = questions.get("directions");
-				String helper = questions.get("helper");
-				existing.setName(name);
-				existing.setHtml(html);
-				existing.setDirections(directions);
-				existing.setHelper(helper);
+//			try {
+//				userTransaction.begin();
+				if (existing == null) {
+//					if (isSynchronise) {
+//						Question val = codeQuestionMappingMainRealm.get(code.toUpperCase());
+//						if (val != null) {
+//							val.setRealm(realmName);
+//							updateRealm(val);
+//							summary.addUpdated();
+//							continue;
+//						}
+//					}
+					insert(question);
+					summary.addNew();
+				} else {
+				
+					String name = questions.get("name");
+					String html = questions.get("html");
+					String directions = questions.get("directions");
+					String helper = questions.get("helper");
+					existing.setName(name);
+					existing.setHtml(html);
+					existing.setDirections(directions);
+					existing.setHelper(helper);
 
-				String oneshotStr = questions.get("oneshot");
-				String readonlyStr = questions.get(GoogleSheetBuilder.READONLY);
-				String mandatoryStr = questions.get(GoogleSheetBuilder.MANDATORY);
-				boolean oneshot = GoogleSheetBuilder.getBooleanFromString(oneshotStr);
-				boolean readonly = GoogleSheetBuilder.getBooleanFromString(readonlyStr);
-				boolean mandatory = GoogleSheetBuilder.getBooleanFromString(mandatoryStr);
-				existing.setOneshot(oneshot);
-				existing.setReadonly(readonly);
-				existing.setMandatory(mandatory);
-				upsert(existing, codeQuestionMapping);
-			 */
-				question.updateById(existing.id);
-				summary.addUpdated();
-			}
+					String oneshotStr = questions.get("oneshot");
+					String readonlyStr = questions.get(GoogleSheetBuilder.READONLY);
+					String mandatoryStr = questions.get(GoogleSheetBuilder.MANDATORY);
+					boolean oneshot = GoogleSheetBuilder.getBooleanFromString(oneshotStr);
+					boolean readonly = GoogleSheetBuilder.getBooleanFromString(readonlyStr);
+					boolean mandatory = GoogleSheetBuilder.getBooleanFromString(mandatoryStr);
+					existing.setOneshot(oneshot);
+					existing.setReadonly(readonly);
+					existing.setMandatory(mandatory);
+					upsert(existing, codeQuestionMapping);
+					existing.persist();
+				//	question.persist();
+					//question.updateById(existing.id);
+					summary.addUpdated();
+				}
+//				userTransaction.commit();
+//			} catch (SecurityException | IllegalStateException | NotSupportedException | SystemException
+//					| RollbackException | HeuristicMixedException | HeuristicRollbackException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
 		}
 		printSummary("Question", summary);
 	}

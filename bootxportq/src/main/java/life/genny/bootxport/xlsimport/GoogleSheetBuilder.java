@@ -474,7 +474,7 @@ public class GoogleSheetBuilder {
 
     public static BaseEntity buildBaseEntity(Map<String, String> baseEntitys, String realmName) {
 
-        String code = baseEntitys.get("code").replaceAll("^\"|\"$", "");
+        String code = baseEntitys.get("code").replaceAll("^\"|\"$", "").toUpperCase().trim().replaceAll(" ", "_");
         String name = getNameFromMap(baseEntitys, code);
         BaseEntity be = new BaseEntity(code, name);
         be.realm = realmName;
