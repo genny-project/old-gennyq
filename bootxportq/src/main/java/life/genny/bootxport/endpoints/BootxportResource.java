@@ -382,8 +382,17 @@ public class BootxportResource {
 							throw new NoResultException(String.format("Can't find %s from database.", obj.getCode()));
 						}
 						try {
-						//	obj.persist();
-							obj.updateById(val.id);
+							if (obj.id==null) {
+								log.error("This baseentity is already in system and we are updating a null id -> "+obj.code);
+								BaseEntity be = BaseEntity.findByCode(obj.code);
+								if (be != null) {
+									be.name = obj.name; // update
+									be.persist();
+								}
+							} else {
+								obj.persist();
+							}
+						//	obj.updateById(val.id);
 						} catch (Exception e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -419,7 +428,8 @@ public class BootxportResource {
  */
 					} else if (panacheEntity instanceof Attribute) {
 						Attribute obj = (Attribute) panacheEntity;
-						Attribute val = (Attribute) (mapping.get(obj.code));
+						Attribute val = (Attribute) (mapping.get(obj.code));						
+						//obj.persist();
 						obj.updateById(val.id);
 //						if (val == null) {
 //							// Should never raise this exception
