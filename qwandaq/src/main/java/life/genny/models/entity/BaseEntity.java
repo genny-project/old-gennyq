@@ -1033,20 +1033,18 @@ public class BaseEntity extends PanacheEntity implements GennyInterface {
 	@Override
 	public void updateById(long id) {
 		// TODO use OWASPS ESAPI
-		if (this.name.contains("please help me")) {
+		if (this.name.contains("please")) {
 			log.info("found culprit");
 		}
-		String safename = this.name
-                .replaceAll("'", "\\'")
-                .replaceAll("\'", "\\'")
-                .replaceAll("\"", "\\\"");
-		
-		String updateStatement = "update from BaseEntity" + " " +
-				"set active = " + this.active + ", " +
-				"name = " + singleQuoteSeparator + safename + singleQuoteSeparator + ", " +
-				"updated = " + singleQuoteSeparator + this.created + singleQuoteSeparator + " " +
-				"where id = ?1";
-		BaseEntity.update(updateStatement,id);
-		//this.persist(); // to avoid sql injection
+//		String safename = this.name
+//                .replaceAll("\\'", "\\\\'");
+// 		
+//		String updateStatement = "update from BaseEntity" + " " +
+//				"set active = " + this.active + ", " +
+//				"name = " + singleQuoteSeparator + safename + singleQuoteSeparator + ", " +
+//				"updated = " + singleQuoteSeparator + this.created + singleQuoteSeparator + " " +
+//				"where id = ?1";
+//		BaseEntity.update(updateStatement,id);
+		this.persist(); // to avoid sql injection
 	}
 }
