@@ -14,6 +14,7 @@ import life.genny.models.entity.BaseEntity;
 import life.genny.models.exception.BadDataException;
 import life.genny.qwanda.message.QBaseMSGMessageTemplate;
 import life.genny.models.validation.Validation;
+import life.genny.models.validation.ValidationList;
 import life.genny.qwandautils.KeycloakUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -157,6 +158,19 @@ public class GoogleSheetBuilder {
         String name = attributes.get("name").replaceAll(REGEX_1, "");
         DataType dataTypeRecord = dataTypeMap.get(dataType);
       
+        ValidationList vlist = new ValidationList();
+        if ((dataTypeRecord != null) && (dataTypeRecord.getValidationList()!=null)) {
+        	for (Validation validation : dataTypeRecord.getValidationList()) {
+        		if (validation !=null) {
+        			Validation exitingValidation = Validation.findByCode(validation.code);
+        			vlist.validationList.add(exitingValidation);
+        		}
+        	}
+        	  dataTypeRecord.setValidationList(vlist.validationList);
+        }
+        if ((dataTypeRecord != null)) {
+        	dataTypeRecord = new DataType(String.class.getCanonicalName());
+        }
 
         String privacyStr = attributes.get(PRIVACY);
         if (privacyStr != null) {
@@ -477,7 +491,7 @@ public class GoogleSheetBuilder {
 //        }
 
         baseEntity.realm = realmName;
-        
+        baseEntity.persist();
         return baseEntity;
     }
 

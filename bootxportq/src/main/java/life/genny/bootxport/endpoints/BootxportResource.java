@@ -945,6 +945,13 @@ public class BootxportResource {
 				String attributeCode = attr.code.toUpperCase().trim();
 				Attribute existing = Attribute.find("code", attributeCode).firstResult();
 				if (existing != null) {
+				       ValidationList vlist = new ValidationList();
+				        for (Validation validation : attr.dataType.getValidationList()) {
+				        	Validation exitingValidation = Validation.findByCode(validation.code);
+				        	vlist.validationList.add(exitingValidation);
+				        }
+				        existing.dataType.setValidationList(vlist.validationList);
+				        existing.persist();
 					// if (codeAttributeMapping.containsKey(code.toUpperCase())) {
 					// if (isChanged(attr, codeAttributeMapping.get(code.toUpperCase()))) {
 					if (isChanged(attr, existing)) {
