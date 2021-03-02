@@ -5,6 +5,7 @@ import com.google.gson.JsonSyntaxException;
 import life.genny.qwanda.Ask;
 import life.genny.qwanda.Question;
 import life.genny.qwanda.QuestionQuestion;
+import life.genny.models.Value;
 import life.genny.models.attribute.Attribute;
 import life.genny.models.attribute.AttributeLink;
 import life.genny.models.attribute.EntityAttribute;
@@ -419,14 +420,14 @@ public class GoogleSheetBuilder {
         Boolean privacy = "TRUE".equalsIgnoreCase(privacyStr);
 
         // Check if attribute code exist in Attribute table, foreign key restriction
-        Attribute attribute = attrHashMap.get(attributeCode.toUpperCase());
+        Attribute attribute = Attribute.findByCode(attributeCode.toUpperCase());
         if (attribute == null) {
 //            log.error(String.format("Invalid EntityAttribute record, AttributeCode:%s is not in the Attribute Table!!!", attributeCode));
             return null;
         }
 
         // Check if baseEntity code exist in BaseEntity table, foreign key restriction
-        BaseEntity baseEntity = beHashMap.get(baseEntityCode.toUpperCase());
+        BaseEntity baseEntity = BaseEntity.findByCode(baseEntityCode);
         if (baseEntity == null) {
 //            log.error(String.format("Invalid EntityAttribute record, BaseEntityCode:%s is not in the BaseEntity Table!!!", baseEntityCode));
             return null;
@@ -437,29 +438,46 @@ public class GoogleSheetBuilder {
             weightField = Double.parseDouble(weight);
         }
 
-        EntityAttribute ea = null;
-        if (valueInt != null) {
-            try {
-                ea = baseEntity.addAttribute(attribute, weightField, valueInt);
-            } catch (BadDataException be) {
-                log.error(String.format("Should never reach here!, Error:%s", be.getMessage()));
-            }
-        } else {
-            try {
-                ea = baseEntity.addAttribute(attribute, weightField, valueStr);
-            } catch (BadDataException be) {
-                log.error(String.format("Should never reach here!, Error:%s", be.getMessage()));
-            }
+        Value value = new Value(valueStr,attribute,weightField);
+       
+        
+        EntityAttribute ea = EntityAttribute.findByBaseEntityCodeAndAttributeCode(realmName,baseEntity,attribute);
+        
+        if (ea == null) {
+        	ea = new EntityAttribute(baseEntity, attribute,  value);
+        	
         }
-
-        if (ea != null) {
-            if (privacy || attribute.defaultPrivacyFlag) {
-                ea.privacyFlag = true;
-            }
-            ea.realm = realmName;
-        }
+        ea.realm = realmName;
+        ea.value = value;
+        ea.setWeight(weightField);
+        ea.persist();
+        
+        baseEntity.baseEntityAttributes.add(ea);
+        
+//        if (valueInt != null) {
+//            try {
+//                ea = baseEntity.addAttribute(attribute, weightField, valueInt);
+//            } catch (BadDataException be) {
+//                log.error(String.format("Should never reach here!, Error:%s", be.getMessage()));
+//            }
+//        } else {
+//            try {
+//                ea = baseEntity.addAttribute(attribute, weightField, valueStr);
+//            } catch (BadDataException be) {
+//                log.error(String.format("Should never reach here!, Error:%s", be.getMessage()));
+//            }
+//        }
+//        
+//        
+//        if (ea != null) {
+//            if (privacy || attribute.defaultPrivacyFlag) {
+//                ea.privacyFlag = true;
+//            }
+//            ea.realm = realmName;
+//        }
 
         baseEntity.realm = realmName;
+        
         return baseEntity;
     }
 

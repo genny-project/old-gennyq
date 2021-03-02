@@ -387,6 +387,9 @@ public class BaseEntity extends PanacheEntity implements GennyInterface {
 		} else {
 			baseEntityAttributes.add(entityAttribute);
 		}
+		entityAttribute.attributeCode = attribute.code;
+		entityAttribute.attributeName = attribute.name;
+		entityAttribute.baseEntityCode = this.code;
 		return entityAttribute;
 	}
 	/**

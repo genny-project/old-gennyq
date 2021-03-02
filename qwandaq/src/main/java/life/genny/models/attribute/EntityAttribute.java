@@ -133,6 +133,29 @@ public class EntityAttribute extends PanacheEntity {
 		setWeight(weight);
 		privacyFlag = attribute.defaultPrivacyFlag;
 		setValue(value);
+		this.attributeCode = attribute.code;
+		this.attributeName = attribute.name;
+		this.baseEntityCode = baseentity.code;
+	}
+	
+	/**
+	 * Constructor.
+	 * 
+	 * @param BaseEntity the entity that needs to contain attributes
+	 * @param Attribute  the associated Attribute
+	 *                   other attributes)
+	 * @param Value      the value associated with this attribute
+	 */
+	public EntityAttribute(final BaseEntity baseEntity, final Attribute attribute, final Value value) {
+		autocreateCreated();
+		this.baseentity = baseEntity;
+		this.attribute = attribute;
+		setWeight(value.weight);
+		privacyFlag = attribute.defaultPrivacyFlag;
+		this.value = value;
+		this.attributeCode = attribute.code;
+		this.attributeName = attribute.name;
+		this.baseEntityCode = baseentity.code;
 	}
 
 	@PreUpdate
@@ -395,4 +418,14 @@ public class EntityAttribute extends PanacheEntity {
       return false;
     return true;
   }
+
+public static EntityAttribute findByBaseEntityCodeAndAttributeCode(String realm, BaseEntity baseEntity,
+		Attribute attribute) {
+	try {
+		return find("realm = ?1 and baseentity.id = ?2 and attribute.id = ?3", realm,baseEntity.id,attribute.id).firstResult();
+	} catch (Exception e) {
+		log.error(e.getLocalizedMessage());
+	}
+	return null;
+}
 }

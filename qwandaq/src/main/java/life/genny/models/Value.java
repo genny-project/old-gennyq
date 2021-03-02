@@ -27,6 +27,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import io.quarkus.runtime.annotations.RegisterForReflection;
+import life.genny.models.attribute.Attribute;
 import life.genny.models.datatype.DataType;
 
 @Embeddable
@@ -77,6 +78,17 @@ public class Value implements Serializable,Comparable<Value> {
         setValue(dataType);
     }
 
+
+	public Value(Object value, DataType dataType,Double weight) {
+		this(value,dataType);
+		this.weight = weight;
+	}
+	
+	public Value(Object value, Attribute attribute,Double weight) {
+		this.dataType = attribute.dataType;
+		this.setValue(value);
+		this.weight = weight;
+	}
 
 	@SuppressWarnings("unchecked")
 	@JsonbTransient

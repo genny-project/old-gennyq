@@ -99,7 +99,7 @@ public class BootxportResource {
 	@ConfigProperty(name = "google.hosting.sheetid", defaultValue = "XXX")
 	String googleHostingSheetId;
 
-	private static final int BATCHSIZE = 500;
+	private static final int BATCHSIZE = 10;
 	String currentRealm = GennySettings.mainrealm; // permit temprorary override
 
 	@ConfigProperty(name = "default.realm", defaultValue = "genny")
@@ -1015,30 +1015,47 @@ public class BootxportResource {
 
 		Summary summary = new Summary();
 
-		for (Map.Entry<String, Map<String, String>> entry : project.entrySet()) {
-			summary.addTotal();
-			Map<String, String> baseEntityAttr = entry.getValue();
+		int pcount=0;
+		
+		try {
+			userTransaction.begin();
+			for (Map.Entry<String, Map<String, String>> entry : project.entrySet()) {
+				summary.addTotal();
+				Map<String, String> baseEntityAttr = entry.getValue();
 
-			String baseEntityCode = GoogleSheetBuilder.getBaseEntityCodeFromBaseEntityAttribute(baseEntityAttr,
-					userCodeUUIDMapping);
-			if (baseEntityCode == null) {
-				summary.addInvalid();
-				continue;
-			}
-			String attributeCode = GoogleSheetBuilder.getAttributeCodeFromBaseEntityAttribute(baseEntityAttr);
-			if (attributeCode == null) {
-				summary.addInvalid();
-				continue;
-			}
+				String baseEntityCode = GoogleSheetBuilder.getBaseEntityCodeFromBaseEntityAttribute(baseEntityAttr,
+						userCodeUUIDMapping);
+				if (baseEntityCode == null) {
+					summary.addInvalid();
+					continue;
+				}
+				String attributeCode = GoogleSheetBuilder.getAttributeCodeFromBaseEntityAttribute(baseEntityAttr);
+				if (attributeCode == null) {
+					summary.addInvalid();
+					continue;
+				}
 
-			BaseEntity be = GoogleSheetBuilder.buildEntityAttribute(baseEntityAttr, realmName, attrHashMap, beHashMap,
-					userCodeUUIDMapping);
-			if (be != null) {
-				updateWithAttributes(be);
-				summary.addNew();
-			} else {
-				summary.addInvalid();
+				BaseEntity be = GoogleSheetBuilder.buildEntityAttribute(baseEntityAttr, realmName, attrHashMap, beHashMap,
+						userCodeUUIDMapping);
+				if (be != null) {
+					updateWithAttributes(be);
+					summary.addNew();
+				} else {
+					summary.addInvalid();
+				}
+				
+				
+				if ((pcount % 1)==0) {
+					userTransaction.commit();
+					userTransaction.begin();
+				}
+				
 			}
+			userTransaction.commit();
+		} catch (SecurityException | IllegalStateException | NotSupportedException | SystemException | RollbackException
+				| HeuristicMixedException | HeuristicRollbackException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		printSummary("BaseEntityAttributes", summary);
 	}
