@@ -19,9 +19,9 @@
 	</licenses>
 
 	<properties>
-		<keycloak.version>12.0.1</keycloak.version>
-		<quarkus-plugin.version>1.12.0.Final</quarkus-plugin.version>
-		<quarkus.platform.version>1.12.0.Final</quarkus.platform.version>
+		<keycloak.version>12.0.3</keycloak.version>
+		<quarkus-plugin.version>1.12.1.Final</quarkus-plugin.version>
+		<quarkus.platform.version>1.12.1.Final</quarkus.platform.version>
  		<commons-lang3.version>3.10</commons-lang3.version>
 		<maven.compiler.target>11</maven.compiler.target>
 		<maven.compiler.source>11</maven.compiler.source>
