@@ -37,3 +37,4 @@ release.properties
 
 # GIT
 src/main/resources/genny-proxy-git.properties
+.env
