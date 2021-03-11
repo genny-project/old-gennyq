@@ -13,7 +13,7 @@ Abn path: /json
 
 Google map: /googleapi/v1/map
 Time zone: /googleapi/v1/timezone
-Google address: /googleapi/v1/v1/geocode
+Google address: /googleapi/v1/geocode
 
 
 udemyapi course details: /udemyapi/v1/course/detail/{id}
