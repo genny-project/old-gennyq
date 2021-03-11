@@ -16,7 +16,7 @@ public class InfinispanServer implements QuarkusTestResourceLifecycleManager{
 
   private GenericContainer<?> infinispan;
 
-  static final String SERVER_VERSION = "11.0";
+  static final String SERVER_VERSION = "12.0.1.Final";
   static final String SERVER_IMAGE = "quay.io/infinispan/server-native";
   static final String ENV_USER = "USER";
   static final String ENV_PASS = "PASS";

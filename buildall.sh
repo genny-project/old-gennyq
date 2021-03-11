@@ -13,7 +13,7 @@ do
 done
 
 
-for project in apiq bridgeq messagesq keisha genny-proxy notes shleemy
+for project in apiq bridgeq messagesq keisha  genny-proxy notes shleemy
 do
     echo $project
     cd $project

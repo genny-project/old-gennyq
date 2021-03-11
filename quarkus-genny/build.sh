@@ -1,2 +1,2 @@
 #!/bin/bash
-mvn clean install  $1 -DskipTests=true
+mvn clean install  $1 -DskipTests=false

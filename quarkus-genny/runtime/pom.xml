@@ -27,7 +27,6 @@
 		<quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
 		<quarkus.platform.group-id>io.quarkus</quarkus.platform.group-id>
 		<surefire.version>3.0.0-M5</surefire.version>
-		<testcontainers.version>1.15.1</testcontainers.version>
 		<jandex.version>1.0.7</jandex.version>
 		<jackson-datatype-money>1.2.0</jackson-datatype-money>
 		<version.moneta>1.4.2</version.moneta>

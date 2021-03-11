@@ -19,9 +19,9 @@
 	</licenses>
 
 	<properties>
-		<keycloak.version>12.0.3</keycloak.version>
-		<quarkus-plugin.version>1.12.1.Final</quarkus-plugin.version>
-		<quarkus.platform.version>1.12.1.Final</quarkus.platform.version>
+		<keycloak.version>12.0.1</keycloak.version>
+		<quarkus-plugin.version>1.11.1.Final</quarkus-plugin.version>
+		<quarkus.platform.version>1.11.1.Final</quarkus.platform.version>
  		<commons-lang3.version>3.10</commons-lang3.version>
 		<maven.compiler.target>11</maven.compiler.target>
 		<maven.compiler.source>11</maven.compiler.source>
@@ -30,7 +30,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<surefire-plugin.version>3.0.0-M5</surefire-plugin.version>
-		<testcontainers.version>1.15.1</testcontainers.version>
+		<testcontainers.version>1.15.2</testcontainers.version>
 		<docker-plugin.version>0.33.0</docker-plugin.version>
 		<jandex.version>1.0.7</jandex.version>
 	</properties>
@@ -64,6 +64,7 @@
 		<module>bootxportq</module>
 		<module>apiq</module>
 		<module>bridgeq</module>
+		<module>keisha</module>
 		<module>shleemy</module>
 		<module>messagesq</module>
 		<module>genny-proxy</module>
