@@ -2,6 +2,7 @@ package life.genny.strategy;
 
 import com.twilio.Twilio;
 import com.twilio.rest.api.v2010.account.Message;
+import life.genny.models.message.QMessageGennyMSG;
 import life.genny.strategy.model.GennyMessage;
  import org.eclipse.microprofile.config.inject.ConfigProperty;
 
@@ -50,4 +51,23 @@ public class SmsStrategy extends Strategy{
     log.info("-------------SMS BODY---------------------");
     log.info(gennyMessage.getBody());
   }
+
+    @Override
+    public void send(QMessageGennyMSG qMessageGennyMSG) throws Exception {
+//        Twilio.init(accountSid, authToken);
+//
+//        Message message =
+//                Message.creator(
+//                        new com.twilio.type.PhoneNumber(qMessageGennyMSG.getRecipient()),
+//                        new com.twilio.type.PhoneNumber(senderMobile),
+//                        qMessageGennyMSG.getBody())
+//                        .create();
+//
+//        log.info("-------------SMS SENT---------------------");
+//        log.info("By Twilio:" + message.getSid());
+//        log.info("-------------SMS RECIPIENT---------------------");
+//        log.info(qMessageGennyMSG.getRecipient());
+//        log.info("-------------SMS BODY---------------------");
+//        log.info(qMessageGennyMSG.getBody());
+    }
 }

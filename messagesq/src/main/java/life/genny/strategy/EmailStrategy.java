@@ -7,6 +7,7 @@ import javax.inject.Named;
 
 import io.quarkus.mailer.Mail;
 import io.quarkus.mailer.Mailer;
+import life.genny.models.message.QMessageGennyMSG;
 import life.genny.strategy.model.GennyMessage;
 
 @ApplicationScoped
@@ -36,4 +37,9 @@ public class EmailStrategy extends Strategy{
     log.info("-------------EMAIL PORT---------------------");
    }
 
- }
+  @Override
+  public void send(QMessageGennyMSG qMessageGennyMSG) throws Exception {
+
+  }
+
+}

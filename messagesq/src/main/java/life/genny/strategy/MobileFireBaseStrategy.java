@@ -1,6 +1,7 @@
 package life.genny.strategy;
 
 import io.vertx.mutiny.ext.web.client.WebClient;
+import life.genny.models.message.QMessageGennyMSG;
 import life.genny.strategy.model.GennyMessage;
 import life.genny.strategy.model.firebase.NotificationPayload;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
@@ -46,6 +47,11 @@ public class MobileFireBaseStrategy extends Strategy {
                 .atMost(Duration.ofSeconds(15))
                 .bodyAsString();
         return ;
+    }
+
+    @Override
+    public void send(QMessageGennyMSG qMessageGennyMSG) throws Exception {
+
     }
 
 
