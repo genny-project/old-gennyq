@@ -1,0 +1,35 @@
+{
+  "baseEntityAttributes": [
+    {
+      "baseEntityCode": "PER_BAD_GUY",
+      "attributeCode": "PRI_NAME",
+      "readonly": false,
+      "index": 0,
+      "created": "2021-02-25T00:02:36",
+      "valueString": "Dr Evil",
+      "weight": 0,
+      "inferred": false,
+      "privacyFlag": false
+    },
+    {
+      "baseEntityCode": "PER_BAD_GUY",
+      "attributeCode": "PRI_PHONE",
+      "readonly": false,
+      "index": 0,
+      "created": "2021-02-25T00:02:36",
+      "valueString": "61414222333",
+      "weight": 0,
+      "inferred": false,
+      "privacyFlag": false
+    }
+  ],
+  "links": [],
+  "questions": [],
+  "code": "PER_BAD_GUY",
+  "index": 0,
+  "created": "2021-02-25T00:02:34",
+  "updated": "2021-02-25T00:02:35",
+  "id": 29820,
+  "name": "Dr Evil",
+  "realm": "internmatch"
+}

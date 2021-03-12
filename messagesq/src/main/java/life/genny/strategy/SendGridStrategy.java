@@ -8,6 +8,7 @@ import com.sendgrid.helpers.mail.Mail;
 import com.sendgrid.helpers.mail.objects.Email;
 import com.sendgrid.helpers.mail.objects.Personalization;
 import io.quarkus.mailer.Mailer;
+import life.genny.models.message.QMessageGennyMSG;
 import life.genny.strategy.model.GennyMessage;
 import org.apache.logging.log4j.Logger;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
@@ -76,4 +77,9 @@ public class SendGridStrategy extends Strategy {
 
    }
 
- }
+  @Override
+  public void send(QMessageGennyMSG qMessageGennyMSG) throws Exception {
+
+  }
+
+}

@@ -1,0 +1,69 @@
+{
+  "baseEntityAttributes": [
+    {
+      "baseEntityCode": "PER_SUPER_HERO",
+      "attributeCode": "PRI_MOBILE",
+      "readonly": false,
+      "index": 0,
+      "created": "2021-02-25T07:54:53",
+      "updated": "2021-02-26T04:44:21",
+      "valueString": "+61430148086",
+      "weight": 0,
+      "inferred": false,
+      "privacyFlag": false
+    },
+    {
+      "baseEntityCode": "PER_SUPER_HERO",
+      "attributeCode": "PRI_NAME",
+      "readonly": false,
+      "index": 0,
+      "created": "2021-02-25T00:02:37",
+      "valueString": "James Bond",
+      "weight": 0,
+      "inferred": false,
+      "privacyFlag": false
+    },
+    {
+      "baseEntityCode": "PER_SUPER_HERO",
+      "attributeCode": "PRI_EMAIL",
+      "readonly": false,
+      "index": 0,
+      "created": "2021-02-25T00:02:37",
+      "valueString": "rogerxiaxia@hotmail.com",
+      "weight": 0,
+      "inferred": false,
+      "privacyFlag": false
+    },
+    {
+      "baseEntityCode": "PER_SUPER_HERO",
+      "attributeCode": "PRI_PHONE",
+      "readonly": false,
+      "index": 0,
+      "created": "2021-02-25T00:02:37",
+      "valueString": "61400000000",
+      "weight": 0,
+      "inferred": false,
+      "privacyFlag": false
+    },
+    {
+      "baseEntityCode": "PER_SUPER_HERO",
+      "attributeCode": "PRI_FIRSTNAME",
+      "readonly": false,
+      "index": 0,
+      "created": "2021-02-25T07:22:17",
+      "valueString": "James",
+      "weight": 0,
+      "inferred": false,
+      "privacyFlag": false
+    }
+  ],
+  "links": [],
+  "questions": [],
+  "code": "PER_SUPER_HERO",
+  "index": 0,
+  "created": "2021-02-25T00:02:35",
+  "updated": "2021-02-25T00:02:35",
+  "id": 29821,
+  "name": "James Bond",
+  "realm": "internmatch"
+}
