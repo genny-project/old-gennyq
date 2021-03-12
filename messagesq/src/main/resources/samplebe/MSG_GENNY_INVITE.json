@@ -1,0 +1,156 @@
+{
+  "baseEntityAttributes": [
+    {
+      "baseEntityCode": "MSG_GENNY_INVITE",
+      "attributeCode": "PRI_SHORT_BODY",
+      "readonly": false,
+      "index": 0,
+      "created": "2021-02-25T07:22:17",
+      "valueString": "This is a short version of the message regarding {{BAD_GUY.PRI_NAME}}",
+      "weight": 0,
+      "inferred": false,
+      "privacyFlag": false
+    },
+    {
+      "baseEntityCode": "MSG_GENNY_INVITE",
+      "attributeCode": "PRI_NAME",
+      "readonly": false,
+      "index": 0,
+      "created": "2021-02-25T07:22:17",
+      "valueString": "Test Message",
+      "weight": 0,
+      "inferred": false,
+      "privacyFlag": false
+    },
+    {
+      "baseEntityCode": "MSG_GENNY_INVITE",
+      "attributeCode": "PRI_OPTIONAL_CONTEXT_CODES",
+      "readonly": false,
+      "index": 0,
+      "created": "2021-02-25T07:22:17",
+      "valueString": "[\"LOVE_INTEREST\"]",
+      "weight": 0,
+      "inferred": false,
+      "privacyFlag": false
+    },
+    {
+      "baseEntityCode": "MSG_GENNY_INVITE",
+      "attributeCode": "PRI_CONTEXT_CODES",
+      "readonly": false,
+      "index": 0,
+      "created": "2021-02-25T07:22:17",
+      "valueString": "[\"SUPER_HERO\",  \"BAD_GUY\" ]",
+      "weight": 0,
+      "inferred": false,
+      "privacyFlag": false
+    },
+    {
+      "baseEntityCode": "MSG_GENNY_INVITE",
+      "attributeCode": "PRI_BODY",
+      "readonly": false,
+      "index": 0,
+      "created": "2021-02-25T07:22:17",
+      "valueString": "This is the main body type of the message from {{SUPER_HERO.PRI_NAME}}",
+      "weight": 0,
+      "inferred": false,
+      "privacyFlag": false
+    },
+    {
+      "baseEntityCode": "MSG_GENNY_INVITE",
+      "attributeCode": "PRI_RECEIVED_CHECK",
+      "readonly": false,
+      "index": 0,
+      "created": "2021-02-25T07:22:17",
+      "valueString": "TRUE",
+      "weight": 0,
+      "inferred": false,
+      "privacyFlag": false
+    },
+    {
+      "baseEntityCode": "MSG_GENNY_INVITE",
+      "attributeCode": "PRI_UNSUBSCRIBE",
+      "readonly": false,
+      "index": 0,
+      "created": "2021-02-25T07:22:17",
+      "valueString": "TEST",
+      "weight": 0,
+      "inferred": false,
+      "privacyFlag": false
+    },
+    {
+      "baseEntityCode": "MSG_GENNY_INVITE",
+      "attributeCode": "PRI_SUBJECT",
+      "readonly": false,
+      "index": 0,
+      "created": "2021-02-25T07:22:17",
+      "valueString": "This is a test message subject.",
+      "weight": 0,
+      "inferred": false,
+      "privacyFlag": false
+    },
+    {
+      "baseEntityCode": "MSG_GENNY_INVITE",
+      "attributeCode": "PRI_SEND_MODE",
+      "readonly": false,
+      "index": 0,
+      "created": "2021-02-25T07:22:17",
+      "valueString": "IMMEDIATELY",
+      "weight": 0,
+      "inferred": false,
+      "privacyFlag": false
+    },
+    {
+      "baseEntityCode": "MSG_GENNY_INVITE",
+      "attributeCode": "PRI_SEND_DATETIME",
+      "readonly": false,
+      "index": 0,
+      "created": "2021-02-25T07:22:17",
+      "valueString": "",
+      "weight": 0,
+      "inferred": false,
+      "privacyFlag": false
+    },
+    {
+      "baseEntityCode": "MSG_GENNY_INVITE",
+      "attributeCode": "PRI_MEDIA",
+      "readonly": false,
+      "index": 0,
+      "created": "2021-02-25T07:22:17",
+      "valueString": "[\"EMAIL\", \"SMS\"]",
+      "weight": 0,
+      "inferred": false,
+      "privacyFlag": false
+    },
+    {
+      "baseEntityCode": "MSG_GENNY_INVITE",
+      "attributeCode": "PRI_TITLE",
+      "readonly": false,
+      "index": 0,
+      "created": "2021-02-25T07:22:17",
+      "valueString": "GADA test message",
+      "weight": 0,
+      "inferred": false,
+      "privacyFlag": false
+    },
+    {
+      "baseEntityCode": "MSG_GENNY_INVITE",
+      "attributeCode": "PRI_HTML",
+      "readonly": false,
+      "index": 0,
+      "created": "2021-02-25T07:22:17",
+      "valueString": "<html><body><p>This is the <b>html</b> body type of the message from {{BAD_GUY.PRI_NAME}} and {{SUPER_HERO.PRI_NAME}}.</p></body></html>",
+      "weight": 0,
+      "inferred": false,
+      "privacyFlag": false
+    }
+  ],
+  "links": [],
+  "questions": [],
+  "code": "MSG_GENNY_INVITE",
+  "index": 0,
+  "created": "2021-02-25T07:22:16",
+  "updated": "2021-02-25T07:22:17",
+  "id": 30044,
+  "name": "Test Message",
+  "realm": "internmatch"
+}
